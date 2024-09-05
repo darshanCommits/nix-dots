@@ -117,14 +117,18 @@
     '';
   };
 
-  programs.starship = {
+  programs.starship.enable = true;
+  programs.atuin = {
     enable = true;
+    enableZshIntegration = true;
     settings = {
+      key_path = "${config.home.homeDirectory}/secrets/ATUIN_KEY";
+      sync_frequency = "20h";
     };
   };
 
-  programs.fzf.enableZshIntegration = true;
-  programs.zoxide.enableZshIntegration = true;
   programs.eza.enableZshIntegration = true;
+  programs.fzf.enableZshIntegration = true;
   programs.yazi.enableZshIntegration = true;
+  programs.zoxide.enableZshIntegration = true;
 }
