@@ -48,6 +48,7 @@
       # GIT
       ga = "git add .";
       gcm = "git commit -m";
+      gca = "git commit --amend";
       push = "git push";
       gcl = "git clone";
     };
