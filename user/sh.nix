@@ -73,7 +73,7 @@
       utility.safeOps = true;
       editor = {
         dotExpansion = true;
-        keymap = "vi";
+        keymap = "emacs";
       };
       pmodules = ["autosuggestions" "directory" "editor" "git" "terminal"];
     };
@@ -122,8 +122,11 @@
     enable = true;
     enableZshIntegration = true;
     settings = {
-      key_path = "${config.home.homeDirectory}/secrets/ATUIN_KEY";
-      sync_frequency = "20h";
+      keymap_mode = "vim-normal";
+      keymap_cursor = {
+        vim_insert = "blink-bar";
+        vim_normal = "steady-block";
+      };
     };
   };
 
