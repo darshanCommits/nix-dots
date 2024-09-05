@@ -123,6 +123,7 @@
     enable = true;
     enableZshIntegration = true;
     settings = {
+      filter_mode_shell_up_key_binding = "directory";
       keymap_mode = "vim-normal";
       keymap_cursor = {
         vim_insert = "blink-bar";
