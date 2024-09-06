@@ -12,7 +12,13 @@
     eza
     nitch
     bottom
+
     bat
+    bat-extras.batgrep
+    bat-extras.batman
+    bat-extras.batpipe
+    bat-extras.prettybat
+
     zsh-completions
     ripgrep
     zoxide

@@ -152,6 +152,7 @@
     aria2
     gparted
     git
+    delta
     nh
     vim
     p7zip
