@@ -34,8 +34,9 @@
     enableCompletion = true;
     shellAliases = {
       lsv = "live-server";
-      cat = "bat";
-      # man = "batman";
+      cat = "prettybat";
+      man = "batman";
+      rg = "batgrep";
       j = "z";
       cd = "z";
       img = "wezterm imgcat";
@@ -93,6 +94,17 @@
       setopt histverify
       setopt interactivecomments
       zstyle ':completion:*:*:*:*:*' menu select
+
+      # To use batpipe, eval the output of this command in your shell init script.
+      LESSOPEN="|/nix/store/gg9cy0rv0ny95rg2bq2mzx32kk0pgyvb-batpipe-2024.07.10/bin/.batpipe-wrapped %s";
+      export LESSOPEN;
+      unset LESSCLOSE;
+
+      # The following will enable colors when using batpipe with less:
+      LESS="$LESS -R";
+      BATPIPE="color";
+      export LESS;
+      export BATPIPE;
 
       # Complete . and .. special directories
       zstyle ':completion:*' special-dirs true
