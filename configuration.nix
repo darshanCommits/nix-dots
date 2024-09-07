@@ -19,12 +19,14 @@
     ./system/keyd/keyd.nix
   ];
 
+  nixpkgs.config.allowUnfree = true;
   nix = {
     settings = {
       trusted-users = ["root" "@wheel" "greeed"];
       experimental-features = ["nix-command" "flakes"];
     };
   };
+  programs.home-manager.useGlobalPkgs = true;
 
   boot.kernelPackages = pkgs.linuxPackages_cachyos;
   chaotic.scx.enable = true;
@@ -39,8 +41,6 @@
 
   # xdg.portal.enable = true;
   # xdg.portal.config.common.default = "*";
-
-  nixpkgs.config.allowUnfree = true;
 
   services.flatpak.enable = true;
   services.openssh.enable = true;
