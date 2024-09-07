@@ -70,6 +70,9 @@ in {
     brave
     foot
     stremio
+    webcord-vencord
+    spotify
+    spicetify-cli
 
     gpu-screen-recorder
     mangohud
