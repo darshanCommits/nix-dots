@@ -26,7 +26,6 @@
       experimental-features = ["nix-command" "flakes"];
     };
   };
-  programs.home-manager.useGlobalPkgs = true;
 
   boot.kernelPackages = pkgs.linuxPackages_cachyos;
   chaotic.scx.enable = true;

@@ -20,6 +20,7 @@ in {
     # ./user/helix/language-servers.nix
   ];
 
+  nixpkgs.config.allowUnfree = true;
   # DO NOT TOUCH
   home.username = "greeed";
   home.homeDirectory = "/home/greeed";
@@ -66,7 +67,9 @@ in {
     hyprpicker
     hyprcursor
 
+    #GUI
     telegram-desktop
+    onlyoffice-bin
     brave
     foot
     stremio
