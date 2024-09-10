@@ -68,8 +68,8 @@ in {
     hyprcursor
 
     #GUI
+    libreoffice-qt
     telegram-desktop
-    onlyoffice-bin
     brave
     foot
     stremio
@@ -86,8 +86,16 @@ in {
 
     go
     nodejs
-    python3
     typescript
+    jupyter
+
+    (python3.withPackages (ps:
+      with ps; [
+        numpy
+        scipy
+        matplotlib
+        notebook
+      ]))
 
     taplo
     hyprls

@@ -1,6 +1,7 @@
 # for later
 # hyprland scratchpads https://www.youtube.com/watch?v=CwGlm-rpok4&list=PL_WcXIXdDWWohRNPGXO6H9Ds3jM_0fT9P&index=2&t=349s
 {
+  lib,
   config,
   pkgs,
   inputs,
@@ -11,7 +12,7 @@
 
     ./system/power_management/undervolt.nix # device specific
     ./system/power_management/thermals.nix
-    ./system/power_management/tlp.nix
+    ./system/power_management/auto-cpufreq.nix
 
     ./system/hardware/nvidia.nix
     ./system/hardware/opengl.nix
@@ -44,6 +45,8 @@
   services.flatpak.enable = true;
   services.openssh.enable = true;
   services.printing.enable = true;
+  services.jupyter.enable = true;
+
   security.rtkit.enable = true;
   security.polkit.enable = true;
 

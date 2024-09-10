@@ -19,6 +19,7 @@
     "float,class:^(error)$"
     "float,class:^(confirmreset)$"
     "float,title:^(Open File)$"
+    "float,title:^(Open)$"
     "float,title:^(branchdialog)$"
     "float,title:^(Confirm to replace files)"
     "float,title:^(File Operation Progress)"

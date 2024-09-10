@@ -31,6 +31,11 @@
     };
 
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+
+    auto-cpufreq = {
+      url = "github:AdnanHodzic/auto-cpufreq";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -38,6 +43,7 @@
     nixpkgs,
     chaotic,
     stylix,
+    auto-cpufreq,
     home-manager,
     helix-master,
     ...
@@ -52,13 +58,10 @@
         inherit system;
         specialArgs = {inherit inputs;};
         modules = [
-          {
-            nixpkgs.config = {
-            };
-          }
           ./configuration.nix
           chaotic.nixosModules.default
           inputs.stylix.nixosModules.stylix
+          auto-cpufreq.nixosModules.default
         ];
       };
     };
