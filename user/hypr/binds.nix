@@ -2,7 +2,9 @@
   config,
   pkgs,
   ...
-}: {
+}: let
+  scripts = ./scripts;
+in {
   wayland.windowManager.hyprland.settings = {
     "$mod" = "SUPER";
   };
@@ -15,17 +17,18 @@
       "$mod, S, togglesplit"
       "$mod, Y, togglefloating, pin"
       "$mod, F, exec, firefox"
-      "$mod, return, exec, footclient"
       "$mod, O, exec, thunar"
       "$mod, W, exec, brave"
+      "$mod, return,  exec, footclient"
 
       ", Print, exec, grimblast --notify copysave"
 
-      "$mod, d,  exec, $(tofi-drun)"
-      "$mod, V,  exec, cliphist list | tofi | cliphist decode | wl-copy"
-      "$mod, m,  exec, cat ~/.config/hypr/emoji | tofi | cut -d ' ' -f 1 | wl-copy"
-      # "$mod, x,  exec, rofi -show power-menu -modi power-menu:rofi-power-menu"
-      "$mod, c,  exec, ~/.config/hypr/scripts/colorpicker"
+      "$mod, d,  exec, ${scripts}/launcher"
+      "$mod, V,  exec, ${scripts}/clipboard-manager"
+      "$mod, m,  exec, ${scripts}/emoji-picker"
+      "$mod, x,  exec, ${scripts}/powermenu"
+      "$mod, c,  exec, ${scripts}/colorpicker"
+      "$mod, SHIFT S,  exec, ${scripts}/ocr"
 
       "ALT, Tab, cyclenext"
       "SHIFT ALT, Tab, cyclenext, prev"

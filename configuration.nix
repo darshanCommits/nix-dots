@@ -45,7 +45,7 @@
   services.flatpak.enable = true;
   services.openssh.enable = true;
   services.printing.enable = true;
-  services.jupyter.enable = true;
+  # services.jupyter.enable = true;
 
   security.rtkit.enable = true;
   security.polkit.enable = true;

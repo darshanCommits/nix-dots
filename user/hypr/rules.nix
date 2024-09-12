@@ -41,9 +41,12 @@
     "center,title:^(download)$"
 
     "idleinhibit focus,class:^(mpv)$"
-    "idleinhibit fullscreen,class:^(Brave-browser)$"
+    "idleinhibit fullscreen,class:^(brave-browser)$"
 
     "animation popin, class:^(Rofi)$"
     "stayfocused, class:^(Rofi)$"
+
+    "workspace 1, class:^(brave-browser)$"
+    "workspace 3, class:^(org.telegram.desktop)$"
   ];
 }

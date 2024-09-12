@@ -9,7 +9,7 @@
 in {
   imports = [
     ./user/sh.nix
-    ./user/tofi.nix
+    ./user/tofi/tofi.nix
 
     ./user/hypr/hyprland.nix
     ./user/hypr/hyprlock.nix
@@ -61,6 +61,7 @@ in {
     mako
     grimblast
     swaybg
+    tesseract
 
     # Hypr ecosystem (user-specific components)
     pyprland
