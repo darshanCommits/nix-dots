@@ -5,7 +5,7 @@
 }: {
   services.undervolt = {
     enable = true;
-    coreOffset = -165;
+    coreOffset = -150;
     turbo = 0;
     verbose = true;
   };
