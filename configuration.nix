@@ -70,10 +70,11 @@
   };
 
   services.displayManager = {
-    sddm = {
-      enable = true;
-      wayland.enable = true;
-    };
+    ly.enable = true;
+    # sddm = {
+    #   enable = true;
+    #   wayland.enable = true;
+    # };
   };
 
   # Configure keymap in X11
