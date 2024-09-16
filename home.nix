@@ -90,13 +90,13 @@ in {
     typescript
     jupyter
 
-    (python3.withPackages (ps:
-      with ps; [
-        numpy
-        scipy
-        matplotlib
-        notebook
-      ]))
+    # (python3.withPackages (ps:
+    #   with ps; [
+    #     numpy
+    #     scipy
+    #     matplotlib
+    #     notebook
+    #   ]))
 
     taplo
     hyprls
@@ -129,6 +129,7 @@ in {
   programs.helix = {
     enable = true;
     package = inputs.helix-master.packages.${pkgs.system}.default;
+
     # Add any other Helix-specific configurations here
   };
 

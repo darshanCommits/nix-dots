@@ -28,15 +28,16 @@
     };
   };
 
-  boot.kernelPackages = pkgs.linuxPackages_cachyos;
-  chaotic.scx.enable = true;
+  boot = {
+    kernelPackages = pkgs.linuxPackages_cachyos;
+    loader.systemd-boot.enable = true;
+    loader.efi.canTouchEfiVariables = true;
+  };
 
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  chaotic.scx.enable = true;
 
   environment.shells = with pkgs; [zsh bash];
   programs.zsh.enable = true;
-  users.defaultUserShell = pkgs.zsh;
   # services.flatpak.enable = true;
 
   # xdg.portal.enable = true;
@@ -90,13 +91,19 @@
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.greeed = {
-    isNormalUser = true;
-    description = "Darshan Kumawat";
-    extraGroups = ["networkmanager" "wheel"];
-    # packages = with pkgs; [
-    # #  thunderbird
-    # ];
+  users = {
+    defaultUserShell = pkgs.zsh;
+    users.greeed = {
+      isNormalUser = true;
+      description = "Darshan Kumawat";
+      extraGroups = [
+        "networkmanager"
+        "wheel"
+        "video"
+        "audio"
+        "input"
+      ];
+    };
   };
 
   programs.nh = {

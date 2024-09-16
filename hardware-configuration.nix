@@ -14,7 +14,9 @@
 
   boot.initrd.availableKernelModules = ["xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod"];
   boot.initrd.kernelModules = [];
-  boot.kernelModules = [];
+  boot.kernelModules = [
+    "systemd.mask=dev-tpmrm0.device" #this is to mask that stupid 1.5 mins systemd bug
+  ];
   boot.extraModulePackages = [];
 
   fileSystems."/" = {

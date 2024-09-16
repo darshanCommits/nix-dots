@@ -9,12 +9,9 @@
     LIBVA_DRIVER_NAME = "nvidia";
     NVD_BACKEND = "direct";
   };
+
   services.xserver.videoDrivers = ["nvidia"];
   boot.kernelParams = ["nvidia.NVreg_PreserveVideoMemoryAllocations=1"];
-
-  environment.systemPackages = with pkgs; [
-    nvidia-vaapi-driver
-  ];
 
   hardware.nvidia = {
     package = config.boot.kernelPackages.nvidiaPackages.stable;
@@ -25,6 +22,7 @@
       enable = true;
       finegrained = true;
     };
+
     prime = {
       # sync.enable = true;
       offload = {

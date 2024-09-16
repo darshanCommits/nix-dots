@@ -19,6 +19,7 @@
     nixpkgs.url = "nixpkgs/nixos-unstable";
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     stylix.url = "github:danth/stylix";
+    nixgl.url = "github:nix-community/nixGL";
 
     home-manager = {
       url = "github:nix-community/home-manager/master";
@@ -40,17 +41,18 @@
 
   outputs = {
     self,
+    nixgl,
     nixpkgs,
     chaotic,
     stylix,
     auto-cpufreq,
     home-manager,
-    helix-master,
     ...
   } @ inputs: let
     system = "x86_64-linux";
     pkgs = import nixpkgs {
       inherit system;
+      overlays = [nixgl.overlay];
     };
   in {
     nixosConfigurations = {
