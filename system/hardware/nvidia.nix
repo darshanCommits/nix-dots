@@ -19,8 +19,8 @@
     modesetting.enable = true;
     nvidiaSettings = true;
     powerManagement = {
-      enable = true;
-      finegrained = true;
+      enable = false;
+      finegrained = false;
     };
 
     prime = {
