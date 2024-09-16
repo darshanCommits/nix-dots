@@ -4,6 +4,7 @@
   ...
 }: let
   scripts = ./scripts;
+  emojilist = "${scripts}/emojilist"; # Path to the text file
 in {
   wayland.windowManager.hyprland.settings = {
     "$mod" = "SUPER";
@@ -23,12 +24,12 @@ in {
 
       ", Print, exec, grimblast --notify copysave"
 
-      "$mod, d,  exec, ${scripts}/launcher"
+      "$mod, D,  exec, ${scripts}/launcher"
       "$mod, V,  exec, ${scripts}/clipboard-manager"
-      "$mod, m,  exec, ${scripts}/emoji-picker"
-      "$mod, x,  exec, ${scripts}/powermenu"
-      "$mod, c,  exec, ${scripts}/colorpicker"
-      "$mod, SHIFT S,  exec, ${scripts}/ocr"
+      "$mod, X,  exec, ${scripts}/powermenu"
+      "$mod, C,  exec, ${scripts}/color-picker"
+      ''$mod, M,  exec, tofi < ${emojilist} | cut -d ' ' -f 1 | tr -d '\n' | wl-copy''
+      "$mod SHIFT, S,  exec, ${scripts}/ocr"
 
       "ALT, Tab, cyclenext"
       "SHIFT ALT, Tab, cyclenext, prev"
