@@ -6,8 +6,8 @@
   services.auto-cpufreq.enable = true;
   services.auto-cpufreq.settings = {
     battery = {
-      governor = "powersave";
-      turbo = "never";
+      governor = "balanced";
+      turbo = "auto";
     };
     charger = {
       governor = "performance";
