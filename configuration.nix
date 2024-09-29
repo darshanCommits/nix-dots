@@ -12,9 +12,9 @@
 
     ./system/power_management/undervolt.nix # device specific
     ./system/power_management/thermals.nix
-    ./system/power_management/auto-cpufreq.nix
+    ./system/power_management/tlp.nix
 
-    # ./system/hardware/nvidia.nix
+    ./system/hardware/nvidia.nix
     ./system/hardware/opengl.nix
 
     ./system/keyd/keyd.nix
