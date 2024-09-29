@@ -10,7 +10,6 @@
     extraPackages = with pkgs; [
       vaapiVdpau
       libvdpau
-      # nvidia-vaapi-driver
       libvdpau-va-gl
       vdpauinfo
       vaapiIntel
