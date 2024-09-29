@@ -7,7 +7,7 @@
   boot.kernelParams = ["nvidia.NVreg_PreserveVideoMemoryAllocations=1"];
 
   hardware.nvidia = {
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    package = config.boot.kernelPackages.nvidiaPackages.latest;
     open = false;
     modesetting.enable = true;
     nvidiaSettings = true;
@@ -17,11 +17,11 @@
     };
 
     prime = {
-      sync.enable = true;
-      # offload = {
-      #   enable = true;
-      #   enableOffloadCmd = true;
-      # };
+      # sync.enable = true;
+      offload = {
+        enable = true;
+        enableOffloadCmd = true;
+      };
       intelBusId = "PCI:0:2:0";
       nvidiaBusId = "PCI:1:0:0";
     };
@@ -37,4 +37,10 @@
   environment.systemPackages = with pkgs; [
     nvidia-vaapi-driver
   ];
+
+  programs.zsh.shellAliases = {
+    mpv = "nvidia-offload mpv";
+    stremio = "nvidia-offload stremio";
+    brave = "nvidia-offload brave";
+  };
 }
