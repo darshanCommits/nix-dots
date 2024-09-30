@@ -88,7 +88,7 @@ in {
   ];
 
   wayland.windowManager.hyprland.settings.bindl = [
-    ",switch:Lid,exec,hyprlock"
+    ",switch:Lid,exec,systemctl suspend"
     '',switch:on:Lid,exec,hyprctl keyword monitor "eDP-1,1920x1080@144,0x0,1.25"''
     '',switch:off:Lid,exec,hyprctl keyword monitor "eDP-1, disable"''
   ];
