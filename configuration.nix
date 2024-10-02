@@ -150,6 +150,10 @@
   programs.steam.gamescopeSession.enable = true;
   programs.gamemode.enable = true;
 
+  services.mongodb.enable = true;
+  # services.postgresql.enable = true;
+  # services.mysql.enable = true;
+
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
     pciutils
