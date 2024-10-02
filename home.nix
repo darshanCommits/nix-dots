@@ -15,6 +15,8 @@ in {
     ./user/hypr/hyprlock.nix
     ./user/hypr/hypridle.nix
 
+    ./user/media/mpv/mpv.nix
+
     ./user/stylix/stylix.nix
     # ./user/helix/helix.nix
     # ./user/helix/language-servers.nix
@@ -125,22 +127,6 @@ in {
     package = inputs.helix-master.packages.${pkgs.system}.default;
 
     # Add any other Helix-specific configurations here
-  };
-
-  programs.mpv = {
-    enable = true;
-    config = {
-      hwdec = "auto-safe";
-      vo = "gpu";
-      profile = "gpu-hq";
-      gpu-context = "wayland";
-      ytdl-format = "bestvideo+bestaudio";
-    };
-    scripts = with pkgs; [
-      mpvScripts.uosc
-      mpvScripts.thumbfast
-      mpvScripts.autosubsync-mpv # press n
-    ];
   };
 
   gtk = {
