@@ -169,6 +169,7 @@
     brightnessctl
     wl-clipboard
     unzip
+    xwaylandvideobridge
     killall
     wget
     aria2
