@@ -74,6 +74,7 @@ in {
     libreoffice-qt
     telegram-desktop
     brave
+    firefox
     foot
     stremio
     webcord-vencord
