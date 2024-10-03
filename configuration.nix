@@ -48,6 +48,10 @@
   services.printing.enable = true;
   # services.jupyter.enable = true;
 
+  services.xserver.enable = true;
+  # services.displayManager.sddm.enable = true;
+  services.desktopManager.plasma6.enable = true;
+
   security.rtkit.enable = true;
   security.polkit.enable = true;
 
