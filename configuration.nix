@@ -171,6 +171,7 @@
     xwaylandvideobridge
     killall
     wget
+    stress-ng
     aria2
     gparted
     git
