@@ -17,7 +17,6 @@ in {
       "$mod, B, togglefloating"
       "$mod, S, togglesplit"
       "$mod, Y, togglefloating, pin"
-      "$mod, F, exec, firefox"
       "$mod, O, exec, thunar"
       "$mod, W, exec, brave"
       "$mod, return,  exec, footclient"
