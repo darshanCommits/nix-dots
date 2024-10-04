@@ -29,12 +29,10 @@
   };
 
   boot = {
-    kernelPackages = pkgs.linuxPackages_cachyos;
+    kernelPackages = pkgs.linuxPackages_latest;
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
   };
-
-  chaotic.scx.enable = true;
 
   environment.shells = with pkgs; [zsh bash];
   programs.zsh.enable = true;
