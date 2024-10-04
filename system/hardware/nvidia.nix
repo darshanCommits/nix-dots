@@ -17,20 +17,18 @@
     };
 
     prime = {
-      # sync.enable = true;
-      offload = {
-        enable = true;
-        enableOffloadCmd = true;
-      };
+      sync.enable = true;
+      # offload = {
+      #   enable = true;
+      #   enableOffloadCmd = true;
+      # };
       intelBusId = "PCI:0:2:0";
       nvidiaBusId = "PCI:1:0:0";
     };
   };
 
   environment.variables = {
-    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-    GBM_BACKEND = "nvidia-drm";
-    LIBVA_DRIVER_NAME = "nvidia";
+    GBM_BACKEND = "nvidia";
     NVD_BACKEND = "direct";
   };
 
@@ -38,9 +36,9 @@
     nvidia-vaapi-driver
   ];
 
-  programs.zsh.shellAliases = {
-    mpv = "nvidia-offload mpv";
-    stremio = "nvidia-offload stremio";
-    brave = "nvidia-offload brave";
-  };
+  # programs.zsh.shellAliases = {
+  #   mpv = "nvidia-offload mpv";
+  #   stremio = "nvidia-offload stremio";
+  #   brave = "nvidia-offload brave";
+  # };
 }
