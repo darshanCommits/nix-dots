@@ -103,6 +103,8 @@ in {
     ccls
     cmake
     rustup
+    gcc
+    openssl
     jdk
     weka
     rPackages.RWekajars
