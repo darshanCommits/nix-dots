@@ -68,12 +68,12 @@ in {
     );
 
   wayland.windowManager.hyprland.settings.binde = [
-    ", XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
-    ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-    ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+    ", XF86AudioRaiseVolume, exec, ${scripts}/volume --inc"
+    ", XF86AudioLowerVolume, exec, ${scripts}/volume --dec"
+    ", XF86AudioMute, exec, ${scripts}/volume --toggle"
 
-    ", XF86MonBrightnessDown , exec, brightnessctl s $(( $(brightnessctl g) > 120 ? $(brightnessctl g) - $(brightnessctl m) / 10 : 20 ))"
-    ", XF86MonBrightnessUp , exec, brightnessctl s +10%"
+    ", XF86MonBrightnessUp , exec, ${scripts}/brightness --inc"
+    ", XF86MonBrightnessDown , exec, ${scripts}/brightness --dec"
 
     "$mod, left, resizeactive, -10 0"
     "$mod, right, resizeactive, 10 0"
