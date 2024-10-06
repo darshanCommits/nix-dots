@@ -18,6 +18,8 @@
     ./system/hardware/nvidia.nix
     ./system/hardware/opengl.nix
 
+    ./system/services/hyprland-suspend.nix
+
     ./system/keyd/keyd.nix
   ];
 
