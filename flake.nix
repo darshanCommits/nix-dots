@@ -24,7 +24,7 @@
     };
 
     helix-master = {
-      url = "github:the-mikedavis/helix/77b5dda839a805b3626987ee9e6c60385f5dca69";
+      url = "github:the-mikedavis/helix/b15b569fab54c520d711d529b5095d89a2601d31";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

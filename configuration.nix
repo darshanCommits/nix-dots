@@ -158,7 +158,7 @@
   programs.steam.gamescopeSession.enable = true;
   programs.gamemode.enable = true;
 
-  services.mongodb.enable = true;
+  # services.mongodb.enable = true;
   services.postgresql.enable = true;
   # services.mysql.enable = true;
 
