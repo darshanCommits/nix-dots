@@ -14,26 +14,23 @@
   };
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixOS/nixpkgs";
     stylix.url = "github:danth/stylix";
-    nixgl.url = "github:nix-community/nixGL";
+    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
 
     home-manager = {
-      url = "github:nix-community/home-manager/master";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     helix-master = {
-      url = "github:the-mikedavis/helix/b15b569fab54c520d711d529b5095d89a2601d31";
+      url = "github:the-mikedavis/helix/77b5dda839a805b3626987ee9e6c60385f5dca69";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
   };
 
   outputs = {
     self,
-    nixgl,
     nixpkgs,
     stylix,
     home-manager,
@@ -42,7 +39,6 @@
     system = "x86_64-linux";
     pkgs = import nixpkgs {
       inherit system;
-      overlays = [nixgl.overlay];
     };
   in {
     nixosConfigurations = {

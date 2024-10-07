@@ -7,8 +7,8 @@
   boot.kernelParams = ["nvidia.NVreg_PreserveVideoMemoryAllocations=1"];
 
   hardware.nvidia = {
-    package = config.boot.kernelPackages.nvidiaPackages.latest;
     open = false;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
     modesetting.enable = true;
     nvidiaSettings = true;
     powerManagement = {
