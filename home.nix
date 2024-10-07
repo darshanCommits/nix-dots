@@ -36,7 +36,6 @@ in {
     VIDEO_PLAYER = "mpv";
     AUDIO_PLAYER = "mpv";
 
-    XDG_SESSION_TYPE = "wayland";
     NIXOS_OZONE_WL = 1;
     STEAM_EXTRA_COMPAT_TOOLS_PATHS = "\\\${HOME}/.steam/root/compatibilitytools.d";
 

@@ -12,7 +12,7 @@
     modesetting.enable = true;
     nvidiaSettings = true;
     powerManagement = {
-      enable = false;
+      enable = true;
       finegrained = false;
     };
 
@@ -25,11 +25,6 @@
       intelBusId = "PCI:0:2:0";
       nvidiaBusId = "PCI:1:0:0";
     };
-  };
-
-  environment.variables = {
-    GBM_BACKEND = "nvidia";
-    NVD_BACKEND = "direct";
   };
 
   environment.systemPackages = with pkgs; [

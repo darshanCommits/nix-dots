@@ -9,9 +9,15 @@
     ./rules.nix
   ];
   wayland.windowManager.hyprland.enable = true;
-
+  wayland.windowManager.hyprland.systemd.variables = ["--all"];
   wayland.windowManager.hyprland.settings = {
     "$mod" = "SUPER";
+
+    env = [
+      "XDG_CURRENT_DESKTOP,Hyprland"
+      "XDG_SESSION_DESKTOP,Hyprland"
+    ];
+
     gestures = {
       workspace_swipe = true;
       workspace_swipe_distance = 200;
@@ -91,7 +97,7 @@
       "hypridle"
       "swaybg -i ~/.dotfiles/assets/wallpapers/goatv3.jpg"
       "waybar"
-      "foot --server "
+      "foot --server"
       "mako"
     ];
   };
