@@ -22,11 +22,6 @@
   ];
 
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-    "steam"
-    "steam-original"
-    "steam-run"
-  ];
   nix = {
     settings = {
       trusted-users = ["root" "@wheel" "greeed"];
@@ -158,11 +153,11 @@
 
   programs.steam.enable = true;
   programs.java.enable = true; 
-  programs.steam.package = pkgs.steam.override {
-     withPrimus = true;
-    withJava = true;
-     extraPkgs =  [ pkgs.bumblebee pkgs.glxinfo ];
-  };
+  # programs.steam.package = pkgs.steam.override {
+  #    # withPrimus = true;
+  #   withJava = true;
+  #    extraPkgs =  [ pkgs.bumblebee pkgs.glxinfo ];
+  # };
 
   programs.steam.gamescopeSession.enable = true;
   programs.gamemode.enable = true;
@@ -173,6 +168,7 @@
 
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
+    inputs.umu.packages.${pkgs.system}.umu 
     pciutils
     wineWowPackages.stable
     libnotify
