@@ -67,6 +67,12 @@ in {
     hyprpicker
     hyprcursor
 
+
+    #GAMES
+    heroic
+    lutris
+    
+
     #GUI
     # libreoffice-qt
     telegram-desktop
