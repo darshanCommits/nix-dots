@@ -58,8 +58,6 @@ in {
     comma
 
     waybar
-    tofi
-    mako
     grimblast
     swaybg
     tesseract
@@ -70,7 +68,7 @@ in {
     hyprcursor
 
     #GUI
-    libreoffice-qt
+    # libreoffice-qt
     telegram-desktop
     brave
     foot

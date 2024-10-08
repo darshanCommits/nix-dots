@@ -10,15 +10,13 @@
   imports = [
     ./hardware-configuration.nix
 
-    ./system/power_management/undervolt.nix # device specific
+    # ./system/power_management/undervolt.nix # device specific
     ./system/power_management/thermals.nix
     ./system/power_management/auto-cpufreq.nix
     # ./system/power_management/tlp.nix
 
     ./system/hardware/nvidia.nix
     ./system/hardware/opengl.nix
-
-    # ./system/services/hyprland-suspend.nix
 
     ./system/keyd/keyd.nix
   ];
@@ -39,7 +37,6 @@
 
   environment.shells = with pkgs; [zsh bash];
   programs.zsh.enable = true;
-  # services.flatpak.enable = true;
 
   # xdg.portal.enable = true;
   # xdg.portal.config.common.default = "*";
@@ -49,7 +46,7 @@
   services.printing.enable = true;
   # services.jupyter.enable = true;
 
-  services.xserver.enable = true;
+  # services.xserver.enable = true;
   # services.displayManager.sddm.enable = true;
 
   security.rtkit.enable = true;
@@ -74,11 +71,10 @@
   };
 
   services.displayManager = {
-    ly.enable = true;
-    # sddm = {
-    #   enable = true;
-    #   wayland.enable = true;
-    # };
+    sddm = {
+      enable = true;
+      wayland.enable = true;
+    };
   };
 
   # Configure keymap in X11
