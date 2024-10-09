@@ -1,11 +1,13 @@
 {
-  config,
   pkgs,
   ...
-}: {
+}:   let  
+    wallpaper = /home/greeed/.dotfiles/assets/wallpapers/goatv3.jpg;
+  in {
+
   stylix = {
     enable = true;
-    image = ./goatv3.jpg;
+    image = wallpaper;
     polarity = "dark";
     base16Scheme = ./dracula.yaml;
 
@@ -48,6 +50,7 @@
       hyprland.enable = false;
       helix.enable = false;
       tofi.enable = false;
+      foot.enable = true;
     };
   };
 }

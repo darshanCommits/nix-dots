@@ -42,6 +42,7 @@
     general = {
       gaps_in = 0;
       gaps_out = 1;
+      allow_tearing = true;
       border_size = 1;
       no_border_on_floating = true;
       "col.active_border" = "rgb(FA584F)";
