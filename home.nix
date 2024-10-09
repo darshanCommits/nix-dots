@@ -18,6 +18,7 @@ in {
     ./user/media/mpv/mpv.nix
 
     ./user/stylix/stylix.nix
+    ./user/foot/foot.nix
     # ./user/helix/helix.nix
     # ./user/helix/language-servers.nix
   ];
@@ -42,6 +43,8 @@ in {
     HISTFILE = "/home/greeed/.zsh_history";
   };
 
+  programs.bun.enable = true;
+
   home.packages = with pkgs; [
     webp-pixbuf-loader
     poppler
@@ -56,6 +59,8 @@ in {
     # mpv
     zathura
     comma
+
+    inputs.umu.packages.${pkgs.system}.umu 
 
     waybar
     grimblast
@@ -72,7 +77,6 @@ in {
     heroic
     lutris
     
-
     #GUI
     # libreoffice-qt
     telegram-desktop

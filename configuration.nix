@@ -121,9 +121,9 @@
 
   programs.hyprland = {
     enable = true;
-    xwayland.enable = true;
-    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-    portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+    # xwayland.enable = true;
+    # package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    # portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
   };
 
   fonts.packages = with pkgs; [
@@ -168,7 +168,6 @@
 
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
-    inputs.umu.packages.${pkgs.system}.umu 
     pciutils
     wineWowPackages.stable
     libnotify
@@ -181,6 +180,7 @@
     stress-ng
     aria2
     gparted
+    mariadb
     git
     delta
     nh

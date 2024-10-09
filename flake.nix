@@ -1,5 +1,6 @@
 {
   description = "My first flake!";
+
   nixConfig = {
     extra-substituters = [
       "https://helix.cachix.org"
