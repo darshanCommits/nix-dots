@@ -1,12 +1,15 @@
 {
-  
+...  
 }: {
   
   programs.foot.enable = true;
   programs.foot.settings =  {
+  main = {
     title="Terminal";
     pad = "15x0";
     font = "JetBrainsMono Nerd Font Mono:size=14";
+    
+  };
     url = {
       launch = "xdg-open $\{url\}";
       osc8-underline="url-mode";

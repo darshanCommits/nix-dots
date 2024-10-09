@@ -19,7 +19,7 @@
 
     fonts = {
       sizes = {
-        terminal = 15;
+        terminal = 14;
         desktop = 12;
         popups = 12;
         applications = 14;
@@ -50,7 +50,7 @@
       hyprland.enable = false;
       helix.enable = false;
       tofi.enable = false;
-      foot.enable = true;
+      foot.enable = false;
     };
   };
 }
