@@ -8,19 +8,20 @@
   icon_name = "Dracula";
 in {
   imports = [
-    ./user/sh.nix
-    ./user/tofi/tofi.nix
+    ./user/zsh/sh.nix
 
     ./user/hypr/hyprland.nix
     ./user/hypr/hyprlock.nix
     ./user/hypr/hypridle.nix
 
-    ./user/media/mpv/mpv.nix
-
-    ./user/stylix/stylix.nix
     ./user/foot/foot.nix
-    # ./user/helix/helix.nix
-    # ./user/helix/language-servers.nix
+    ./user/mako/mako.nix
+    ./user/stylix/stylix.nix
+    ./user/waybar/waybar.nix
+    ./user/git/git.nix
+    ./user/mpv/mpv.nix
+    ./user/tofi/tofi.nix
+    ./user/zathura/zathura.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
@@ -57,7 +58,6 @@ in {
 
     # Media and productivity
     # mpv
-    zathura
     comma
 
     inputs.umu.packages.${pkgs.system}.umu 
@@ -78,7 +78,6 @@ in {
     lutris
     
     #GUI
-    # libreoffice-qt
     telegram-desktop
     brave
     foot

@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+HW_BAT_DIR="/sys/class/power_supply/BAT1"
+BAT_FULL_FILE="$HW_BAT_DIR/energy_full"
+BAT_NOW_FILE="$HW_BAT_DIR/energy_now"
+
+get_battery_percentage() {
+	if [[ ! -f "$BAT_FULL_FILE" || ! -f "$BAT_NOW_FILE" ]]; then
+		return 1
+	fi
+
+	local bat_full
+	local bat_now
+
+	bat_full=$(cat "$BAT_FULL_FILE")
+	bat_now=$(cat "$BAT_NOW_FILE")
+
+	echo $(( (bat_now * 100) / bat_full ))
+}
+
+send_notification() {
+	local battery_percentage="$1"
+	local date
+	local time
+
+	date=$(date +"%Y-%m-%d")
+	time=$(date +"%I:%M %p")
+
+	notify-send "System Info" "Battery: ${battery_percentage}%\nDate: $date\nTime: $time"
+}
+
+main() {
+	local battery_percentage
+
+	if ! battery_percentage=$(get_battery_percentage); then
+		notify-send "Battery information not available"
+		exit 1
+	fi
+
+	send_notification "$battery_percentage"
+}
+
+main

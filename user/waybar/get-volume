@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+# Get primary sink ID (USB-C if available, otherwise default)
+get_primary_sink() {
+    local usb_sink=$(wpctl status | grep -A 2 "Sinks:" | grep "USB-C Audio" | awk '{print $2}' | tr -d '.')
+    if [ -n "$usb_sink" ]; then
+        echo "$usb_sink"
+    else
+        echo "@DEFAULT_AUDIO_SINK@"
+    fi
+}
+
+# Get volume
+get_volume() {
+    local sink=$(get_primary_sink)
+    local volume=$(wpctl get-volume "$sink" 2>/dev/null | awk '{printf "%.0f\n", $2 * 100}')
+    local muted=$(wpctl get-volume "$sink" 2>/dev/null | grep -q '\[MUTED\]'; echo $?)
+
+    if [ "$muted" -eq 0 ]; then
+        status="muted"
+    else
+        status="unmuted"
+    fi
+
+    if [ -n "$volume" ]; then
+        echo "{\"volume\": \"$volume%\", \"status\": \"$status\", \"percentage\": $volume}"
+    else
+        echo "Error: Unable to get volume for $sink" >&2
+        return 1
+    fi
+}
+
+# Call get_volume directly
+get_volume

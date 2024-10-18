@@ -1,74 +1,84 @@
 #!/usr/bin/env bash
 
-# Get Volume
+# Enable error tracing
+set -e
+
+# Get primary sink ID (USB-C if available, otherwise default)
+get_primary_sink() {
+    local usb_sink=$(wpctl status | grep -A 2 "Sinks:" | grep "USB-C Audio" | awk '{print $2}' | tr -d '.')
+    if [ -n "$usb_sink" ]; then
+        echo "$usb_sink"
+    else
+        echo "@DEFAULT_AUDIO_SINK@"
+    fi
+}
+
+# Get volume
 get_volume() {
-	volume=$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print $2 * 100}' | cut -d'.' -f1)
-	echo "$volume"
+    local sink=$(get_primary_sink)
+    local volume=$(wpctl get-volume "$sink" 2>/dev/null | awk '{printf "%.0f\n", $2 * 100}')
+    if [ -n "$volume" ]; then
+        echo "$volume"
+    else
+        echo "Error: Unable to get volume for $sink" >&2
+        return 1
+    fi
 }
 
-# Notify user with current volume
+# Notify user
 notify_user() {
-	notify-send -h string:x-canonical-private-synchronous:sys-notify -u low "Volume: $(get_volume)%"
+    local volume=$(get_volume)
+    if [ $? -eq 0 ]; then
+        notify-send -h string:x-canonical-private-synchronous:sys-notify -u low "Volume: $volume%"
+    else
+        notify-send -h string:x-canonical-private-synchronous:sys-notify -u low "Error: Unable to get volume"
+    fi
 }
 
-# Increase Volume
+# Adjust volume
+adjust_volume() {
+    local sink=$(get_primary_sink)
+    local direction=$1
+    if ! wpctl set-volume "$sink" "$direction" >/dev/null 2>&1; then
+        echo "Error: Unable to adjust volume for $sink" >&2
+        return 1
+    fi
+    notify_user
+}
+
+# Increase volume
 inc_volume() {
-	wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ && notify_user
+    adjust_volume "5%+"
 }
 
-# Decrease Volume
+# Decrease volume
 dec_volume() {
-	wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && notify_user
+    adjust_volume "5%-"
 }
 
-# Toggle Mute
+# Toggle mute
 toggle_mute() {
-	if wpctl get-volume @DEFAULT_AUDIO_SINK@ | grep -q '\[MUTED\]'; then
-		wpctl set-mute @DEFAULT_AUDIO_SINK@ 0 && notify-send -h string:x-canonical-private-synchronous:sys-notify -u low "Volume Switched ON"
-	else
-		wpctl set-mute @DEFAULT_AUDIO_SINK@ 1 && notify-send -h string:x-canonical-private-synchronous:sys-notify -u low "Volume Switched OFF"
-	fi
-}
-
-# Toggle Mic
-toggle_mic() {
-	if wpctl get-volume @DEFAULT_AUDIO_SOURCE@ | grep -q '\[MUTED\]'; then
-		wpctl set-mute @DEFAULT_AUDIO_SOURCE@ 0 && notify-send -h string:x-canonical-private-synchronous:sys-notify -u low "Microphone Switched ON"
-	else
-		wpctl set-mute @DEFAULT_AUDIO_SOURCE@ 1 && notify-send -h string:x-canonical-private-synchronous:sys-notify -u low "Microphone Switched OFF"
-	fi
-}
-
-# Notify mic level
-notify_mic_user() {
-	notify-send -h string:x-canonical-private-synchronous:sys-notify -u low "Mic-Level: $(wpctl get-volume @DEFAULT_AUDIO_SOURCE@ | awk '{print $2 * 100}' | cut -d'.' -f1) %"
-}
-
-# Increase MIC Volume
-inc_mic_volume() {
-	wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 5%+ && notify_mic_user
-}
-
-# Decrease MIC Volume
-dec_mic_volume() {
-	wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 5%- && notify_mic_user
+    local sink=$(get_primary_sink)
+    if wpctl get-volume "$sink" 2>/dev/null | grep -q '\[MUTED\]'; then
+        if ! wpctl set-mute "$sink" 0 >/dev/null 2>&1; then
+            echo "Error: Unable to unmute $sink" >&2
+            return 1
+        fi
+        notify-send -h string:x-canonical-private-synchronous:sys-notify -u low "Volume Switched ON"
+    else
+        if ! wpctl set-mute "$sink" 1 >/dev/null 2>&1; then
+            echo "Error: Unable to mute $sink" >&2
+            return 1
+        fi
+        notify-send -h string:x-canonical-private-synchronous:sys-notify -u low "Volume Switched OFF"
+    fi
 }
 
 # Execute accordingly
-if [[ "$1" == "--get" ]]; then
-	get_volume
-elif [[ "$1" == "--inc" ]]; then
-	inc_volume
-elif [[ "$1" == "--dec" ]]; then
-	dec_volume
-elif [[ "$1" == "--toggle" ]]; then
-	toggle_mute
-elif [[ "$1" == "--toggle-mic" ]]; then
-	toggle_mic
-elif [[ "$1" == "--mic-inc" ]]; then
-	inc_mic_volume
-elif [[ "$1" == "--mic-dec" ]]; then
-	dec_mic_volume
-else
-	get_volume
-fi
+case "$1" in
+    --get) get_volume ;;
+    --inc) inc_volume ;;
+    --dec) dec_volume ;;
+    --toggle) toggle_mute ;;
+    *) get_volume ;;
+esac

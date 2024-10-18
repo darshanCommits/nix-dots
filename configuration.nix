@@ -2,9 +2,7 @@
 # hyprland scratchpads https://www.youtube.com/watch?v=CwGlm-rpok4&list=PL_WcXIXdDWWohRNPGXO6H9Ds3jM_0fT9P&index=2&t=349s
 {
   lib,
-  config,
   pkgs,
-  inputs,
   ...
 }: {
   imports = [
@@ -22,6 +20,9 @@
   ];
 
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.allowUnfreePredicate = pkg:
+    builtins.elem (lib.getName pkg) [ "corefonts" ];
+
   nix = {
     settings = {
       trusted-users = ["root" "@wheel" "greeed"];
@@ -46,15 +47,14 @@
   services.printing.enable = true;
   # services.jupyter.enable = true;
 
+
   # services.xserver.enable = true;
-  # services.displayManager.sddm.enable = true;
 
   security.rtkit.enable = true;
   security.polkit.enable = true;
 
   networking.hostName = "greeed-nix"; # Define your hostname.
   networking.networkmanager.enable = true;
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   time.timeZone = "Asia/Kolkata";
   i18n.defaultLocale = "en_IN";
@@ -127,6 +127,7 @@
   };
 
   fonts.packages = with pkgs; [
+    corefonts
     noto-fonts
     noto-fonts-cjk
     noto-fonts-emoji
@@ -151,16 +152,10 @@
 
   # GAMING
 
-  programs.steam.enable = true;
-  programs.java.enable = true; 
-  # programs.steam.package = pkgs.steam.override {
-  #    # withPrimus = true;
-  #   withJava = true;
-  #    extraPkgs =  [ pkgs.bumblebee pkgs.glxinfo ];
-  # };
-
-  programs.steam.gamescopeSession.enable = true;
   programs.gamemode.enable = true;
+  programs.steam.enable = true;
+  programs.steam.gamescopeSession.enable = true;
+  programs.java.enable = true; 
 
   # services.mongodb.enable = true;
   services.postgresql.enable = true;
@@ -192,8 +187,10 @@
     hyprlock
     hypridle
     libsForQt5.qtstyleplugin-kvantum
-    polkit_gnome
+    polkit-kde-agent
     android-tools
+    onlyoffice-bin
+    corefonts
   ];
 
   # Enable the OpenSSH daemon.

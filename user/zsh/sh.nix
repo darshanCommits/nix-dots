@@ -43,6 +43,8 @@
       anime = "ani-cli";
       "..." = "cd ../..";
       pdf = "zathura";
+      onlyoffice = "onlyoffice-desktopeditors --force-scale=1.25";
+      onlyoffice-desktopeditors = "onlyoffice-desktopeditors --force-scale=1.25";
 
       ls = "eza -g --icons --header --group-directories-first";
       la = "eza -lag --icons --header --group-directories-first";

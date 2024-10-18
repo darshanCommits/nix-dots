@@ -1,6 +1,3 @@
-{
-	
-}:
 let 
   style = ./style.css;
   config = ./config.jsonc;
@@ -9,8 +6,5 @@ in {
     enable = true;
     settings = builtins.fromJSON (builtins.readFile config);
     style = builtins.readFile style;
-};
-  
+  };
 }
-
-

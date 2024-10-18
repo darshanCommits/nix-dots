@@ -1,93 +1,100 @@
 {
-	"modules-left": ["clock", "hyprland/workspaces", "wlr/taskbar", "tray"],
-	"modules-right": ["network", "pulseaudio", "battery", "custom/power"],
-	"clock": {
-		"format": "󰅐  {:%I:%M:%p}",
-		"tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-		"format-alt": "  {:%d/%m}"
-	},
-	"hyprland/window": {
-		"max-length": 30
-	},
-	"wlr/workspaces": {
-		"disable-scroll": true,
-		"all-outputs": true,
-		"on-click": "activate",
-		"persistent_workspaces": {
-			"1": [],
-			"2": [],
-			"3": [],
-			"4": [],
-			"5": [],
-			"6": [],
-			"7": [],
-			"8": [],
-			"9": [],
-			"10": []
+	"mainBar": {
+		"modules-left": ["clock", "hyprland/workspaces", "tray"],
+		"modules-right": ["network", "custom/volume", "battery", "custom/power"],
+		"clock": {
+			"format": "󰅐  {:%I:%M:%p}",
+			"tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+			"format-alt": "  {:%d/%m}"
 		},
-		"format": "{icon}",
-		"format-icons": {
-			"1": "I",
-			"2": "II",
-			"3": "III",
-			"4": "IV",
-			"5": "V",
-			"6": "VI",
-			"7": "VII",
-			"8": "VIII",
-			"9": "IX",
-			"10": "X"
-		}
-	},
-	"custom/playerlabel": {
-		"format": "<span>{}</span>",
-		"return-type": "json",
-		"max-length": 40,
-		"exec": "playerctl -a metadata --format '{\"text\": \"{{markup_escape(title)}}\", \"tooltip\": \"{{playerName}} : {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F",
-		"on-click": "playerctl play-pause",
-		"on-click-right": "playerctl next"
-	},
-	"network": {
-		"format-wifi": "  {essid}",
-		"format-ethernet": "{ifname}: {ipaddr}/{cidr} ",
-		"format-linked": "{ifname} (No IP) ",
-		"format-disconnected": "󰤮 Disconnected",
-		"format-alt": "{ipaddr}/{cidr}"
-	},
-	"pulseaudio": {
-		"on-click": "pactl set-sink-mute 0 toggle",
-		"on-scroll-down": "pactl set-sink-volume 0 +5%",
-		"on-scroll-up": "pactl set-sink-volume 0 -5%",
-		"scroll-step": 1,
-		"format": "{icon}  {volume}%",
-		"format-muted": "󰖁 ",
-		"format-icons": {
-			"default": ["", "", ""]
-		}
-	},
-	"wlr/taskbar": {
-		"format": "{icon} {title:.17}",
-		"icon-size": 28,
-		"spacing": 3,
-		"on-click-middle": "close",
-		"tooltip-format": "{title}",
-		"ignore-list": [],
-		"on-click": "activate"
-	},
-	"tray": {
-		"icon-size": 18,
-		"spacing": 3
-	},
-	"battery": {
-		"states": {
-			"good": 95,
-			"warning": 30,
-			"critical": 20
+		"hyprland/window": {
+			"max-length": 30
 		},
-		"format": "{icon} {capacity}%",
-		"format-charging": " {capacity}%",
-		"format-plugged": " {capacity}%",
-		"format-alt": "{time} {icon}",
-		"format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+		"hyprland/workspaces": {
+			"disable-scroll": true,
+			"all-outputs": true,
+			"on-click": "activate",
+			"persistent_workspaces": {
+				"1": [],
+				"2": [],
+				"3": [],
+				"4": [],
+				"5": [],
+				"6": [],
+				"7": [],
+				"8": [],
+				"9": [],
+				"10": []
+			},
+			"format": "{icon}",
+			"format-icons": {
+				"1": "I",
+				"2": "II",
+				"3": "III",
+				"4": "IV",
+				"5": "V",
+				"6": "VI",
+				"7": "VII",
+				"8": "VIII",
+				"9": "IX",
+				"10": "X"
+			}
+		},
+		"custom/playerlabel": {
+			"format": "<span>{}</span>",
+			"return-type": "json",
+			"max-length": 40,
+			"exec": "playerctl -a metadata --format '{\"text\": \"{{markup_escape(title)}}\", \"tooltip\": \"{{playerName}} : {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F",
+			"on-click": "playerctl play-pause",
+			"on-click-right": "playerctl next"
+		},
+		"network": {
+			"format-wifi": "  {essid}",
+			"format-ethernet": "{ifname}: {ipaddr}/{cidr} ",
+			"format-linked": "{ifname} (No IP) ",
+			"format-disconnected": "󰤮 Disconnected",
+			"format-alt": "{bandwidthDownBytes} {bandwidthUpBytes} | {ipaddr}/{cidr}"
+		},
+		"pulseaudio": {
+			"on-click": "$FLAKE/user/hypr/scripts/volume --toggle",
+			"on-scroll-down": "$FLAKE/user/hypr/scripts/volume --inc",
+			"on-scroll-up": "$FLAKE/user/hypr/scripts/volume --dec",
+			"scroll-step": 1,
+			"format-source": "{$FLAKE/user/hypr/scripts/volume --get}",
+			"format": "{icon} {volume}%",
+			"format-muted": "󰖁 ",
+			"format-icons": {
+				"default": ["", "", ""]
+			}
+		},
+		"tray": {
+			"icon-size": 15,
+			"spacing": 8
+		},
+		"battery": {
+			"states": {
+				"good": 95,
+				"warning": 30,
+				"critical": 20
+			},
+			"format": "{icon} {capacity}%",
+			"format-charging": " {capacity}%",
+			"format-plugged": " {capacity}%",
+			"format-alt": "{time} {icon}",
+			"format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+		},
+		"custom/volume": {
+			"exec": "$FLAKE/user/waybar/get-volume",
+			"on-click": "$FLAKE/user/hypr/scripts/volume --toggle",
+			"on-scroll-down": "$FLAKE/user/hypr/scripts/volume --inc",
+			"on-scroll-up": "$FLAKE/user/hypr/scripts/volume --dec",
+			"interval": 1,
+			"format": "{icon} {}",
+			"format-icons": {
+				"muted": "󰖁 ",
+				"default": ["", "", ""]
+			},
+			"tooltip": false
+		}
 	}
 }

@@ -14,9 +14,14 @@
     "$mod" = "SUPER";
 
     env = [
+      "STEAM_FORCE_DESKTOPUI_SCALING,1.25"
       "XDG_CURRENT_DESKTOP,Hyprland"
       "XDG_SESSION_DESKTOP,Hyprland"
+      "GDK_SCALE,2"
+      "XCURSOR_SIZE,24"
     ];
+
+    xwayland.force_zero_scaling = true;
 
     gestures = {
       workspace_swipe = true;
@@ -89,7 +94,7 @@
       preserve_split = true;
     };
 
-    monitor = "eDP-1,1920x1080@144,0x0,1.25";
+    monitor = "eDP-1,1920x1080@144,auto,1.25";
 
     exec-once = [
       "systemctl --user import-environment"
