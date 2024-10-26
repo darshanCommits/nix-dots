@@ -1,6 +1,4 @@
 {
-  config,
-  pkgs,
   ...
 }: let
   scripts = ./scripts;
@@ -24,6 +22,7 @@ in {
       ", Print, exec, grimblast --notify copysave"
 
       "$mod, D,  exec, ${scripts}/launcher"
+      "$mod, R,  exec, ${scripts}/get-info"
       "$mod, V,  exec, ${scripts}/clipboard-manager"
       "$mod, X,  exec, ${scripts}/powermenu"
       "$mod, C,  exec, ${scripts}/color-picker"

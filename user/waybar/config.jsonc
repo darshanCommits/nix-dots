@@ -1,7 +1,7 @@
 {
 	"mainBar": {
 		"modules-left": ["clock", "hyprland/workspaces", "tray"],
-		"modules-right": ["network", "custom/volume", "battery", "custom/power"],
+		"modules-right": ["network", "pulseaudio", "battery"],
 		"clock": {
 			"format": "󰅐  {:%I:%M:%p}",
 			"tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
@@ -60,8 +60,7 @@
 			"on-scroll-down": "$FLAKE/user/hypr/scripts/volume --inc",
 			"on-scroll-up": "$FLAKE/user/hypr/scripts/volume --dec",
 			"scroll-step": 1,
-			"format-source": "{$FLAKE/user/hypr/scripts/volume --get}",
-			"format": "{icon} {volume}%",
+			"format": "{icon}  {volume}%",
 			"format-muted": "󰖁 ",
 			"format-icons": {
 				"default": ["", "", ""]
@@ -82,19 +81,6 @@
 			"format-plugged": " {capacity}%",
 			"format-alt": "{time} {icon}",
 			"format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
-		},
-		"custom/volume": {
-			"exec": "$FLAKE/user/waybar/get-volume",
-			"on-click": "$FLAKE/user/hypr/scripts/volume --toggle",
-			"on-scroll-down": "$FLAKE/user/hypr/scripts/volume --inc",
-			"on-scroll-up": "$FLAKE/user/hypr/scripts/volume --dec",
-			"interval": 1,
-			"format": "{icon} {}",
-			"format-icons": {
-				"muted": "󰖁 ",
-				"default": ["", "", ""]
-			},
-			"tooltip": false
 		}
 	}
 }

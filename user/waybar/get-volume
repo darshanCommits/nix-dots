@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# Path to a lock file for debouncing
+LOCK_FILE="/tmp/volume_debounce.lock"
+DEBOUNCE_TIME=0.5  # Debounce time in seconds
+
 # Get primary sink ID (USB-C if available, otherwise default)
 get_primary_sink() {
     local usb_sink=$(wpctl status | grep -A 2 "Sinks:" | grep "USB-C Audio" | awk '{print $2}' | tr -d '.')
@@ -10,20 +14,46 @@ get_primary_sink() {
     fi
 }
 
+# Check if the debounce lock is active
+check_debounce() {
+    if [ -e "$LOCK_FILE" ]; then
+        return 1  # Lock exists, debounce active
+    else
+        touch "$LOCK_FILE"  # Create lock file
+        sleep "$DEBOUNCE_TIME"  # Wait for debounce period
+        rm -f "$LOCK_FILE"  # Remove lock file
+        return 0  # Debounce is free
+    fi
+}
+
 # Get volume
 get_volume() {
+    if ! check_debounce; then
+        return  # Exit if debounce is active
+    fi
+
     local sink=$(get_primary_sink)
     local volume=$(wpctl get-volume "$sink" 2>/dev/null | awk '{printf "%.0f\n", $2 * 100}')
     local muted=$(wpctl get-volume "$sink" 2>/dev/null | grep -q '\[MUTED\]'; echo $?)
 
     if [ "$muted" -eq 0 ]; then
         status="muted"
+        icon="󰖁 "  # Muted icon
     else
         status="unmuted"
+
+        # Determine icon based on volume level
+        if [ "$volume" -eq 0 ]; then
+            icon=" "  # Low volume icon
+        elif [ "$volume" -le 50 ]; then
+            icon=" "  # Medium volume icon
+        else
+            icon=" "  # High volume icon
+        fi
     fi
 
     if [ -n "$volume" ]; then
-        echo "{\"volume\": \"$volume%\", \"status\": \"$status\", \"percentage\": $volume}"
+        echo '{"text": "'$icon' '$volume'%", "class": "'$status'", "percentage": "'$volume'"}'
     else
         echo "Error: Unable to get volume for $sink" >&2
         return 1

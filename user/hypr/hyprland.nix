@@ -1,9 +1,4 @@
-{
-  config,
-  pkgs,
-  inputs,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [
     ./binds.nix
     ./rules.nix
@@ -45,11 +40,11 @@
     };
 
     general = {
-      gaps_in = 0;
-      gaps_out = 1;
+      gaps_in = 1;
+      gaps_out = 2;
       allow_tearing = false;
-      border_size = 1;
-      no_border_on_floating = true;
+      border_size = 2;
+      no_border_on_floating = false;
       "col.active_border" = "rgb(FA584F)";
       "col.inactive_border" = "rgba(00000000)";
       layout = "dwindle";
@@ -98,13 +93,15 @@
 
     exec-once = [
       "systemctl --user import-environment"
-      "$(which polkit-kde-authentication-agent-1)"
+      # "pidof waybar || waybar"
       "wl-paste --watch cliphist store"
       "hypridle"
       "swaybg -i ~/.dotfiles/assets/wallpapers/goatv3.jpg"
-      "waybar"
       "foot --server"
       "mako"
     ];
   };
+  home.packages = with pkgs; [
+    polkit_gnome
+  ];
 }

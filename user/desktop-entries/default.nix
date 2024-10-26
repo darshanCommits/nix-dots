@@ -1,0 +1,5 @@
+{...}: {
+  imports = [
+    ./blanket.nix
+  ];
+}

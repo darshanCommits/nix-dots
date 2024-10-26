@@ -3,18 +3,19 @@
 }: {
   services.mako ={
     enable = true;
-    background-color="#000000";
-    text-color="#CDD6F4";
-    font="Ubuntu Nerd Font Light 10";
-    border-color="#ff4835";
-    padding="15
-    icons=1";
-    max-icon-size="64";
-    margin="10
-    border-size=1
-    border-radius=0";
-    progress-color="#ff4835";
-    default-timeout="5000";
+    backgroundColor="#000000";
+    textColor="#CDD6F4";
+    font="JetBrainsMono Nerd Font Mono 10";
+    borderColor="#ff4835";
+    padding="13";
+    icons=false;
+    maxIconSize=64;
+    margin="10";
+    borderSize=1;
+    borderRadius=0;
+    layer="overlay";
+    progressColor="#ff4835";
+    defaultTimeout=5000;
   };
   
 }

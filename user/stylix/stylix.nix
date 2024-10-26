@@ -1,10 +1,6 @@
-{
-  pkgs,
-  ...
-}:   let  
-    wallpaper = /home/greeed/.dotfiles/assets/wallpapers/goatv3.jpg;
-  in {
-
+{pkgs, ...}: let
+  wallpaper = /home/greeed/.dotfiles/assets/wallpapers/goatv3.jpg;
+in {
   stylix = {
     enable = true;
     image = wallpaper;
@@ -51,6 +47,8 @@
       helix.enable = false;
       tofi.enable = false;
       foot.enable = false;
+      mako.enable = false;
+      waybar.enable = false;
     };
   };
 }
