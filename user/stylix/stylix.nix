@@ -1,9 +1,11 @@
-{pkgs, ...}: let
-  wallpaper = /home/greeed/.dotfiles/assets/wallpapers/goatv3.jpg;
-in {
+{
+  pkgs,
+  # wallpaper,
+  ...
+}: {
   stylix = {
     enable = true;
-    image = wallpaper;
+    image = ./goatv3.jpg;
     polarity = "dark";
     base16Scheme = ./dracula.yaml;
 

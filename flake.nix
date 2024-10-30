@@ -15,7 +15,7 @@
   };
 
   inputs = {
-    nixpkgs.url = "github:nixOS/nixpkgs";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     stylix.url = "github:danth/stylix";
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
 
@@ -36,12 +36,13 @@
   };
 
   outputs = {
-    self,
+    # self,
     nixpkgs,
     stylix,
     home-manager,
     ...
   } @ inputs: let
+    wallpaper = "/home/greeed/.dotfiles/assets/wallpapers/goatv3.jpg";
     system = "x86_64-linux";
     pkgs = import nixpkgs {
       inherit system;
@@ -50,7 +51,7 @@
     nixosConfigurations = {
       greeed-nix = nixpkgs.lib.nixosSystem {
         inherit system;
-        specialArgs = {inherit inputs;};
+        specialArgs = {inherit inputs wallpaper;};
         modules = [
           ./configuration.nix
           inputs.stylix.nixosModules.stylix
@@ -60,7 +61,7 @@
     homeConfigurations = {
       greeed = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
-        extraSpecialArgs = {inherit inputs;};
+        extraSpecialArgs = {inherit inputs wallpaper;};
         modules = [
           ./home.nix
           stylix.homeManagerModules.stylix

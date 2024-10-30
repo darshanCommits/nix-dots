@@ -1,4 +1,5 @@
 {
+  config,
   inputs,
   pkgs,
   ...
@@ -42,7 +43,8 @@ in {
     NIXOS_OZONE_WL = 1;
     STEAM_EXTRA_COMPAT_TOOLS_PATHS = "\\\${HOME}/.steam/root/compatibilitytools.d";
 
-    HISTFILE = "/home/greeed/.zsh_history";
+    HISTFILE = "${config.home.homeDirectory}/.zsh_history";
+    # HISTFILE = "/home/greeed/.zsh_history";
   };
 
   programs.bun.enable = true;
@@ -120,8 +122,8 @@ in {
     gcc
     openssl
     jdk
-    weka
-    rPackages.RWekajars
+    # weka
+    # rPackages.RWekajars
 
     # web
     biome

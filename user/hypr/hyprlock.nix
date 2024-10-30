@@ -1,18 +1,14 @@
 {
-
-  pkgs,
+  wallpaper,
+  # pkgs,
   ...
-  
-}:   let  
-    wallpaper = /home/greeed/.dotfiles/assets/wallpapers/goatv3.jpg;
-  in 
- {
+}: {
   programs.hyprlock = {
     enable = true;
     settings = {
       background = {
         monitor = "";
-        path = "${wallpaper}";
+        path = wallpaper;
         color = "rgba(13, 17, 23, 0.7)";
         blur_passes = 1;
         blur_size = 2;

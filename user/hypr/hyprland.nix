@@ -1,4 +1,10 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  wallpaper,
+  ...
+}: let
+  # wallpaper = "${config.home.homeDirectory}/.dotfiles/assets/wallpapers/goatv3.jpg";
+in {
   imports = [
     ./binds.nix
     ./rules.nix
@@ -96,7 +102,7 @@
       # "pidof waybar || waybar"
       "wl-paste --watch cliphist store"
       "hypridle"
-      "swaybg -i ~/.dotfiles/assets/wallpapers/goatv3.jpg"
+      "swaybg -i ${wallpaper}"
       "foot --server"
       "mako"
     ];
