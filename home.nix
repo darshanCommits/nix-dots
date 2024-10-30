@@ -1,6 +1,5 @@
 {
   inputs,
-  config,
   pkgs,
   ...
 }: let
@@ -22,6 +21,8 @@ in {
     ./user/mpv/mpv.nix
     ./user/tofi/tofi.nix
     ./user/zathura/zathura.nix
+
+    ./user/desktop-entries/default.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
@@ -60,7 +61,7 @@ in {
     # mpv
     comma
 
-    inputs.umu.packages.${pkgs.system}.umu 
+    inputs.umu.packages.${pkgs.system}.umu
 
     waybar
     grimblast
@@ -72,20 +73,22 @@ in {
     hyprpicker
     hyprcursor
 
-
     #GAMES
     heroic
     lutris
-    
+
     #GUI
+    blanket
     telegram-desktop
     brave
+    pavucontrol
     foot
     stremio
     webcord-vencord
     spotify
     spicetify-cli
-
+    zapzap
+    localsend
     gpu-screen-recorder
     mangohud
     protonup
@@ -94,20 +97,25 @@ in {
     imagemagick
 
     lazygit
+    glow
 
     go
     nodejs
     typescript
     jupyter
 
+    pest-ide-tools
     taplo
     hyprls
     alejandra # nix formatter
+    shellcheck
+    shfmt
     nixd
     nil
     nodePackages.bash-language-server
     ccls
     cmake
+    sqlite
     rustup
     gcc
     openssl
@@ -152,4 +160,6 @@ in {
   };
 
   programs.home-manager.enable = true;
+
+  programs.wezterm.enable = true;
 }

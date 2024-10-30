@@ -3,27 +3,30 @@
 {
   lib,
   pkgs,
+  inputs,
   ...
 }: {
   imports = [
     ./hardware-configuration.nix
 
-    # ./system/power_management/undervolt.nix # device specific
     ./system/power_management/thermals.nix
     ./system/power_management/auto-cpufreq.nix
-    # ./system/power_management/tlp.nix
 
     ./system/hardware/nvidia.nix
     ./system/hardware/opengl.nix
+    ./system/plymouth/plymouth.nix
 
     ./system/keyd/keyd.nix
+
+    ./system/services/battery/low-battery.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [ "corefonts" ];
+    builtins.elem (lib.getName pkg) ["corefonts"];
 
   nix = {
+    nixPath = ["nixpkgs=${inputs.nixpkgs}"];
     settings = {
       trusted-users = ["root" "@wheel" "greeed"];
       experimental-features = ["nix-command" "flakes"];
@@ -39,16 +42,40 @@
   environment.shells = with pkgs; [zsh bash];
   programs.zsh.enable = true;
 
+  systemd = {
+    user.services.polkit-gnome-authentication-agent-1 = {
+      description = "polkit-gnome-authentication-agent-1";
+      wantedBy = ["graphical-session.target"];
+      wants = ["graphical-session.target"];
+      after = ["graphical-session.target"];
+      serviceConfig = {
+        Type = "simple";
+        ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+        Restart = "on-failure";
+        RestartSec = 1;
+        TimeoutStopSec = 10;
+      };
+    };
+  };
+
   # xdg.portal.enable = true;
   # xdg.portal.config.common.default = "*";
 
   services.flatpak.enable = true;
   services.openssh.enable = true;
   services.printing.enable = true;
+  services.tor.enable = true;
   # services.jupyter.enable = true;
 
-
-  # services.xserver.enable = true;
+  # services.desktopManager.plasma6.enable = true;
+  services.xserver.enable = true;
+  xdg.portal = {
+    enable = true;
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-hyprland
+      xdg-desktop-portal-gtk
+    ];
+  };
 
   security.rtkit.enable = true;
   security.polkit.enable = true;
@@ -123,7 +150,7 @@
     enable = true;
     # xwayland.enable = true;
     # package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-    # portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+    portalPackage = pkgs.xdg-desktop-portal-hyprland;
   };
 
   fonts.packages = with pkgs; [
@@ -155,7 +182,7 @@
   programs.gamemode.enable = true;
   programs.steam.enable = true;
   programs.steam.gamescopeSession.enable = true;
-  programs.java.enable = true; 
+  programs.java.enable = true;
 
   # services.mongodb.enable = true;
   services.postgresql.enable = true;
@@ -171,6 +198,7 @@
     unzip
     xwaylandvideobridge
     killall
+    qalculate-qt
     wget
     stress-ng
     aria2
@@ -183,11 +211,11 @@
     p7zip
     wtype
     dracula-theme
+
     dracula-icon-theme
     hyprlock
     hypridle
     libsForQt5.qtstyleplugin-kvantum
-    polkit-kde-agent
     android-tools
     onlyoffice-bin
     corefonts

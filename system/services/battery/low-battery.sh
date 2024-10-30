@@ -43,6 +43,8 @@ check_battery_status() {
 		last_status="Unknown"
 	fi
 
+	echo "$battery_percentage"
+
 	# Low battery warning
 	if [[ "$battery_percentage" -le "$LOW_BATTERY_THRESHOLD" && "$battery_status" == "Discharging" ]]; then
 		notify-send -u critical "Low Battery Warning" "Battery is at ${battery_percentage}%. Please connect the charger."

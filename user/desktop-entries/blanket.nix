@@ -1,9 +1,11 @@
-{
-  blanket = {
+{...}: {
+  xdg.desktopEntries.blanket = {
     name = "Blanket";
-    genericName = "Soothing Background noise";
+    comment = "Listen to different sounds";
     exec = "blanket";
-    terminal = false;
+    icon = "com.rafaelmardojai.Blanket";
+    type = "Application";
     categories = ["Application" "Audio"];
+    terminal = false;
   };
 }
