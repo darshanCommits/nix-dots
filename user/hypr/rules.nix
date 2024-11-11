@@ -1,58 +1,66 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
-  wayland.windowManager.hyprland.settings.windowrulev2 = [
-    "opacity 0.0 override, class:^(xwaylandvideobridge)$"
-    "noanim, class:^(xwaylandvideobridge)$"
-    "noinitialfocus, class:^(xwaylandvideobridge)$"
-    "maxsize 1 1, class:^(xwaylandvideobridge)$"
-    "noblur, class:^(xwaylandvideobridge)$"
+# i was bored so i wrote functions in nix to assert dominance.
+{...}: let
 
-    "float,class:^(org.kde.polkit-kde-authentication-agent-1)$"
-    "float,class:^(pavucontrol)$"
-    "float,class:^(feh)$"
-    "float,title:^(Media viewer)$"
-    "float,title:^(Volume Control)$"
-    "float,class:^(Viewnior)$"
-    "float,title:^(DevTools)$"
-    "float,class:^(file_progress)$"
-    "float,class:^(confirm)$"
-    "float,class:^(dialog)$"
-    "float,class:^(download)$"
-    "float,class:^(notification)$"
-    "float,class:^(error)$"
-    "float,class:^(confirmreset)$"
-    "float,title:^(Open File)$"
-    "float,title:^(Open)$"
-    "float,title:^(branchdialog)$"
-    "float,title:^(Confirm to replace files)"
-    "float,title:^(File Operation Progress)"
-    "float, class:^(Rofi)$"
-    "fullscreen, class:^(com.stremio.stremio)$"
+  isTitle = isTitle: app: 
+    if isTitle
+    then "title:^(${app})$"
+    else "class:^(${app})$";
+  compose = rules: isTitleVal: app: map (rule: "${rule}, ${(isTitle isTitleVal app)}") rules;
 
-    "float,title:^(Picture-in-picture)$"
-    "pin,title:^(Picture-in-picture)$"
-    "size 640 360,title:^(Picture-in-picture)$"
-    "move onscreen cursor 100%-640 100%-360,title:^(Picture-in-picture)$"
+in {
+  wayland.windowManager.hyprland.settings.windowrulev2 =
+    [
+      "opacity 0.0 override, class:^(xwaylandvideobridge)$"
+      "noanim, class:^(xwaylandvideobridge)$"
+      "noinitialfocus, class:^(xwaylandvideobridge)$"
+      "maxsize 1 1, class:^(xwaylandvideobridge)$"
+      "noblur, class:^(xwaylandvideobridge)$"
 
-    "size 50% 60%,class:^(download)$"
-    "size 50% 60%,title:^(Open File)$"
-    "size 50% 60%,title:^(Save File)$"
-    "size 50% 60%,title:^(Volume Control)$"
+      "float,title:^(Picture-in-picture)$"
+      "pin,title:^(Picture-in-picture)$"
+      "size 640 360,title:^(Picture-in-picture)$"
+      "move onscreen cursor 100%-640 100%-360,title:^(Picture-in-picture)$"
 
-    "center,title:^(Open File)$"
-    "center,title:^(Save File)$"
-    "center,title:^(download)$"
+      "idleinhibit focus,class:^(mpv)$"
+      "idleinhibit fullscreen,class:^(brave-browser)$"
 
-    "idleinhibit focus,class:^(mpv)$"
-    "idleinhibit fullscreen,class:^(brave-browser)$"
-
-    "animation popin, class:^(Rofi)$"
-    "stayfocused, class:^(Rofi)$"
-
-    "workspace 1, class:^(brave-browser)$"
-    "workspace 3, class:^(org.telegram.desktop)$"
-  ];
+      "animation popin, class:^(Rofi)$"
+      "stayfocused, class:^(Rofi)$"
+    ]
+    ++ ([
+      "com.rtosta.zapzap"
+      "org.pulseaudio.pavucontrol"
+      "thunar"
+      "com.rafaelmardojai.Blanket"
+      "com.stremio.stremio"
+      "feh"
+      ] |> builtins.concatMap (compose ["float" "center" "size 80% 80%"] false))
+    ++ ([
+      "org.kde.polkit-kde-authentication-agent-1"
+      "pavucontrol"
+      "Viewnior"
+      "file_progress"
+      "confirm"
+      "dialog"
+      "notification"
+      "error"
+      "confirmreset"
+      "Rofi" 
+      ] |> builtins.concatMap (compose ["float" "center"] false))
+    ++ ([
+      "Media viewer"
+      "Volume Control"
+      "DevTools"
+      "Open"
+      "branchdialog"
+      "Confirm to replace files"
+      "File Operation Progress"
+      "xdg-desktop-portal-gtk" 
+      ] |> builtins.concatMap (compose ["float" "center" "size 40% 60%"] false))
+    ++ ([
+      "download"
+      "Open File"
+      "Save File"
+      "Volume Control" 
+      ] |> builtins.concatMap (compose ["float" "center" "size 40% 60%"] true)) ;
 }

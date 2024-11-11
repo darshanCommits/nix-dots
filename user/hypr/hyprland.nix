@@ -1,4 +1,5 @@
 {
+  inputs,
   pkgs,
   wallpaper,
   ...
@@ -9,8 +10,15 @@ in {
     ./binds.nix
     ./rules.nix
   ];
-  wayland.windowManager.hyprland.enable = true;
-  wayland.windowManager.hyprland.systemd.variables = ["--all"];
+
+  wayland.windowManager.hyprland = {
+    enable = true;
+    package =
+      inputs.hyprland.packages.${pkgs.system}.hyprland;
+    systemd.enable = true;
+    systemd.variables = ["--all"];
+  };
+
   wayland.windowManager.hyprland.settings = {
     "$mod" = "SUPER";
 
@@ -68,7 +76,6 @@ in {
 
     decoration = {
       rounding = 0;
-      drop_shadow = false;
     };
 
     animations = {
@@ -90,7 +97,7 @@ in {
     };
 
     dwindle = {
-      no_gaps_when_only = false;
+      # no_gaps_when_only = false;
       pseudotile = true;
       preserve_split = true;
     };
@@ -98,7 +105,9 @@ in {
     monitor = "eDP-1,1920x1080@144,auto,1.25";
 
     exec-once = [
+      "pypr"
       "systemctl --user import-environment"
+      "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
       # "pidof waybar || waybar"
       "wl-paste --watch cliphist store"
       "hypridle"
@@ -107,7 +116,9 @@ in {
       "mako"
     ];
   };
+
   home.packages = with pkgs; [
+    pyprland
     polkit_gnome
   ];
 }
