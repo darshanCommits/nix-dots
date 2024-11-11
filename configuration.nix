@@ -14,11 +14,8 @@
 
     ./system/hardware/nvidia.nix
     ./system/hardware/opengl.nix
-    ./system/plymouth/plymouth.nix
 
     ./system/keyd/keyd.nix
-
-    ./system/services/battery/low-battery.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
@@ -29,7 +26,7 @@
     nixPath = ["nixpkgs=${inputs.nixpkgs}"];
     settings = {
       trusted-users = ["root" "@wheel" "greeed"];
-      experimental-features = ["nix-command" "flakes"];
+      experimental-features = ["nix-command" "flakes" "pipe-operators"];
     };
   };
 
@@ -61,6 +58,13 @@
   # xdg.portal.enable = true;
   # xdg.portal.config.common.default = "*";
 
+  services.udev.extraRules = ''
+    # Monitor power supply changes (AC adapter and battery events)
+    SUBSYSTEM=="power_supply", ACTION=="change", \
+    ENV{SYSTEMD_USER_WANTS}+="low-battery-check.service", \
+    TAG+="systemd"
+  '';
+
   services.flatpak.enable = true;
   services.openssh.enable = true;
   services.printing.enable = true;
@@ -68,7 +72,7 @@
   # services.jupyter.enable = true;
 
   # services.desktopManager.plasma6.enable = true;
-  services.xserver.enable = true;
+  services.xserver.enable = false;
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [
@@ -77,6 +81,8 @@
     ];
   };
 
+  security.pam.services.ly.enableGnomeKeyring = true;
+  security.pam.services.hyprlock.enableGnomeKeyring = true;
   security.rtkit.enable = true;
   security.polkit.enable = true;
 
@@ -98,10 +104,11 @@
   };
 
   services.displayManager = {
-    sddm = {
-      enable = true;
-      wayland.enable = true;
-    };
+    ly.enable = true;
+    # sddm = {
+    #   enable = true;
+    #   wayland.enable = true;
+    # };
   };
 
   # Configure keymap in X11

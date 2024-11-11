@@ -30,7 +30,7 @@
     };
 
     helix-master = {
-      url = "github:the-mikedavis/helix/b15b569fab54c520d711d529b5095d89a2601d31";
+      url = "github:helix-editor/helix/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

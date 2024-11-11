@@ -9,76 +9,48 @@ LOW_BATTERY_THRESHOLD=20
 FULLY_CHARGED_THRESHOLD=95        # Notify when battery is above 95%
 STATUS_FILE="/tmp/battery_status" # Temporary file to store last battery state
 
-get_battery_percentage() {
-	if [[ ! -f "$BAT_FULL_FILE" || ! -f "$BAT_NOW_FILE" ]]; then
-		return 1
-	fi
+# Get battery percentage
+if [[ -f "$BAT_FULL_FILE" && -f "$BAT_NOW_FILE" ]]; then
+	bat_full=$(<"$BAT_FULL_FILE")
+	bat_now=$(<"$BAT_NOW_FILE")
+	battery_percentage=$(((bat_now * 100) / bat_full)) <"$BAT_NOW_FILE"
+else
+	echo "Battery info files missing." >&2
+	exit 1
+fi
 
-	local bat_full
-	local bat_now
+battery_status=$(<"$BAT_STATUS_FILE") || battery_status="Unknown"
+last_status=$(<"$STATUS_FILE") || last_status="Unknown"
 
-	bat_full=$(cat "$BAT_FULL_FILE")
-	bat_now=$(cat "$BAT_NOW_FILE")
+echo "$battery_percentage"
+echo "$battery_status"
+echo "$last_status"
 
-	echo $(((bat_now * 100) / bat_full))
+send_notification() {
+	notify-send "$1" "$2" || echo "Failed to send notification: $1 - $2" >&2
+	echo "$1"
+	echo "$2"
 }
 
-get_battery_status() {
-	if [[ -f "$BAT_STATUS_FILE" ]]; then
-		cat "$BAT_STATUS_FILE"
-	else
-		echo "Unknown"
-	fi
-}
+if [[ "$battery_percentage" -le "$LOW_BATTERY_THRESHOLD" ]]; then
+	echo 1
+	send_notification "Low Battery Warning" "Battery is at $battery_percentage%. Please connect the charger."
+fi
 
-check_battery_status() {
-	local battery_percentage="$1"
-	local battery_status="$2"
-	local last_status
+if [[ "$battery_status" == "Charging" ]]; then
+	echo 2
+	send_notification "Charger Plugged In" "The charger is connected."
+fi
 
-	# Check the previous status
-	if [[ -f "$STATUS_FILE" ]]; then
-		last_status=$(cat "$STATUS_FILE")
-	else
-		last_status="Unknown"
-	fi
+if [[ "$battery_status" == "Discharging" ]]; then
+	echo 3
+	send_notification "Charger Plugged Out" "The charger is disconnected."
+fi
 
-	echo "$battery_percentage"
+if [[ "$battery_percentage" -ge "$FULLY_CHARGED_THRESHOLD" ]]; then
+	echo 4
+	send_notification "Battery Fully Charged" "Battery is at $battery_percentage%. You can disconnect the charger."
+fi
 
-	# Low battery warning
-	if [[ "$battery_percentage" -le "$LOW_BATTERY_THRESHOLD" && "$battery_status" == "Discharging" ]]; then
-		notify-send -u critical "Low Battery Warning" "Battery is at ${battery_percentage}%. Please connect the charger."
-	fi
-
-	# Charger plugged in
-	if [[ "$battery_status" == "Charging" && "$last_status" != "Charging" ]]; then
-		notify-send "Charger Plugged In" "The charger is connected."
-	fi
-
-	# Charger unplugged
-	if [[ "$battery_status" == "Discharging" && "$last_status" != "Discharging" ]]; then
-		notify-send "Charger Plugged Out" "The charger is disconnected."
-	fi
-
-	# Fully charged notification
-	if [[ "$battery_percentage" -ge "$FULLY_CHARGED_THRESHOLD" && "$battery_status" == "Charging" ]]; then
-		notify-send "Battery Fully Charged" "Battery is at ${battery_percentage}%. You can disconnect the charger."
-	fi
-
-	# Store the current status for the next run
-	echo "$battery_status" >"$STATUS_FILE"
-}
-
-main() {
-	local battery_percentage
-	local battery_status
-
-	if ! battery_percentage=$(get_battery_percentage); then
-		exit 1
-	fi
-
-	battery_status=$(get_battery_status)
-	check_battery_status "$battery_percentage" "$battery_status"
-}
-
-main
+# Store current status for next check
+echo "$battery_status" >"$STATUS_FILE"

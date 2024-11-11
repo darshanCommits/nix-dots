@@ -24,6 +24,8 @@ in {
     ./user/zathura/zathura.nix
 
     ./user/desktop-entries/default.nix
+
+    ./system/services/battery/low-battery.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
@@ -33,6 +35,8 @@ in {
   home.stateVersion = "24.05";
 
   home.sessionVariables = {
+    GSK_RENDERER = "ngl"; # BUG IN NVIDIA LATEST DRIVER FOR GTK APPS
+
     EDITOR = "hx";
     VISUAL = "hx";
     BROWSER = "brave";
@@ -80,6 +84,7 @@ in {
     lutris
 
     #GUI
+    feh
     blanket
     telegram-desktop
     brave
