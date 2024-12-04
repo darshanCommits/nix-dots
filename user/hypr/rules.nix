@@ -28,13 +28,15 @@ in {
       "stayfocused, class:^(Rofi)$"
     ]
     ++ ([
-      "com.rtosta.zapzap"
       "org.pulseaudio.pavucontrol"
       "thunar"
       "com.rafaelmardojai.Blanket"
+      "scratch.term"
+      "com.rtosta.zapzap"
+      "org.telegram.desktop"
       "com.stremio.stremio"
       "feh"
-      ] |> builtins.concatMap (compose ["float" "center" "size 80% 80%"] false))
+      ] |> builtins.concatMap (compose ["float" "center" "size 90% 90%" ] false)) # mimic scratchpads
     ++ ([
       "org.kde.polkit-kde-authentication-agent-1"
       "pavucontrol"
@@ -46,7 +48,7 @@ in {
       "error"
       "confirmreset"
       "Rofi" 
-      ] |> builtins.concatMap (compose ["float" "center"] false))
+      ] |> builtins.concatMap (compose ["float" "center"] false)) # for centered things with client deciding size
     ++ ([
       "Media viewer"
       "Volume Control"
@@ -56,11 +58,14 @@ in {
       "Confirm to replace files"
       "File Operation Progress"
       "xdg-desktop-portal-gtk" 
-      ] |> builtins.concatMap (compose ["float" "center" "size 40% 60%"] false))
+      ] |> builtins.concatMap (compose ["float" "center" "size 40% 60%"] false)) # for centered things
+
     ++ ([
       "download"
       "Open File"
       "Save File"
       "Volume Control" 
-      ] |> builtins.concatMap (compose ["float" "center" "size 40% 60%"] true)) ;
+      "Sign in – Google accounts - Brave"
+      ] |> builtins.concatMap (compose ["float" "center" "size 40% 60%"] true)) # title: outliers, same as above 
+    ;
 }

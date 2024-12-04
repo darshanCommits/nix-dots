@@ -36,6 +36,12 @@
     loader.efi.canTouchEfiVariables = true;
   };
 
+  virtualisation.docker.enable = true;
+  virtualisation.docker.rootless = {
+    enable = true;
+    setSocketVariable = true;
+  };
+
   environment.shells = with pkgs; [zsh bash];
   programs.zsh.enable = true;
 
@@ -58,8 +64,8 @@
   # xdg.portal.enable = true;
   # xdg.portal.config.common.default = "*";
 
+  # Monitor power supply changes (AC adapter and battery events)
   services.udev.extraRules = ''
-    # Monitor power supply changes (AC adapter and battery events)
     SUBSYSTEM=="power_supply", ACTION=="change", \
     ENV{SYSTEMD_USER_WANTS}+="low-battery-check.service", \
     TAG+="systemd"
@@ -139,6 +145,7 @@
       extraGroups = [
         "networkmanager"
         "wheel"
+        "docker"
         "video"
         "audio"
         "input"
@@ -209,6 +216,7 @@
     wget
     stress-ng
     aria2
+    python3
     gparted
     mariadb
     git

@@ -4,6 +4,7 @@
   pkgs,
   ...
 }: let
+  path_devshells = "${config.home.homeDirectory}/.dotfiles/user/dev/devshells";
   icon_pkg = pkgs.dracula-icon-theme;
   icon_name = "Dracula";
 in {
@@ -26,6 +27,8 @@ in {
     ./user/desktop-entries/default.nix
 
     ./system/services/battery/low-battery.nix
+
+    ./user/dev/rust.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
@@ -36,7 +39,7 @@ in {
 
   home.sessionVariables = {
     GSK_RENDERER = "ngl"; # BUG IN NVIDIA LATEST DRIVER FOR GTK APPS
-
+    DEVSHELLS = "${path_devshells}";
     EDITOR = "hx";
     VISUAL = "hx";
     BROWSER = "brave";
@@ -48,7 +51,7 @@ in {
     STEAM_EXTRA_COMPAT_TOOLS_PATHS = "\\\${HOME}/.steam/root/compatibilitytools.d";
 
     HISTFILE = "${config.home.homeDirectory}/.zsh_history";
-    # HISTFILE = "/home/greeed/.zsh_history";
+    # HISTFILE = "/home/greeed/.zsh_history"; # I started using atuin
   };
 
   programs.bun.enable = true;
@@ -103,8 +106,10 @@ in {
     tokei
     imagemagick
 
+    smartcat
     lazygit
     glow
+    act
 
     go
     nodejs
@@ -123,7 +128,7 @@ in {
     ccls
     cmake
     sqlite
-    rustup
+    # rustup
     gcc
     openssl
     jdk
@@ -134,6 +139,7 @@ in {
     biome
     jdt-language-server
     typescript-language-server
+    tree-sitter
     emmet-language-server
     vscode-langservers-extracted
   ];
