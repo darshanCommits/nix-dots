@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
-    # stylix.url = "github:danth/stylix";
+    stylix.url = "github:danth/stylix";
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
 
     ghostty = {
@@ -15,10 +15,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # home-manager = {
-    #   url = "github:nix-community/home-manager";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     helix-master = {
       url = "github:helix-editor/helix/master";
@@ -42,8 +42,8 @@
   outputs = {
     # self,
     nixpkgs,
-    # stylix,
-    # home-manager,
+    stylix,
+    home-manager,
     ...
   } @ inputs: let
     wallpaper = "/home/greeed/.dotfiles/assets/wallpapers/goatv3.jpg";
@@ -57,20 +57,17 @@
         inherit system;
         specialArgs = {inherit inputs wallpaper;};
         modules = [
+          stylix.nixosModules.stylix
           ./configuration.nix
-          # inputs.stylix.nixosModules.stylix
+
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.greeed = import ./home.nix;
+          }
         ];
       };
     };
-    # homeConfigurations = {
-    #   greeed = home-manager.lib.homeManagerConfiguration {
-    #     inherit pkgs;
-    #     extraSpecialArgs = {inherit inputs wallpaper;};
-    #     modules = [
-    #       ./home.nix
-    #       stylix.homeManagerModules.stylix
-    #     ];
-    #   };
-    # };
   };
 }

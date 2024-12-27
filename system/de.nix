@@ -90,35 +90,32 @@
   programs.hyprlock.enable = true;
   programs.waybar.enable = true;
 
-  environment.systemPackages = with pkgs; (
-    [
-      # Generic
-      mako
-      xwaylandvideobridge
-      waybar
-      grimblast
-      swaybg
-      pavucontrol
-    ]
-    ++ [
-      # Theming
+  environment.systemPackages = with pkgs; [
+    # Generic
+    mako
+    xwaylandvideobridge
+    waybar
+    grimblast
+    swaybg
+    pavucontrol
+    nwg-look
+    nwg-displays
 
-      libsForQt5.qtstyleplugin-kvantum
-    ]
-    ++ [
-      # ClipBoard
+    # Theming
+    dracula-icon-theme
+    dracula-qt5-theme
+    dracula-theme
+    libsForQt5.qtstyleplugin-kvantum
+    # ClipBoard
 
-      cliphist
-      wl-clipboard
-      wtype
-    ]
-    ++ [
-      # Hyprland ecosystem
+    cliphist
+    wl-clipboard
+    wtype
+    # Hyprland ecosystem
 
-      hyprpicker
-      hyprcursor
-      hyprlock
-      hyprpaper
-    ]
-  );
+    hyprpicker
+    hyprcursor
+    hyprlock
+    hyprpaper
+  ];
 }

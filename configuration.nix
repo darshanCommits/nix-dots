@@ -24,8 +24,12 @@
     ./system/fonts.nix
     ./system/gui.nix
     ./system/utilpkgs.nix
+    ./system/coding.nix
+    # ./system/stylix.nix
 
     ./system/services/battery/low-battery.nix
+
+    # ./home.nix
   ];
 
   nixpkgs.config.allowUnfree = true;

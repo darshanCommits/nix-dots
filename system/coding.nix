@@ -5,16 +5,15 @@
   ...
 }: {
   
-  environment.systemPackages = with pkgs; (
-    [ # Languages
+  environment.systemPackages = with pkgs; [
+    # Languages
       go
       nodejs
       typescript
       jdk
       gcc
     python3
-    ] ++
-    [ # LSP
+     # LSP
       nil
       nodePackages.bash-language-server
       typescript-language-server
@@ -28,12 +27,11 @@
       taplo
     hyprls
       
-    ] ++
-    [ # Formatters
+    
+     # Formatters
       
     shfmt
     alejandra # nix formatter
-    ]
-  );
+    ];
 }
 

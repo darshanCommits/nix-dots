@@ -5,6 +5,9 @@
   ...
 }: {
   environment.systemPackages = with pkgs; [
+    lsof
+    pciutils # lspci
+    usbutils # lsusb
     pciutils
     libnotify
     brightnessctl
