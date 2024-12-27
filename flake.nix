@@ -1,6 +1,31 @@
 {
   description = "My first flake!";
 
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
+    # stylix.url = "github:danth/stylix";
+    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+
+    ghostty = {
+      url = "github:ghostty-org/ghostty";
+    };
+
+    umu = {
+      url = "git+https://github.com/Open-Wine-Components/umu-launcher/?dir=packaging\/nix&submodules=1";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # home-manager = {
+    #   url = "github:nix-community/home-manager";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
+
+    helix-master = {
+      url = "github:helix-editor/helix/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
+
   nixConfig = {
     extra-substituters = [
       "https://helix.cachix.org"
@@ -14,32 +39,11 @@
     ];
   };
 
-  inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    stylix.url = "github:danth/stylix";
-    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
-
-    umu = {
-      url = "git+https://github.com/Open-Wine-Components/umu-launcher/?dir=packaging\/nix&submodules=1";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    helix-master = {
-      url = "github:helix-editor/helix/master";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-  };
-
   outputs = {
     # self,
     nixpkgs,
-    stylix,
-    home-manager,
+    # stylix,
+    # home-manager,
     ...
   } @ inputs: let
     wallpaper = "/home/greeed/.dotfiles/assets/wallpapers/goatv3.jpg";
@@ -54,19 +58,19 @@
         specialArgs = {inherit inputs wallpaper;};
         modules = [
           ./configuration.nix
-          inputs.stylix.nixosModules.stylix
+          # inputs.stylix.nixosModules.stylix
         ];
       };
     };
-    homeConfigurations = {
-      greeed = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        extraSpecialArgs = {inherit inputs wallpaper;};
-        modules = [
-          ./home.nix
-          stylix.homeManagerModules.stylix
-        ];
-      };
-    };
+    # homeConfigurations = {
+    #   greeed = home-manager.lib.homeManagerConfiguration {
+    #     inherit pkgs;
+    #     extraSpecialArgs = {inherit inputs wallpaper;};
+    #     modules = [
+    #       ./home.nix
+    #       stylix.homeManagerModules.stylix
+    #     ];
+    #   };
+    # };
   };
 }

@@ -8,7 +8,7 @@
     settings = {
       background = {
         monitor = "";
-        path = wallpaper;
+        # path = wallpaper;
         color = "rgba(13, 17, 23, 0.7)";
         blur_passes = 1;
         blur_size = 2;

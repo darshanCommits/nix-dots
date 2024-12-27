@@ -4,26 +4,6 @@
   ...
 }: {
   home.packages = with pkgs; [
-    jq
-    tealdeer
-    bc
-    dua
-    fd
-    eza
-    nitch
-    bottom
-
-    bat
-    bat-extras.batgrep
-    bat-extras.batman
-    bat-extras.batpipe
-    bat-extras.prettybat
-
-    zsh-completions
-    ripgrep
-    zoxide
-    ripgrep-all
-    yazi
   ];
 
   programs.zsh = {
@@ -138,7 +118,6 @@
     '';
   };
 
-  programs.starship.enable = true;
   programs.atuin = {
     enable = true;
     enableZshIntegration = true;

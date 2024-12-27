@@ -5,6 +5,15 @@
   pkgs,
   ...
 }: {
+  programs.uwsm = {
+    enable = true;
+    waylandCompositorshyprland = {
+      prettyName = "Hyprland";
+      comment = "Hyprland compositor managed by UWSM";
+      binPath = "/run/current-system/sw/bin/Hyprland";
+    };
+  };
+
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
@@ -81,7 +90,7 @@
   programs.hyprlock.enable = true;
   programs.waybar.enable = true;
 
-  environment.packages = with pkgs; (
+  environment.systemPackages = with pkgs; (
     [
       # Generic
       mako
@@ -89,6 +98,7 @@
       waybar
       grimblast
       swaybg
+      pavucontrol
     ]
     ++ [
       # Theming

@@ -5,7 +5,7 @@
   browser = "brave";
   fm = "thunar";
   tg = "telegram-desktop";
-  term = "footclient";
+  term = "foot";
   wa = "zapzap";
   volume = "pavucontrol";
 

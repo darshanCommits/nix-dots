@@ -16,11 +16,19 @@
     ./system/hardware/opengl.nix
 
     ./system/keyd/keyd.nix
+
+    ./system/de.nix
+    ./system/gaming.nix
+    ./system/sh.nix
+    ./system/cli.nix
+    ./system/fonts.nix
+    ./system/gui.nix
+    ./system/utilpkgs.nix
+
+    ./system/services/battery/low-battery.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) ["corefonts"];
 
   nix = {
     nixPath = ["nixpkgs=${inputs.nixpkgs}"];
@@ -61,9 +69,6 @@
     };
   };
 
-  # xdg.portal.enable = true;
-  # xdg.portal.config.common.default = "*";
-
   # Monitor power supply changes (AC adapter and battery events)
   services.udev.extraRules = ''
     SUBSYSTEM=="power_supply", ACTION=="change", \
@@ -75,22 +80,8 @@
   services.openssh.enable = true;
   services.printing.enable = true;
   services.tor.enable = true;
-  # services.jupyter.enable = true;
 
-  # services.desktopManager.plasma6.enable = true;
-  services.xserver.enable = false;
-  xdg.portal = {
-    enable = true;
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-hyprland
-      xdg-desktop-portal-gtk
-    ];
-  };
-
-  security.pam.services.ly.enableGnomeKeyring = true;
-  security.pam.services.hyprlock.enableGnomeKeyring = true;
   security.rtkit.enable = true;
-  security.polkit.enable = true;
 
   networking.hostName = "greeed-nix"; # Define your hostname.
   networking.networkmanager.enable = true;
@@ -107,14 +98,6 @@
     LC_PAPER = "en_IN";
     LC_TELEPHONE = "en_IN";
     LC_TIME = "en_IN";
-  };
-
-  services.displayManager = {
-    ly.enable = true;
-    # sddm = {
-    #   enable = true;
-    #   wayland.enable = true;
-    # };
   };
 
   # Configure keymap in X11
@@ -160,80 +143,30 @@
     flake = "/home/greeed/.dotfiles";
   };
 
-  programs.hyprland = {
-    enable = true;
-    # xwayland.enable = true;
-    # package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-    portalPackage = pkgs.xdg-desktop-portal-hyprland;
-  };
-
-  fonts.packages = with pkgs; [
-    corefonts
-    noto-fonts
-    noto-fonts-cjk-sans
-    noto-fonts-emoji
-  ];
-
-  # Thunar config
-  programs.thunar = {
-    enable = true;
-    plugins = with pkgs.xfce; [
-      thunar-archive-plugin
-      thunar-volman
-    ];
-  };
-
   programs.xfconf.enable = true;
-  services.gvfs.enable = true; # Mount, trash, and other functionalities
-  services.tumbler.enable = true; # Thumbnail support for images
+
   services.udisks2 = {
     enable = true;
     mountOnMedia = true;
   };
 
-  # GAMING
-
-  programs.gamemode.enable = true;
-  programs.steam.enable = true;
-  programs.steam.gamescopeSession.enable = true;
   programs.java.enable = true;
-
-  # services.mongodb.enable = true;
+  # GAMING
   services.postgresql.enable = true;
-  # services.mysql.enable = true;
-
-  # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
-    pciutils
-    wineWowPackages.stable
-    libnotify
     brightnessctl
-    wl-clipboard
-    unzip
-    xwaylandvideobridge
-    killall
     qalculate-qt
-    wget
-    stress-ng
-    aria2
-    python3
-    gparted
-    mariadb
+
     git
     delta
-    nh
-    vim
-    p7zip
-    wtype
-    dracula-theme
+    webp-pixbuf-loader
+    poppler
+    ffmpegthumbnailer
 
+    dracula-theme
     dracula-icon-theme
-    hyprlock
-    hypridle
-    libsForQt5.qtstyleplugin-kvantum
     android-tools
     onlyoffice-bin
-    corefonts
   ];
 
   # Enable the OpenSSH daemon.

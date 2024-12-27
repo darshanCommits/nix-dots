@@ -34,7 +34,7 @@
       };
 
       monospace = {
-        package = pkgs.nerdfonts.override {fonts = ["JetBrainsMono"];};
+        package = pkgs.nerd-fonts.jetbrains-mono;
         name = "JetBrainsMono Nerd Font Mono";
       };
 
@@ -48,7 +48,7 @@
       hyprland.enable = false;
       helix.enable = false;
       tofi.enable = false;
-      foot.enable = false;
+      # foot.enable = true;
       mako.enable = false;
       waybar.enable = false;
     };

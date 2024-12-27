@@ -15,9 +15,10 @@
   services.gvfs.enable = true; # Mount, trash, and other functionalities
   services.tumbler.enable = true; # Thumbnail support for images
 
-  environment.packages = with pkgs; (
+  environment.systemPackages = with pkgs; (
     let
       genericPkgs = [
+foot
         gparted
         feh
         blanket
@@ -25,6 +26,7 @@
         inputs.ghostty.packages.${pkgs.system}.ghostty
         localsend
         transmission_4-qt
+        tofi
       ];
       messagingPkgs = [
         telegram-desktop

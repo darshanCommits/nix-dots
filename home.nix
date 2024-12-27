@@ -12,11 +12,11 @@ in {
     ./user/zsh/sh.nix
 
     ./user/hypr/hyprland.nix
-    ./user/hypr/hyprlock.nix
+    # ./user/hypr/hyprlock.nix
     ./user/hypr/hypridle.nix
 
-    ./user/foot/foot.nix
-    ./user/mako/mako.nix
+    # ./user/foot/foot.nix
+    # ./user/mako/mako.nix
     ./user/stylix/stylix.nix
     ./user/waybar/waybar.nix
     ./user/git/git.nix
@@ -38,7 +38,7 @@ in {
   home.stateVersion = "24.05";
 
   home.sessionVariables = {
-    GSK_RENDERER = "ngl"; # BUG IN NVIDIA LATEST DRIVER FOR GTK APPS
+    GSK_RENDERER = "gl"; # BUG IN NVIDIA LATEST DRIVER FOR GTK APPS
     DEVSHELLS = "${path_devshells}";
     EDITOR = "hx";
     VISUAL = "hx";
@@ -55,6 +55,20 @@ in {
   };
 
   programs.bun.enable = true;
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications = {
+      "x-scheme-handler/mailto" = ["brave-browser.desktop"];
+      "application/pdf" = ["org.pwmt.zathura-pdf-mupdf.desktop"];
+      "image/png" = ["feh.desktop"];
+      "image/jpeg" = ["feh.desktop"];
+      "application/x-ms-shortcut" = ["Helix.desktop"];
+      "x-scheme-handler/tg" = ["org.telegram.desktop.desktop"];
+      "x-scheme-handler/tonsite" = ["org.telegram.desktop.desktop"];
+
+      "inode/directory" = ["thunar.desktop"];
+    };
+  };
 
   home.packages = with pkgs; [
     webp-pixbuf-loader
@@ -63,85 +77,36 @@ in {
 
     # User-specific utilities and tools
     gh
-    cliphist
-    starship
 
     # Media and productivity
     # mpv
-    comma
-
-    inputs.umu.packages.${pkgs.system}.umu
-
-    waybar
-    grimblast
-    swaybg
-    tesseract
 
     # Hypr ecosystem (user-specific components)
     pyprland
-    hyprpicker
-    hyprcursor
 
     #GAMES
-    heroic
-    lutris
 
     #GUI
-    feh
-    blanket
-    telegram-desktop
-    brave
-    pavucontrol
     foot
-    stremio
     webcord-vencord
     spotify
     spicetify-cli
-    zapzap
-    localsend
     gpu-screen-recorder
     mangohud
-    protonup
     montserrat
-    tokei
-    imagemagick
 
-    smartcat
-    lazygit
-    glow
-    act
 
-    go
-    nodejs
-    typescript
-    jupyter
-
-    pest-ide-tools
-    taplo
-    hyprls
-    alejandra # nix formatter
-    shellcheck
-    shfmt
-    nixd
-    nil
-    nodePackages.bash-language-server
-    ccls
-    cmake
     sqlite
     # rustup
-    gcc
     openssl
-    jdk
+    tetex
     # weka
     # rPackages.RWekajars
 
     # web
     biome
     jdt-language-server
-    typescript-language-server
     tree-sitter
-    emmet-language-server
-    vscode-langservers-extracted
   ];
 
   # syntax => "<filepath>".source = <flakepath>; if i wish to use as is
@@ -168,11 +133,11 @@ in {
 
   qt = {
     enable = true;
-    platformTheme.name = "gtk";
+    # platformTheme.name = "gtk";
     style.name = "kvantum";
   };
 
-  programs.home-manager.enable = true;
+  # programs.home-manager.enable = true;
 
   programs.wezterm.enable = true;
 }

@@ -8,7 +8,7 @@
   programs.steam.enable = true;
   programs.steam.gamescopeSession.enable = true;
 
-  environment.packages = with pkgs; (
+  environment.systemPackages = with pkgs; (
     let
       basePkgs = [
         # base

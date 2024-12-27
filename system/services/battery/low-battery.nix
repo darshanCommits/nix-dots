@@ -67,16 +67,25 @@
     '';
   };
 in {
-  systemd.user.services.low-battery-check = {
-    Unit = {
-      Description = "Low Battery Check";
-      StartLimitIntervalSec = 3;
-      StartLimitBurst = 1;
+  # Timer unit
+  systemd.timers."low-battery-check" = {
+    wantedBy = ["timers.target"];
+    timerConfig = {
+      OnBootSec = "1min"; # Run 1 minute after boot
+      OnUnitActiveSec = "1min"; # Run every minute thereafter
+      Unit = "low-battery-check.service";
     };
-    Service = {
-      Type = "simple";
-      ExecStart = "${low-battery-check}/bin/low-battery-check";
+  };
+
+  # Service unit
+  systemd.services."low-battery-check" = {
+    script = ''
+      set -eu
+      ${low-battery-check}
+    '';
+    serviceConfig = {
+      Type = "oneshot";
+      User = "greeed"; # Using the same user as in your cron job
     };
-    Install.WantedBy = ["multi-user.target"];
   };
 }

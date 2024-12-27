@@ -12,7 +12,6 @@ FULLY_CHARGED_THRESHOLD=95
 STATUS_FILE="/tmp/battery_status"
 PREVIOUS_LEVEL_FILE="/tmp/battery_level"
 
-# Get battery percentage
 if [[ -f "$BAT_FULL_FILE" && -f "$BAT_NOW_FILE" ]]; then
 	bat_full=$(<"$BAT_FULL_FILE")
 	bat_now=$(<"$BAT_NOW_FILE")
@@ -44,18 +43,15 @@ elif [[ "$battery_percentage" -le "$LOW_BATTERY_THRESHOLD_10" && "$previous_batt
 	send_notification "Critical Battery Warning" "Battery is critically low at $battery_percentage%. Connect the charger immediately."
 fi
 
-# Notify for charging and discharging events
 if [[ "$battery_status" == "Charging" && "$last_status" != "Charging" ]]; then
 	send_notification "Charger Plugged In" "The charger is connected."
 elif [[ "$battery_status" == "Discharging" && "$last_status" != "Discharging" ]]; then
 	send_notification "Charger Plugged Out" "The charger is disconnected."
 fi
 
-# Notify when the battery is fully charged
 if [[ "$battery_percentage" -ge "$FULLY_CHARGED_THRESHOLD" ]]; then
 	send_notification "Battery Fully Charged" "Battery is at $battery_percentage%. You can disconnect the charger."
 fi
 
-# Save the current battery status and level for future checks
 echo "$battery_status" >"$STATUS_FILE"
 echo "$battery_percentage" >"$PREVIOUS_LEVEL_FILE"

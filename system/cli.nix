@@ -1,5 +1,5 @@
-{pkgs, ...}: {
-  environment.packages = with pkgs; (
+{inputs, pkgs, ...}: {
+  environment.systemPackages = with pkgs; (
     let
       defaultPkgs = [
         unzip
@@ -18,11 +18,13 @@
       ];
 
       devEnvPkgs = [
+        gh
         tokei
         smartcat
         lazygit
         glow
         act # i dont actually know how to use this
+        inputs.helix-master.packages.${pkgs.system}.helix
       ];
 
       replacementPkgs = [
