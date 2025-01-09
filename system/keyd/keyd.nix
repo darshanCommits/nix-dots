@@ -20,7 +20,10 @@
         extraConfig = ''
           [alt]
           h = left
+          j = down
+          k = up
           l = right
+
           a = C-a
           v = S-insert
           c = C-insert

@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-COLOR=$(hyprpicker -a -n)
-TMP="/tmp/xcolor_$(date +%s).png"
-
-magick -size 120x120 xc:"$COLOR" "$TMP"
-echo -n "$COLOR" | wl-copy
-notify-send -a "xcolor-pick" -i "$TMP" "Color Picked" "$COLOR"

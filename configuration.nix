@@ -1,9 +1,9 @@
 # for later
 # hyprland scratchpads https://www.youtube.com/watch?v=CwGlm-rpok4&list=PL_WcXIXdDWWohRNPGXO6H9Ds3jM_0fT9P&index=2&t=349s
 {
-  lib,
   pkgs,
   inputs,
+  HOME,
   ...
 }: {
   imports = [
@@ -19,13 +19,14 @@
 
     ./system/de.nix
     ./system/gaming.nix
+
     ./system/sh.nix
     ./system/cli.nix
     ./system/fonts.nix
     ./system/gui.nix
     ./system/utilpkgs.nix
     ./system/coding.nix
-    # ./system/stylix.nix
+    ./system/stylix.nix
 
     ./system/services/battery/low-battery.nix
 
@@ -34,6 +35,7 @@
 
   nixpkgs.config.allowUnfree = true;
 
+  programs.dconf.enable = true;
   nix = {
     nixPath = ["nixpkgs=${inputs.nixpkgs}"];
     settings = {
@@ -42,8 +44,11 @@
     };
   };
 
+  services.scx.enable = true; # by default uses scx_rustland scheduler
   boot = {
-    kernelPackages = pkgs.linuxPackages_latest;
+    # kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages_cachyos;
+
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
   };
@@ -54,8 +59,7 @@
     setSocketVariable = true;
   };
 
-  environment.shells = with pkgs; [zsh bash];
-  programs.zsh.enable = true;
+  environment.shells = with pkgs; [zsh bash nushell];
 
   systemd = {
     user.services.polkit-gnome-authentication-agent-1 = {
@@ -86,29 +90,31 @@
   services.tor.enable = true;
 
   security.rtkit.enable = true;
+  security.sudo = {
+    enable = true;
+    extraRules = [
+      {
+        commands = [
+          {
+            command = "${pkgs.brightnessctl}/bin/brightnessctl";
+            options = ["NOPASSWD"];
+          }
+        ];
+        groups = ["users"];
+      }
+    ];
+  };
 
   networking.hostName = "greeed-nix"; # Define your hostname.
   networking.networkmanager.enable = true;
 
   time.timeZone = "Asia/Kolkata";
-  i18n.defaultLocale = "en_IN";
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "en_IN";
-    LC_IDENTIFICATION = "en_IN";
-    LC_MEASUREMENT = "en_IN";
-    LC_MONETARY = "en_IN";
-    LC_NAME = "en_IN";
-    LC_NUMERIC = "en_IN";
-    LC_PAPER = "en_IN";
-    LC_TELEPHONE = "en_IN";
-    LC_TIME = "en_IN";
-  };
 
-  # Configure keymap in X11
-  # services.xserver = {
-  #   xkb.layout = "us";
-  #   xkb.variant = "";
-  # };
+  i18n.defaultLocale = "en_US.UTF-8";
+  i18n.supportedLocales = [
+    # "en_IN.UTF-8/UTF-8"
+    "en_US.UTF-8/UTF-8"
+  ];
 
   hardware.pulseaudio.enable = false;
   hardware.xone.enable = true;
@@ -121,11 +127,41 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
+    # jack.enable = true;
+
+    extraConfig = {
+      pipewire."92-low-latency" = {
+        "context.properties" = {
+          "default.clock.rate" = 48000;
+          "default.clock.quantum" = 32;
+          "default.clock.min-quantum" = 32;
+          "default.clock.max-quantum" = 32;
+        };
+      };
+      pipewire-pulse."92-low-latency" = {
+        context.modules = [
+          {
+            name = "libpipewire-module-protocol-pulse";
+            args = {
+              pulse.min.req = "32/48000";
+              pulse.default.req = "32/48000";
+              pulse.max.req = "32/48000";
+              pulse.min.quantum = "32/48000";
+              pulse.max.quantum = "32/48000";
+            };
+          }
+        ];
+        stream.properties = {
+          node.latency = "32/48000";
+          resample.quality = 1;
+        };
+      };
+    };
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users = {
-    defaultUserShell = pkgs.zsh;
+    defaultUserShell = pkgs.nushell;
     users.greeed = {
       isNormalUser = true;
       description = "Darshan Kumawat";
@@ -144,7 +180,7 @@
     enable = true;
     clean.enable = true;
     clean.extraArgs = "--keep-since 4d --keep 3";
-    flake = "/home/greeed/.dotfiles";
+    flake = "${HOME}/.dotfiles";
   };
 
   programs.xfconf.enable = true;
@@ -154,9 +190,8 @@
     mountOnMedia = true;
   };
 
-  programs.java.enable = true;
   # GAMING
-  services.postgresql.enable = true;
+  services.postgresql.enable = false;
   environment.systemPackages = with pkgs; [
     brightnessctl
     qalculate-qt
@@ -173,6 +208,59 @@
     onlyoffice-bin
   ];
 
+  xdg.mime = {
+    enable = true;
+    defaultApplications = {
+      # Browser-related MIME types
+      "x-scheme-handler/http" = ["brave-browser.desktop"];
+      "x-scheme-handler/https" = ["brave-browser.desktop"];
+      "x-scheme-handler/mailto" = ["brave-browser.desktop"];
+      "text/html" = ["brave-browser.desktop"];
+
+      # Image files to open with feh
+      "image/png" = ["feh.desktop"];
+      "image/jpeg" = ["feh.desktop"];
+      "image/gif" = ["feh.desktop"];
+      "image/bmp" = ["feh.desktop"];
+      "image/tiff" = ["feh.desktop"];
+      "image/svg+xml" = ["feh.desktop"];
+
+      # Video and audio files to open with mpv
+      "video/mp4" = ["mpv.desktop"];
+      "video/x-matroska" = ["mpv.desktop"];
+      "video/x-msvideo" = ["mpv.desktop"];
+      "video/webm" = ["mpv.desktop"];
+      "audio/mpeg" = ["mpv.desktop"];
+      "audio/ogg" = ["mpv.desktop"];
+      "audio/wav" = ["mpv.desktop"];
+      "audio/flac" = ["mpv.desktop"];
+
+      # Text files to open with Helix
+      "text/plain" = ["Helix.desktop"];
+      "text/xml" = ["Helix.desktop"];
+      "application/json" = ["Helix.desktop"];
+      "text/x-shellscript" = ["Helix.desktop"];
+      "application/x-sh" = ["Helix.desktop"];
+      "text/css" = ["Helix.desktop"];
+      "application/x-yaml" = ["Helix.desktop"];
+      "application/x-tar" = ["Helix.desktop"];
+
+      # PDF files to open with Zathura
+      "application/pdf" = ["org.pwmt.zathura-pdf-mupdf.desktop"];
+
+      # File manager for directories
+      "inode/directory" = ["thunar.desktop"];
+
+      # Terminal: foot for terminal applications
+      "x-scheme-handler/terminal" = ["foot.desktop"];
+
+      # Telegram desktop application handlers
+      "x-scheme-handler/tg" = ["org.telegram.desktop.desktop"];
+      "x-scheme-handler/tonsite" = ["org.telegram.desktop.desktop"];
+    };
+  };
+
+  home-manager.backupFileExtension = "backup";
   # Enable the OpenSSH daemon.
 
   # Open ports in the firewall.

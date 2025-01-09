@@ -23,11 +23,6 @@
     vim
     p7zip
     wtype
-    dracula-theme
-    dracula-icon-theme
-    hyprlock
-    hypridle
-    libsForQt5.qtstyleplugin-kvantum
     android-tools
     onlyoffice-bin
     corefonts

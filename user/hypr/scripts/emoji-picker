@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-tofi < ~/emojilist | cut -d ' ' -f 1 | tr -d '\n' | wl-copy
-

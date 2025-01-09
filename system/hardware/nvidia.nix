@@ -29,10 +29,4 @@
   environment.systemPackages = with pkgs; [
     nvidia-vaapi-driver
   ];
-
-  # programs.zsh.shellAliases = {
-  #   mpv = "nvidia-offload mpv";
-  #   stremio = "nvidia-offload stremio";
-  #   brave = "nvidia-offload brave";
-  # };
 }

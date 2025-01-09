@@ -1,29 +1,26 @@
 {
-  config,
-  inputs,
   pkgs,
+  HOME,
   ...
 }: {
-  programs.gamemode.enable = true;
   programs.steam.enable = true;
   programs.steam.gamescopeSession.enable = true;
+  programs.gamemode.enable = true;
 
-  environment.systemPackages = with pkgs; (
-    let
-      basePkgs = [
-        # base
-        wineWowPackages.stable
-        inputs.umu.packages.${pkgs.system}.umu
-        protonup
-      ];
-      launcherPkgs = [
-        # Launchers
-        heroic
-        lutris
-        itch
-        bottles-unwrapped
-      ];
-    in
-      basePkgs ++ launcherPkgs
-  );
+  environment.sessionVariables = {
+    STEAM_EXTRA_COMPAT_TOOLS_PATHS = "${HOME}/.steam/root/compatibilitytools.d";
+  };
+
+  environment.systemPackages = with pkgs; [
+    # base
+    wineWowPackages.stable
+    protonup
+    gamescope
+    mangohud
+
+    # Launchers
+    heroic-unwrapped
+    lutris-unwrapped
+    itch
+  ];
 }

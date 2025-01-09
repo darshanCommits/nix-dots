@@ -1,21 +1,33 @@
 # WAYLAND WAYLAND WAYLAND
 {
-  config,
   inputs,
   pkgs,
   ...
 }: {
+  boot = {
+    # Override other boot settings
+    consoleLogLevel = 0;
+    initrd.verbose = false;
+    kernelParams = [
+      "quiet"
+      "splash"
+      "boot.shell_on_fail"
+      "loglevel=3"
+      "rd.systemd.show_status=false"
+      "rd.udev.log_level=3"
+      "udev.log_priority=3"
+    ];
+    loader.timeout = 2;
+  };
+
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
   programs.uwsm = {
     enable = true;
-    waylandCompositors.hyprland = {
-      prettyName = "Hyprland";
-      comment = "Hyprland compositor managed by UWSM";
-      binPath = "/run/current-system/sw/bin/Hyprland";
-    };
   };
 
   programs.hyprland = {
     enable = true;
+    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
     xwayland.enable = true;
     portalPackage = pkgs.xdg-desktop-portal-hyprland;
     withUWSM = true;
@@ -23,99 +35,67 @@
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [
-      xdg-desktop-portal-hyprland
       xdg-desktop-portal-gtk
     ];
   };
 
-  xdg.mime = {
-    enable = true;
-    defaultApplications = {
-      # Browser-related MIME types
-      "x-scheme-handler/http" = ["brave-browser.desktop"];
-      "x-scheme-handler/https" = ["brave-browser.desktop"];
-      "x-scheme-handler/mailto" = ["brave-browser.desktop"];
-      "text/html" = ["brave-browser.desktop"];
+  services.xserver.displayManager.lightdm.enable = false;
+  # services.displayManager.sddm.enable = true;
+  # services.displayManager.sddm.wayland.enable = true;
 
-      # Image files to open with feh
-      "image/png" = ["feh.desktop"];
-      "image/jpeg" = ["feh.desktop"];
-      "image/gif" = ["feh.desktop"];
-      "image/bmp" = ["feh.desktop"];
-      "image/tiff" = ["feh.desktop"];
-      "image/svg+xml" = ["feh.desktop"];
-
-      # Video and audio files to open with mpv
-      "video/mp4" = ["mpv.desktop"];
-      "video/x-matroska" = ["mpv.desktop"];
-      "video/x-msvideo" = ["mpv.desktop"];
-      "video/webm" = ["mpv.desktop"];
-      "audio/mpeg" = ["mpv.desktop"];
-      "audio/ogg" = ["mpv.desktop"];
-      "audio/wav" = ["mpv.desktop"];
-      "audio/flac" = ["mpv.desktop"];
-
-      # Text files to open with Helix
-      "text/plain" = ["Helix.desktop"];
-      "text/xml" = ["Helix.desktop"];
-      "application/json" = ["Helix.desktop"];
-      "text/x-shellscript" = ["Helix.desktop"];
-      "application/x-sh" = ["Helix.desktop"];
-      "text/css" = ["Helix.desktop"];
-      "application/x-yaml" = ["Helix.desktop"];
-      "application/x-tar" = ["Helix.desktop"];
-
-      # PDF files to open with Zathura
-      "application/pdf" = ["org.pwmt.zathura-pdf-mupdf.desktop"];
-
-      # File manager for directories
-      "inode/directory" = ["thunar.desktop"];
-
-      # Terminal: foot for terminal applications
-      "x-scheme-handler/terminal" = ["foot.desktop"];
-
-      # Telegram desktop application handlers
-      "x-scheme-handler/tg" = ["org.telegram.desktop.desktop"];
-      "x-scheme-handler/tonsite" = ["org.telegram.desktop.desktop"];
-    };
-  };
-
-  services.displayManager.ly.enable = true;
   security.polkit.enable = true;
-  security.pam.services.ly.enableGnomeKeyring = true;
   security.pam.services.hyprlock.enableGnomeKeyring = true;
 
-  services.xserver.enable = false;
+  services.xserver.enable = true;
   services.hypridle.enable = true;
   programs.hyprlock.enable = true;
-  programs.waybar.enable = true;
+
+  # Thunar config
+  services.gvfs.enable = true; # Mount, trash, and other functionalities
+  services.tumbler.enable = true; # Thumbnail support for images
+  programs.thunar = {
+    enable = true;
+    plugins = with pkgs.xfce; [
+      thunar-archive-plugin
+      thunar-volman
+    ];
+  };
 
   environment.systemPackages = with pkgs; [
-    # Generic
+    # Util
+    dbus-broker
     mako
     xwaylandvideobridge
-    waybar
     grimblast
     swaybg
     pavucontrol
     nwg-look
     nwg-displays
+    greetd.tuigreet
+    plymouth
+    gpu-screen-recorder
 
     # Theming
     dracula-icon-theme
     dracula-qt5-theme
     dracula-theme
     libsForQt5.qtstyleplugin-kvantum
-    # ClipBoard
 
+    # ClipBoard
     cliphist
     wl-clipboard
     wtype
-    # Hyprland ecosystem
 
+    # Hyprland ecosystem
     hyprpicker
     hyprcursor
     hyprlock
     hyprpaper
+    hyprpolkitagent
+
+    # Misc
+    cmus
+    hyprlandPlugins.hyprspace
+    hyprlandPlugins.hyprexpo
   ];
 }
