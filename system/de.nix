@@ -4,6 +4,16 @@
   pkgs,
   ...
 }: {
+  # REFER: flake.nix TODO:1
+  # imports = [
+  #   inputs.gauntlet.nixosModules.default
+  # ];
+
+  # programs.gauntlet = {
+  #   enable = true;
+  #   service.enable = true;
+  # };
+
   boot = {
     # Override other boot settings
     consoleLogLevel = 0;
@@ -36,7 +46,22 @@
     enable = true;
     extraPortals = with pkgs; [
       xdg-desktop-portal-gtk
+      xdg-desktop-portal-kde
     ];
+  };
+
+  programs.kdeconnect = {
+    enable = true;
+    package = pkgs.plasma5Packages.kdeconnect-kde;
+  };
+  networking.firewall = rec {
+    allowedTCPPortRanges = [
+      {
+        from = 1714;
+        to = 1764;
+      }
+    ];
+    allowedUDPPortRanges = allowedTCPPortRanges;
   };
 
   services.xserver.displayManager.lightdm.enable = false;
@@ -61,41 +86,46 @@
     ];
   };
 
-  environment.systemPackages = with pkgs; [
-    # Util
-    dbus-broker
-    mako
-    xwaylandvideobridge
-    grimblast
-    swaybg
-    pavucontrol
-    nwg-look
-    nwg-displays
-    greetd.tuigreet
-    plymouth
-    gpu-screen-recorder
+  environment.systemPackages = with pkgs;
+    [
+      # Util
+      dbus-broker
+      mako
+      xwaylandvideobridge
+      grimblast
+      swaybg
+      pavucontrol
+      nwg-look
+      nwg-displays
+      greetd.tuigreet
+      plymouth
+      gpu-screen-recorder
 
-    # Theming
-    dracula-icon-theme
-    dracula-qt5-theme
-    dracula-theme
-    libsForQt5.qtstyleplugin-kvantum
+      # Theming
+      dracula-icon-theme
+      dracula-qt5-theme
+      dracula-theme
+      libsForQt5.qtstyleplugins
 
-    # ClipBoard
-    cliphist
-    wl-clipboard
-    wtype
+      # ClipBoard
+      cliphist
+      wl-clipboard
+      wtype
 
-    # Hyprland ecosystem
-    hyprpicker
-    hyprcursor
-    hyprlock
-    hyprpaper
-    hyprpolkitagent
+      # Hyprland ecosystem
+      hyprpicker
+      hyprcursor
+      hyprlock
+      hyprpaper
+      hyprpolkitagent
 
-    # Misc
-    cmus
-    hyprlandPlugins.hyprspace
-    hyprlandPlugins.hyprexpo
-  ];
+      # Misc
+      cmus
+      audio-sharing
+
+      # hyprlandPlugins.hyprspace
+      # hyprlandPlugins.hyprexpo
+    ]
+    ++ [
+    ];
 }

@@ -3,7 +3,9 @@
   pkgs,
   inputs,
   ...
-}: {
+}: let
+  jetbrains = pkgs.nerdfonts.override {fonts = ["JetBrainsMono"];};
+in {
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) ["corefonts"];
 
@@ -15,7 +17,7 @@
     noto-fonts
     noto-fonts-cjk-sans
     noto-fonts-emoji
-    (nerdfonts.override {fonts = ["JetBrainsMono"];})
+    jetbrains
     jetbrains-mono
   ];
 
@@ -38,7 +40,7 @@
     };
 
     monospace = {
-      package = pkgs.jetbrains-mono;
+      package = jetbrains;
       name = "JetBrainsMono Nerd Font Mono";
     };
 
@@ -47,5 +49,4 @@
       name = "Noto Color Emoji";
     };
   };
-
 }

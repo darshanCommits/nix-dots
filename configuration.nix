@@ -4,6 +4,7 @@
   pkgs,
   inputs,
   HOME,
+  chaotic,
   ...
 }: {
   imports = [
@@ -36,6 +37,10 @@
   nixpkgs.config.allowUnfree = true;
 
   programs.dconf.enable = true;
+  services.scx = {
+    enable = true;
+    scheduler = "scx_lavd";
+  };
   nix = {
     nixPath = ["nixpkgs=${inputs.nixpkgs}"];
     settings = {
@@ -44,10 +49,11 @@
     };
   };
 
-  services.scx.enable = true; # by default uses scx_rustland scheduler
+  # services.scx.enable = true; # by default uses scx_rustland scheduler
   boot = {
     # kernelPackages = pkgs.linuxPackages_latest;
     kernelPackages = pkgs.linuxPackages_cachyos;
+    kernelParams = ["preempt=full"];
 
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
@@ -129,39 +135,39 @@
     pulse.enable = true;
     # jack.enable = true;
 
-    extraConfig = {
-      pipewire."92-low-latency" = {
-        "context.properties" = {
-          "default.clock.rate" = 48000;
-          "default.clock.quantum" = 32;
-          "default.clock.min-quantum" = 32;
-          "default.clock.max-quantum" = 32;
-        };
-      };
-      pipewire-pulse."92-low-latency" = {
-        context.modules = [
-          {
-            name = "libpipewire-module-protocol-pulse";
-            args = {
-              pulse.min.req = "32/48000";
-              pulse.default.req = "32/48000";
-              pulse.max.req = "32/48000";
-              pulse.min.quantum = "32/48000";
-              pulse.max.quantum = "32/48000";
-            };
-          }
-        ];
-        stream.properties = {
-          node.latency = "32/48000";
-          resample.quality = 1;
-        };
-      };
-    };
+    # extraConfig = {
+    #   pipewire."92-low-latency" = {
+    #     "context.properties" = {
+    #       "default.clock.rate" = 48000;
+    #       "default.clock.quantum" = 64;
+    #       "default.clock.min-quantum" = 64;
+    #       "default.clock.max-quantum" = 64;
+    #     };
+    #   };
+    #   pipewire-pulse."92-low-latency" = {
+    #     context.modules = [
+    #       {
+    #         name = "libpipewire-module-protocol-pulse";
+    #         args = {
+    #           pulse.min.req = "64/48000";
+    #           pulse.default.req = "64/48000";
+    #           pulse.max.req = "64/48000";
+    #           pulse.min.quantum = "64/48000";
+    #           pulse.max.quantum = "64/48000";
+    #         };
+    #       }
+    #     ];
+    #     stream.properties = {
+    #       node.latency = "64/48000";
+    #       resample.quality = 1;
+    #     };
+    #   };
+    # };
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users = {
-    defaultUserShell = pkgs.nushell;
+    defaultUserShell = pkgs.bash;
     users.greeed = {
       isNormalUser = true;
       description = "Darshan Kumawat";
@@ -172,6 +178,7 @@
         "video"
         "audio"
         "input"
+        "gamemode"
       ];
     };
   };

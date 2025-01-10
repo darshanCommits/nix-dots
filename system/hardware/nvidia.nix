@@ -3,13 +3,17 @@
   pkgs,
   ...
 }: {
+  nixpkgs.config.allowUnfree = true;
+
   services.xserver.videoDrivers = ["nvidia"];
   boot.kernelParams = ["nvidia.NVreg_PreserveVideoMemoryAllocations=1"];
 
   hardware.nvidia = {
     open = false;
+    package = config.boot.kernelPackages.nvidiaPackages.latest;
     modesetting.enable = true;
     nvidiaSettings = true;
+
     powerManagement = {
       enable = true;
       finegrained = false;
