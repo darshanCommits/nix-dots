@@ -5,30 +5,27 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
 
-    stylix.url = "github:danth/stylix";
+    stylix.url = "github:danth/stylix/release-24.11";
 
     # TODO:1 need to investigate, cant figure out this
-    gauntlet = {
-      url = "github:project-gauntlet/gauntlet/fd01fa2";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # inputs.gauntlet.url = github:project-gauntlet/gauntlet/dbc22aa81b1afce91efb869f0df9ccbff7b6cd6a;
+    # gauntlet = {
+    #   url = "github:project-gauntlet/gauntlet/dbc22aa81b1afce91efb869f0df9ccbff7b6cd6a";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
 
     hyprland = {
       url = "git+https://github.com/hyprwm/hyprland?ref=refs/tags/v0.46.2";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    hyprland-plugins = {
-      url = "github:hyprwm/hyprland-plugins?ref=refs/tags/v0.46.0";
-      inputs.hyprland.follows = "hyprland";
-    };
-
-    hyprland-easymotion = {
-      url = "github:zakk4223/hyprland-easymotion";
-      inputs.hyprland.follows = "hyprland";
+    pyprland = {
+      url = "github:hyprland-community/pyprland?ref=refs/tags/2.4.3";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     umu = {
       url = "github:Open-Wine-Components/umu-launcher?dir=packaging/nix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     home-manager = {
@@ -40,28 +37,6 @@
       url = "github:helix-editor/helix?ref=refs/tags/25.01";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-  };
-
-  nixConfig = {
-    experimental-features = ["nix-command" "flakes"];
-    extra-substituters = [
-      "https://cache.nixos.org/"
-      "https://nix-community.cachix.org"
-
-      "https://hyprland.cachix.org"
-      "https://helix.cachix.org"
-
-      "https://chaotic-nyx.cachix.org/"
-    ];
-    trusted-public-keys = [
-      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-
-      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
-      "helix.cachix.org-1:ejp9KQpR1FBI2onstMQ34yogDm4OgU2ru6lIwPvuCVs="
-
-      "chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
-    ];
   };
 
   outputs = {

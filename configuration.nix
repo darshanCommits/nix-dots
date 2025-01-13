@@ -21,13 +21,11 @@
     ./system/de.nix
     ./system/gaming.nix
 
-    ./system/sh.nix
     ./system/cli.nix
     ./system/fonts.nix
     ./system/gui.nix
     ./system/utilpkgs.nix
     ./system/coding.nix
-    ./system/stylix.nix
 
     ./system/services/battery/low-battery.nix
 
@@ -45,7 +43,25 @@
     nixPath = ["nixpkgs=${inputs.nixpkgs}"];
     settings = {
       trusted-users = ["root" "@wheel" "greeed"];
-      experimental-features = ["nix-command" "flakes" "pipe-operators"];
+      experimental-features = ["nix-command" "flakes"];
+      substituters = [
+        "https://cache.nixos.org/"
+        "https://nix-community.cachix.org"
+
+        "https://hyprland.cachix.org"
+        "https://helix.cachix.org"
+
+        "https://chaotic-nyx.cachix.org/"
+      ];
+      trusted-public-keys = [
+        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+
+        "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+        "helix.cachix.org-1:ejp9KQpR1FBI2onstMQ34yogDm4OgU2ru6lIwPvuCVs="
+
+        "chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
+      ];
     };
   };
 
@@ -66,8 +82,8 @@
   };
 
   environment.shells = with pkgs; [zsh bash nushell];
-
   systemd = {
+    extraConfig = "DefaultLimitNOFILE=2048";
     user.services.polkit-gnome-authentication-agent-1 = {
       description = "polkit-gnome-authentication-agent-1";
       wantedBy = ["graphical-session.target"];
@@ -167,7 +183,7 @@
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users = {
-    defaultUserShell = pkgs.bash;
+    defaultUserShell = pkgs.nushell;
     users.greeed = {
       isNormalUser = true;
       description = "Darshan Kumawat";
@@ -196,6 +212,8 @@
     enable = true;
     mountOnMedia = true;
   };
+
+  qt.enable = true;
 
   # GAMING
   services.postgresql.enable = false;

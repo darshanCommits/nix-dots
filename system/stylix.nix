@@ -6,7 +6,6 @@
 }: {
   stylix.enable = true;
   stylix.autoEnable = true;
-  stylix.image = ./../assets/wallpapers/goatv3.jpg;
 
   stylix.polarity = "dark";
   stylix.base16Scheme = {
@@ -34,14 +33,10 @@
     size = 24;
   };
 
-  # stylix.targets.foot.enable = false;
-
-  # stylix.targets = {
-  #   hyprland.enable = false;
-  #   helix.enable = false;
-  #   tofi.enable = false;
-  #   foot.enable = false;
-  #   mako.enable = false;
-  #   waybar.enable = false;
-  # };
+  stylix.iconTheme = {
+    enable = true;
+    package = pkgs.dracula-icon-theme;
+    dark = "Dracula";
+    light = "Dracula";
+  };
 }

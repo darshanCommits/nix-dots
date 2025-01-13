@@ -4,13 +4,16 @@
   pkgs,
   ...
 }: {
+  services.gvfs.enable = true; # Mount, trash, and other functionalities
+  services.tumbler.enable = true; # Thumbnail support for images
+
   environment.systemPackages = with pkgs; (
     let
       genericPkgs = [
         foot
-        oculante
-        gparted
         feh
+        nemo
+        gparted
         blanket
         brave
         localsend
@@ -18,6 +21,7 @@
         tofi
         zathura
         ffsubsync
+        onlyoffice-bin
       ];
       messagingPkgs = [
         telegram-desktop

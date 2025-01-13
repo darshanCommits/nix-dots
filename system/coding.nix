@@ -45,5 +45,7 @@
 
     # Misc
     mold
+    cachix
+    devenv
   ];
 }

@@ -14,6 +14,11 @@
   #   service.enable = true;
   # };
 
+  stylix.enable = true;
+  stylix.autoEnable = true;
+  stylix.image = ./../assets/wallpapers/goatv3.jpg;
+  stylix.base16Scheme = ./../assets/dracula.yaml;
+
   boot = {
     # Override other boot settings
     consoleLogLevel = 0;
@@ -50,18 +55,27 @@
     ];
   };
 
+  qt = {
+    enable = true;
+    platformTheme = "qt5ct";
+  };
+
   programs.kdeconnect = {
     enable = true;
-    package = pkgs.plasma5Packages.kdeconnect-kde;
   };
-  networking.firewall = rec {
+  networking.firewall = {
     allowedTCPPortRanges = [
       {
         from = 1714;
         to = 1764;
       }
     ];
-    allowedUDPPortRanges = allowedTCPPortRanges;
+    allowedUDPPortRanges = [
+      {
+        from = 1714;
+        to = 1764;
+      }
+    ];
   };
 
   services.xserver.displayManager.lightdm.enable = false;
@@ -75,17 +89,6 @@
   services.hypridle.enable = true;
   programs.hyprlock.enable = true;
 
-  # Thunar config
-  services.gvfs.enable = true; # Mount, trash, and other functionalities
-  services.tumbler.enable = true; # Thumbnail support for images
-  programs.thunar = {
-    enable = true;
-    plugins = with pkgs.xfce; [
-      thunar-archive-plugin
-      thunar-volman
-    ];
-  };
-
   environment.systemPackages = with pkgs;
     [
       # Util
@@ -95,7 +98,6 @@
       grimblast
       swaybg
       pavucontrol
-      nwg-look
       nwg-displays
       greetd.tuigreet
       plymouth
@@ -103,9 +105,15 @@
 
       # Theming
       dracula-icon-theme
-      dracula-qt5-theme
       dracula-theme
+      dracula-qt5-theme
+
+      kdePackages.qtstyleplugin-kvantum
+      libsForQt5.qtstyleplugin-kvantum
       libsForQt5.qtstyleplugins
+      kdePackages.qt6ct
+      libsForQt5.qt5ct
+      nwg-look
 
       # ClipBoard
       cliphist
@@ -118,14 +126,16 @@
       hyprlock
       hyprpaper
       hyprpolkitagent
-
+      inputs.pyprland.packages.${pkgs.system}.pyprland
       # Misc
       cmus
       audio-sharing
-
+      wl-clipboard
       # hyprlandPlugins.hyprspace
       # hyprlandPlugins.hyprexpo
     ]
     ++ [
     ];
+
+  # More info REFER: home.nix
 }
