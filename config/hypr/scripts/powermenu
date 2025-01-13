@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+if pgrep -x tofi >/dev/null; then
+	killall -q tofi
+else
+	case $(printf "%s\n" "Power Off" "Reboot" "Suspend" "Hibernate" "Lock" "Log Out" | tofi --height 300) in
+	"Power Off")
+		systemctl poweroff
+		;;
+	"Reboot")
+		systemctl reboot
+		;;
+	"Suspend")
+		systemctl suspend
+		;;
+	"Hibernate")
+		systemctl hibernate
+		;;
+	"Lock")
+		hyprlock
+		;;
+	"Log Out")
+		hyprctl dispatch exit 1
+		;;
+	esac
+fi

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+screenshot_file=$(mktemp /tmp/screenshot.XXXXXX.png)
+uwsm app -- grimblast --notify copysave area "$screenshot_file"
+tesseract "$screenshot_file" stdout | wl-copy
+rm "$screenshot_file"

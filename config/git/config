@@ -1,0 +1,28 @@
+[user]
+	email = kumawatdarshan.1304@gmail.com
+	name = Darshan Kumawat
+[credential]
+	helper = store
+[credential "https://github.com"]
+	helper = gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = gh auth git-credential
+
+[core]
+	editor = hx
+
+[alias]
+	st = status -sb
+	last = log -1 HEAD
+    # ls = log --pretty=format:'%C(yellow)%h%C(reset) %C(blue)%an%C(reset) %s %C(dim white)(%ar)%C(reset)' --abbrev-commit --date=relative
+    ll = log --oneline --graph --decorate --all --pretty=format:'%C(auto)%h%d %<(72,trunc)%s %C(green)(%ar) %C(yellow)%an%C(reset)'
+
+[color]
+    ui = auto  
+
+[log]
+    abbrevCommit = true      # Show short commit hashes by default
+
+[submodule]
+    recurse = true
+

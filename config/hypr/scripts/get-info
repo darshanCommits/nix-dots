@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+HW_BAT_DIR="/sys/class/power_supply/BAT1"
+BAT_FULL_FILE="$HW_BAT_DIR/energy_full"
+BAT_NOW_FILE="$HW_BAT_DIR/energy_now"
+BAT_STATUS_FILE="$HW_BAT_DIR/status"
+
+get_wifi_info() {
+	local connected
+	connected=$(nmcli -g NAME connection show --active | grep -v 'lo' | head -n 1)
+	if [[ -z "$connected" ]]; then
+		echo "Not Connected"
+	else
+		echo "$connected"
+	fi
+}
+
+get_battery_percentage() {
+	if [[ ! -f "$BAT_FULL_FILE" || ! -f "$BAT_NOW_FILE" ]]; then
+		return 1
+	fi
+	local bat_full
+	local bat_now
+	bat_full=$(cat "$BAT_FULL_FILE")
+	bat_now=$(cat "$BAT_NOW_FILE")
+	echo $(((bat_now * 100) / bat_full))
+}
+
+get_battery_status() {
+	if [[ -f "$BAT_STATUS_FILE" ]]; then
+		cat "$BAT_STATUS_FILE"
+	else
+		echo "Unknown"
+	fi
+}
+
+send_notification() {
+	local battery_percentage="$1"
+	local battery_status="$2"
+	local wifi_name="$3"
+	local date
+	local time
+	date=$(date +"%Y-%m-%d")
+	time=$(date +"%I:%M %p")
+	notify-send -u critical "System Status" "$(
+		cat <<EOF
+Battery: ${battery_percentage}% (${battery_status})
+WiFi: ${wifi_name}
+Date: ${date}
+Time: ${time}
+EOF
+	)"
+}
+
+main() {
+	local battery_percentage
+	local battery_status
+	local wifi_name
+
+	if ! battery_percentage=$(get_battery_percentage); then
+		notify-send "Battery information not available"
+		exit 1
+	fi
+
+	battery_status=$(get_battery_status)
+	wifi_name=$(get_wifi_info)
+	send_notification "$battery_percentage" "$battery_status" "$wifi_name"
+}
+
+main

@@ -23,7 +23,7 @@
     bat-extras.batman
     bat-extras.batpipe
     bat-extras.prettybat
-    chezmoi
+    stow
     dua
     eza
     fd

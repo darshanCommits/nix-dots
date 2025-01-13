@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+
+# Enable error tracing
+set -e
+
+# Get primary sink ID (USB-C if available, otherwise default)
+get_primary_sink() {
+    local usb_sink=$(wpctl status | grep -A 2 "Sinks:" | grep "USB-C Audio" | awk '{print $2}' | tr -d '.')
+    if [ -n "$usb_sink" ]; then
+        echo "$usb_sink"
+    else
+        echo "@DEFAULT_AUDIO_SINK@"
+    fi
+}
+
+# Get volume
+get_volume() {
+    local sink=$(get_primary_sink)
+    local volume=$(wpctl get-volume "$sink" 2>/dev/null | awk '{printf "%.0f\n", $2 * 100}')
+    if [ -n "$volume" ]; then
+        echo "$volume"
+    else
+        echo "Error: Unable to get volume for $sink" >&2
+        return 1
+    fi
+}
+
+# Notify user
+notify_user() {
+    local volume=$(get_volume)
+    if [ $? -eq 0 ]; then
+        notify-send -h string:x-canonical-private-synchronous:sys-notify -u low "Volume: $volume%"
+    else
+        notify-send -h string:x-canonical-private-synchronous:sys-notify -u low "Error: Unable to get volume"
+    fi
+}
+
+# Adjust volume
+adjust_volume() {
+    local sink=$(get_primary_sink)
+    local direction=$1
+    if ! wpctl set-volume "$sink" "$direction" >/dev/null 2>&1; then
+        echo "Error: Unable to adjust volume for $sink" >&2
+        return 1
+    fi
+    notify_user
+}
+
+# Increase volume
+inc_volume() {
+    adjust_volume "5%+"
+}
+
+# Decrease volume
+dec_volume() {
+    adjust_volume "5%-"
+}
+
+# Toggle mute
+toggle_mute() {
+    local sink=$(get_primary_sink)
+    if wpctl get-volume "$sink" 2>/dev/null | grep -q '\[MUTED\]'; then
+        if ! wpctl set-mute "$sink" 0 >/dev/null 2>&1; then
+            echo "Error: Unable to unmute $sink" >&2
+            return 1
+        fi
+        notify-send -h string:x-canonical-private-synchronous:sys-notify -u low "Volume Switched ON"
+    else
+        if ! wpctl set-mute "$sink" 1 >/dev/null 2>&1; then
+            echo "Error: Unable to mute $sink" >&2
+            return 1
+        fi
+        notify-send -h string:x-canonical-private-synchronous:sys-notify -u low "Volume Switched OFF"
+    fi
+}
+
+# Execute accordingly
+case "$1" in
+    --get) get_volume ;;
+    --inc) inc_volume ;;
+    --dec) dec_volume ;;
+    --toggle) toggle_mute ;;
+    *) get_volume ;;
+esac

@@ -1,0 +1,44 @@
+[pyprland]
+plugins = ["magnify", "scratchpads" ,"fetch_client_menu" , "toggle_special"]
+ 
+
+[scratchpads.fm]
+command = "nemo"
+class = "nemo"
+size = "80% 80%"
+
+[scratchpads.volume]
+command = "pavucontrol"
+class = "org.pulseaudio.pavucontrol"
+position = "50% 50%"
+size = "80% 80%"
+# unfocus = "hide"
+lazy = true
+
+[scratchpads.wa]
+command = "zapzap"
+class = "com.rtosta.zapzap"
+size = "90% 90%"
+margin = 10
+
+[scratchpads.tg]
+command = "telegram-desktop"
+class = "org.telegram.desktop"
+size = "90% 90%"
+
+[scratchpads.blanket]
+command = "blanket"
+class = "com.rafaelmardojai.Blanket"
+size = "80% 80%"
+
+[scratchpads.stremio]
+command = "stremio"
+class = "com.stremio.stremio"
+size = "80% 80%"
+
+[scratchpads.term]
+command = "foot -a 'scratch.term'"
+class = "scratch.term"
+size = "80% 80%"
+
+

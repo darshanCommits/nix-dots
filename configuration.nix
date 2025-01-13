@@ -24,7 +24,6 @@
     ./system/cli.nix
     ./system/fonts.nix
     ./system/gui.nix
-    ./system/utilpkgs.nix
     ./system/coding.nix
 
     ./system/services/battery/low-battery.nix

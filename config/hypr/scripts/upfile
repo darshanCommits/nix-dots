@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+if [ $# -eq 0 ]; then
+	# If no argument is provided, read input from stdin
+	temp_file=$(mktemp)
+	cat >"$temp_file"
+	file_to_upload="$temp_file"
+else
+	file_to_upload="$1"
+fi
+
+if [ ! -f "$file_to_upload" ] && [ ! -p "$file_to_upload" ]; then
+	echo "Error: File '$file_to_upload' does not exist."
+	exit 1
+fi
+
+output=$(curl -F "file=@$file_to_upload" http://0x0.st)
+
+if [ $? -eq 0 ]; then
+	echo "File uploaded successfully."
+	echo -n "$output" | wl-copy
+	echo "Link copied to clipboard."
+else
+	echo "Error: Failed to upload the file."
+fi
+
+# Clean up temporary file if it was created
+if [ -n "$temp_file" ]; then
+	rm -f "$temp_file"
+fi
