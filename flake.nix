@@ -53,7 +53,7 @@
     system = "x86_64-linux";
   in {
     nixosConfigurations = {
-      greeed-nix = nixpkgs.lib.nixosSystem {
+      nixos = nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = {
           inherit inputs wallpaper HOME chaotic;

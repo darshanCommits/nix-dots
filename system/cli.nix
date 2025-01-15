@@ -68,6 +68,7 @@
     # Archive and Compression
     p7zip
     unzip
+    unrar
 
     # Media and Image Processing
     imagemagick

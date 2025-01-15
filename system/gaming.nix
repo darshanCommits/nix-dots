@@ -11,6 +11,16 @@
   };
 in {
   programs = {
+    gamescope = {
+      enable = true;
+      package = pkgs.gamescope;
+      capSysNice = true;
+      env = {
+        __NV_PRIME_RENDER_OFFLOAD = "1";
+        __VK_LAYER_NV_optimus = "NVIDIA_only";
+        __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+      };
+    };
     gamemode = {
       enable = true;
       settings = {
@@ -42,11 +52,17 @@ in {
     umu
     pkgs.wineWowPackages.stable
     pkgs.protonup
-    pkgs.gamescope
     pkgs.mangohud
 
     # Launchers
-    pkgs.heroic-unwrapped
+    (pkgs.heroic.override {
+      extraPkgs = pkgs:
+        with pkgs; [
+          gamescope
+          gamemode
+        ];
+    })
+
     pkgs.lutris-unwrapped
     pkgs.itch
   ];

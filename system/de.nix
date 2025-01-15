@@ -13,6 +13,17 @@
   #   enable = true;
   #   service.enable = true;
   # };
+  #
+
+  services.displayManager.ly.enable = true;
+  programs.xfconf.enable = true;
+  services.gvfs.enable = true; # Mount, trash, and other functionalities
+  services.tumbler.enable = true; # Thumbnail support for images
+  programs.thunar.enable = true;
+  programs.thunar.plugins = with pkgs.xfce; [
+    thunar-archive-plugin
+    thunar-volman
+  ];
 
   stylix.enable = true;
   stylix.autoEnable = true;

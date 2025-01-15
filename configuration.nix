@@ -34,10 +34,6 @@
   nixpkgs.config.allowUnfree = true;
 
   programs.dconf.enable = true;
-  services.scx = {
-    enable = true;
-    scheduler = "scx_lavd";
-  };
   nix = {
     nixPath = ["nixpkgs=${inputs.nixpkgs}"];
     settings = {
@@ -64,7 +60,10 @@
     };
   };
 
-  # services.scx.enable = true; # by default uses scx_rustland scheduler
+  services.scx = {
+    enable = true;
+    scheduler = "scx_rusty";
+  };
   boot = {
     # kernelPackages = pkgs.linuxPackages_latest;
     kernelPackages = pkgs.linuxPackages_cachyos;
@@ -126,7 +125,7 @@
     ];
   };
 
-  networking.hostName = "greeed-nix"; # Define your hostname.
+  networking.hostName = "nixos"; # Define your hostname.
   networking.networkmanager.enable = true;
 
   time.timeZone = "Asia/Kolkata";
@@ -267,13 +266,16 @@
       "application/x-sh" = ["Helix.desktop"];
       "text/css" = ["Helix.desktop"];
       "application/x-yaml" = ["Helix.desktop"];
-      "application/x-tar" = ["Helix.desktop"];
 
       # PDF files to open with Zathura
       "application/pdf" = ["org.pwmt.zathura-pdf-mupdf.desktop"];
 
       # File manager for directories
       "inode/directory" = ["thunar.desktop"];
+      "application/x-7z-compressed" = ["thunar-archive.desktop"];
+      "application/x-rar" = ["thunar-archive.desktop"];
+      "application/zip" = ["thunar-archive.desktop"];
+      "application/x-tar" = ["thunar-archive.desktop"];
 
       # Terminal: foot for terminal applications
       "x-scheme-handler/terminal" = ["foot.desktop"];
@@ -299,5 +301,5 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.05"; # Did you read the comment?
+  system.stateVersion = "24.11"; # Did you read the comment?
 }

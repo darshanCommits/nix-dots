@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-tofi <"$XDG_CONFIG_HOME/hypr/scripts/emojilist" | cut -d ' ' -f 1 | tr -d '\n' | wl-copy

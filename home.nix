@@ -16,14 +16,56 @@
   home.enableNixpkgsReleaseCheck = false;
 
   # SYMLINKING DOTS
-  home.file = {
-    ".config/hypr" = {source = ./config/hypr; recursive = true;};
-    ".config/mpv" = {source = ./config/mpv; recursive = true;};
-    ".config/helix" = {source = ./config/helix; recursive = true;};
-    ".config/zathura" = {source = ./config/zathura; recursive = true;};
-    ".config/git" = {source = ./config/git; recursive = true;};
-    ".config/nushell" = {source = ./config/nushell; recursive = true;};
-  };
+  # home.file = {
+  #   ".config/atuin" = {
+  #     source = ./config/atuin;
+  #     recursive = true;
+  #   };
+  #   ".config/hypr" = {
+  #     source = ./config/hypr;
+  #     recursive = true;
+  #   };
+  #   ".config/bottom" = {
+  #     source = ./config/bottom;
+  #     recursive = true;
+  #   };
+  #   ".config/uwsm" = {
+  #     source = ./config/uwsm;
+  #     recursive = true;
+  #   };
+  #   ".config/mpv" = {
+  #     source = ./config/mpv;
+  #     recursive = true;
+  #   };
+  #   ".config/helix" = {
+  #     source = ./config/helix;
+  #     recursive = true;
+  #   };
+  #   ".config/zathura" = {
+  #     source = ./config/zathura;
+  #     recursive = true;
+  #   };
+  #   ".config/git" = {
+  #     source = ./config/git;
+  #     recursive = true;
+  #   };
+  #   ".config/nushell" = {
+  #     source = ./config/nushell;
+  #     recursive = true;
+  #   };
+  #   ".config/foot" = {
+  #     source = ./config/foot;
+  #     recursive = true;
+  #   };
+  #   ".config/tofi" = {
+  #     source = ./config/tofi;
+  #     recursive = true;
+  #   };
+  #   ".config/mako" = {
+  #     source = ./config/mako;
+  #     recursive = true;
+  #   };
+  # };
 
   services.easyeffects.enable = true;
 
