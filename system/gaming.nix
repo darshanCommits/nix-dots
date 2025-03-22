@@ -1,45 +1,61 @@
 {
-  inputs,
   pkgs,
   HOME,
   ...
-}: let
-  umu = inputs.umu.packages.${pkgs.system}.umu.override {
-    version = inputs.umu.shortRev;
-    truststore = true;
-    cbor2 = true;
-  };
-in {
+}: {
   programs = {
     gamescope = {
       enable = true;
       package = pkgs.gamescope;
       capSysNice = true;
-      env = {
-        __NV_PRIME_RENDER_OFFLOAD = "1";
-        __VK_LAYER_NV_optimus = "NVIDIA_only";
-        __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-      };
+      args = [
+        "--force-grab-cursor" # Better cursor handling
+        "--borderless" # Removes window decorations
+        "--fullscreen" # Forces fullscreen mode
+      ];
     };
+
     gamemode = {
       enable = true;
+      enableRenice = true;
       settings = {
-        general.inhibit_screensaver = 0;
+        general = {
+          inhibit_screensaver = 0;
+          renice = 0; # Higher process priority
+          ioprio = 0; # Highest I/O priority
+        };
+        gpu = {
+          apply_gpu_optimisations = "accept-responsibility";
+          nv_powermizer_mode = 1; # needs coolbit set or a 570+ driver since it has it on by default
+        };
         custom = {
-          start = "${pkgs.libnotify}/bin/notify-send 'GameMode started'";
-          end = "${pkgs.libnotify}/bin/notify-send 'GameMode ended'";
+          start = ''
+            #!/usr/bin/env bash
+            # makoctl mode -s dnd
+            hyprctl --batch "\
+                keyword animations:enabled 0;\
+                keyword decoration:shadow:enabled 0;\
+                keyword decoration:blur:enabled 0;\
+                keyword general:gaps_in 0;\
+                keyword general:gaps_out 0;\
+                keyword general:border_size 1;\
+                keyword decoration:rounding 0"
+
+            notify-send "GameMode" "Performance mode enabled"
+          '';
+          end = ''
+            #!/usr/bin/env bash
+            # makoctl mode -r dnd
+            hyprctl reload
+            notify-send "GameMode" "Performance mode disabled"
+          '';
         };
       };
     };
     steam = {
       enable = true;
       gamescopeSession.enable = true;
-      package = pkgs.steam.override {
-        extraPkgs = pkgs:
-          with pkgs; [
-            gamemode
-          ];
-      };
+      package = pkgs.steam;
     };
   };
 
@@ -47,23 +63,21 @@ in {
     STEAM_EXTRA_COMPAT_TOOLS_PATHS = "${HOME}/.steam/root/compatibilitytools.d";
   };
 
-  environment.systemPackages = [
+  environment.systemPackages = with pkgs; [
     # base, things wont work properly without these
-    umu
-    pkgs.wineWowPackages.stable
-    pkgs.protonup
-    pkgs.mangohud
+    unstable.umu-launcher
+    gamemode
+    gamescope
+    mangohud
+    protontricks
+    protonup
+    winetricks
+    wineWowPackages.stable
 
     # Launchers
-    (pkgs.heroic.override {
-      extraPkgs = pkgs:
-        with pkgs; [
-          gamescope
-          gamemode
-        ];
-    })
-
-    pkgs.lutris-unwrapped
-    pkgs.itch
+    heroic-unwrapped
+    lutris-unwrapped
+    bottles-unwrapped
+    itch
   ];
 }

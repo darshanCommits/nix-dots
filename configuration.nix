@@ -4,14 +4,21 @@
   pkgs,
   inputs,
   HOME,
-  chaotic,
   ...
-}: {
+}:
+# let
+# browser-desktop = "zen.desktop";
+# image-desktop = "feh.desktop";
+# video-desktop = "mpv.desktop";
+# editor-desktop = "Helix.desktop";
+# in
+{
   imports = [
     ./hardware-configuration.nix
 
     ./system/power_management/thermals.nix
     ./system/power_management/auto-cpufreq.nix
+    ./system/power_management/undervolt.nix
 
     ./system/hardware/nvidia.nix
     ./system/hardware/opengl.nix
@@ -20,63 +27,35 @@
 
     ./system/de.nix
     ./system/gaming.nix
+    ./system/flatpak.nix
+    ./system/waydroid.nix
 
     ./system/cli.nix
+    ./system/llm.nix
     ./system/fonts.nix
     ./system/gui.nix
+    ./system/virt-manager.nix
+
     ./system/coding.nix
+    ./system/postgresql.nix
+    ./system/docker.nix
+    ./system/mongodb.nix
 
     ./system/services/battery/low-battery.nix
 
     # ./home.nix
   ];
 
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs = {
+    config.allowUnfree = true;
+  };
 
   programs.dconf.enable = true;
-  nix = {
-    nixPath = ["nixpkgs=${inputs.nixpkgs}"];
-    settings = {
-      trusted-users = ["root" "@wheel" "greeed"];
-      experimental-features = ["nix-command" "flakes"];
-      substituters = [
-        "https://cache.nixos.org/"
-        "https://nix-community.cachix.org"
 
-        "https://hyprland.cachix.org"
-        "https://helix.cachix.org"
-
-        "https://chaotic-nyx.cachix.org/"
-      ];
-      trusted-public-keys = [
-        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-
-        "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
-        "helix.cachix.org-1:ejp9KQpR1FBI2onstMQ34yogDm4OgU2ru6lIwPvuCVs="
-
-        "chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
-      ];
-    };
-  };
-
-  services.scx = {
-    enable = true;
-    scheduler = "scx_rusty";
-  };
   boot = {
-    # kernelPackages = pkgs.linuxPackages_latest;
-    kernelPackages = pkgs.linuxPackages_cachyos;
-    kernelParams = ["preempt=full"];
-
+    kernelPackages = pkgs.linuxPackages_latest;
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
-  };
-
-  virtualisation.docker.enable = true;
-  virtualisation.docker.rootless = {
-    enable = true;
-    setSocketVariable = true;
   };
 
   environment.shells = with pkgs; [zsh bash nushell];
@@ -99,34 +78,22 @@
 
   # Monitor power supply changes (AC adapter and battery events)
   services.udev.extraRules = ''
-    SUBSYSTEM=="power_supply", ACTION=="change", \
-    ENV{SYSTEMD_USER_WANTS}+="low-battery-check.service", \
-    TAG+="systemd"
+    ACTION=="add", SUBSYSTEM=="backlight", RUN+="${pkgs.coreutils}/bin/chgrp video /sys/class/backlight/%k/brightness"
+    ACTION=="add", SUBSYSTEM=="backlight", RUN+="${pkgs.coreutils}/bin/chmod g+w /sys/class/backlight/%k/brightness"
   '';
 
-  services.flatpak.enable = true;
   services.openssh.enable = true;
-  services.printing.enable = true;
+  services.printing.enable = false;
   services.tor.enable = true;
 
-  security.rtkit.enable = true;
   security.sudo = {
     enable = true;
-    extraRules = [
-      {
-        commands = [
-          {
-            command = "${pkgs.brightnessctl}/bin/brightnessctl";
-            options = ["NOPASSWD"];
-          }
-        ];
-        groups = ["users"];
-      }
-    ];
   };
 
   networking.hostName = "nixos"; # Define your hostname.
   networking.networkmanager.enable = true;
+
+  services.dnsmasq.enable = false;
 
   time.timeZone = "Asia/Kolkata";
 
@@ -136,47 +103,26 @@
     "en_US.UTF-8/UTF-8"
   ];
 
-  hardware.pulseaudio.enable = false;
   hardware.xone.enable = true;
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
   services.blueman.enable = true;
 
+  security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
+    pulse.enable = true;
     alsa.enable = true;
     alsa.support32Bit = true;
-    pulse.enable = true;
-    # jack.enable = true;
-
-    # extraConfig = {
-    #   pipewire."92-low-latency" = {
-    #     "context.properties" = {
-    #       "default.clock.rate" = 48000;
-    #       "default.clock.quantum" = 64;
-    #       "default.clock.min-quantum" = 64;
-    #       "default.clock.max-quantum" = 64;
-    #     };
-    #   };
-    #   pipewire-pulse."92-low-latency" = {
-    #     context.modules = [
-    #       {
-    #         name = "libpipewire-module-protocol-pulse";
-    #         args = {
-    #           pulse.min.req = "64/48000";
-    #           pulse.default.req = "64/48000";
-    #           pulse.max.req = "64/48000";
-    #           pulse.min.quantum = "64/48000";
-    #           pulse.max.quantum = "64/48000";
-    #         };
-    #       }
-    #     ];
-    #     stream.properties = {
-    #       node.latency = "64/48000";
-    #       resample.quality = 1;
-    #     };
-    #   };
-    # };
+    jack.enable = false;
+    extraConfig.pipewire."92-low-latency" = {
+      "context.properties" = {
+        "default.clock.rate" = 48000;
+        "default.clock.quantum" = 2048;
+        "default.clock.min-quantum" = 2048;
+        "default.clock.max-quantum" = 2048;
+      };
+    };
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -188,7 +134,6 @@
       extraGroups = [
         "networkmanager"
         "wheel"
-        "docker"
         "video"
         "audio"
         "input"
@@ -211,12 +156,8 @@
     mountOnMedia = true;
   };
 
-  qt.enable = true;
-
   # GAMING
-  services.postgresql.enable = false;
   environment.systemPackages = with pkgs; [
-    brightnessctl
     qalculate-qt
 
     git
@@ -231,62 +172,94 @@
     onlyoffice-bin
   ];
 
-  xdg.mime = {
-    enable = true;
-    defaultApplications = {
-      # Browser-related MIME types
-      "x-scheme-handler/http" = ["brave-browser.desktop"];
-      "x-scheme-handler/https" = ["brave-browser.desktop"];
-      "x-scheme-handler/mailto" = ["brave-browser.desktop"];
-      "text/html" = ["brave-browser.desktop"];
+  nix = {
+    nixPath = ["nixpkgs=${inputs.nixpkgs}"];
+    settings = {
+      trusted-users = ["root" "@wheel" "greeed"];
+      experimental-features = ["nix-command" "flakes"];
+      builders-use-substitutes = true;
+      substituters = [
+        "https://cache.nixos.org/"
+        "https://anyrun.cachix.org"
+        "https://nix-community.cachix.org"
 
-      # Image files to open with feh
-      "image/png" = ["feh.desktop"];
-      "image/jpeg" = ["feh.desktop"];
-      "image/gif" = ["feh.desktop"];
-      "image/bmp" = ["feh.desktop"];
-      "image/tiff" = ["feh.desktop"];
-      "image/svg+xml" = ["feh.desktop"];
+        "https://hyprland.cachix.org"
+        "https://helix.cachix.org"
 
-      # Video and audio files to open with mpv
-      "video/mp4" = ["mpv.desktop"];
-      "video/x-matroska" = ["mpv.desktop"];
-      "video/x-msvideo" = ["mpv.desktop"];
-      "video/webm" = ["mpv.desktop"];
-      "audio/mpeg" = ["mpv.desktop"];
-      "audio/ogg" = ["mpv.desktop"];
-      "audio/wav" = ["mpv.desktop"];
-      "audio/flac" = ["mpv.desktop"];
+        "https://chaotic-nyx.cachix.org/"
+      ];
+      trusted-public-keys = [
+        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
 
-      # Text files to open with Helix
-      "text/plain" = ["Helix.desktop"];
-      "text/xml" = ["Helix.desktop"];
-      "application/json" = ["Helix.desktop"];
-      "text/x-shellscript" = ["Helix.desktop"];
-      "application/x-sh" = ["Helix.desktop"];
-      "text/css" = ["Helix.desktop"];
-      "application/x-yaml" = ["Helix.desktop"];
+        "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+        "helix.cachix.org-1:ejp9KQpR1FBI2onstMQ34yogDm4OgU2ru6lIwPvuCVs="
 
-      # PDF files to open with Zathura
-      "application/pdf" = ["org.pwmt.zathura-pdf-mupdf.desktop"];
-
-      # File manager for directories
-      "inode/directory" = ["thunar.desktop"];
-      "application/x-7z-compressed" = ["thunar-archive.desktop"];
-      "application/x-rar" = ["thunar-archive.desktop"];
-      "application/zip" = ["thunar-archive.desktop"];
-      "application/x-tar" = ["thunar-archive.desktop"];
-
-      # Terminal: foot for terminal applications
-      "x-scheme-handler/terminal" = ["foot.desktop"];
-
-      # Telegram desktop application handlers
-      "x-scheme-handler/tg" = ["org.telegram.desktop.desktop"];
-      "x-scheme-handler/tonsite" = ["org.telegram.desktop.desktop"];
+        "anyrun.cachix.org-1:pqBobmOjI7nKlsUMV25u9QHa9btJK65/C8vnO3p346s="
+        "chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
+      ];
     };
   };
 
-  home-manager.backupFileExtension = "backup";
+  xdg.mime = {
+    enable = true;
+    # defaultApplications = {
+    #   "text/html" = [browser-desktop];
+    #   "application/xhtml+xml" = [browser-desktop];
+    #   "x-scheme-handler/http" = [browser-desktop];
+    #   "x-scheme-handler/https" = [browser-desktop];
+    #   "x-scheme-handler/about" = [browser-desktop];
+    #   "x-scheme-handler/unknown" = [browser-desktop];
+
+    #   # Browser-related MIME types
+    #   # "x-scheme-handler/http" = ["brave-browser.desktop"];
+    #   # "x-scheme-handler/https" = ["brave-browser.desktop"];
+    #   # "x-scheme-handler/mailto" = ["brave-browser.desktop"];
+    #   # "text/html" = ["brave-browser.desktop"];
+
+    #   # Image files to open with feh
+    #   "image/png" = [image-desktop];
+    #   "image/jpeg" = [image-desktop];
+    #   "image/gif" = [image-desktop];
+    #   "image/bmp" = [image-desktop];
+    #   "image/tiff" = [image-desktop];
+    #   "image/svg+xml" = [image-desktop];
+
+    #   # Video and audio files to open with mpv
+    #   "video/mp4" = [video-desktop];
+    #   "video/x-matroska" = [video-desktop];
+    #   "video/x-msvideo" = [video-desktop];
+    #   "video/webm" = [video-desktop];
+    #   "audio/mpeg" = [video-desktop];
+    #   "audio/ogg" = [video-desktop];
+    #   "audio/wav" = [video-desktop];
+    #   "audio/flac" = [video-desktop];
+
+    #   # Text files to open with Helix
+    #   "text/plain" = [editor-desktop];
+    #   "text/xml" = [editor-desktop];
+    #   "application/json" = [editor-desktop];
+    #   "text/x-shellscript" = [editor-desktop];
+    #   "application/x-sh" = [editor-desktop];
+    #   "text/css" = [editor-desktop];
+    #   "application/x-yaml" = [editor-desktop];
+
+    #   # PDF files to open with Zathura
+    #   "application/pdf" = ["org.pwmt.zathura-pdf-mupdf.desktop"];
+
+    #   # File manager for directories
+    #   "inode/directory" = ["thunar.desktop"];
+
+    #   # Terminal: foot for terminal applications
+    #   "x-scheme-handler/terminal" = ["foot.desktop"];
+
+    #   # Telegram desktop application handlers
+    #   "x-scheme-handler/tg" = ["org.telegram.desktop.desktop"];
+    #   "x-scheme-handler/tonsite" = ["org.telegram.desktop.desktop"];
+    # };
+  };
+
+  home-manager.backupFileExtension = "hm-backup";
   # Enable the OpenSSH daemon.
 
   # Open ports in the firewall.

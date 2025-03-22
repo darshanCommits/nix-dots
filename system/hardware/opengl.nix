@@ -2,27 +2,22 @@
   config,
   pkgs,
   lib,
+  inputs,
   ...
-}: {
+}: let
+  pkgs-unstable = inputs.hyprland.inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system}; # use when using hyprland git pkg
+in {
+  nixpkgs.config.packageOverrides = pkgs: {
+    intel-vaapi-driver = pkgs.intel-vaapi-driver.override {enableHybridCodec = true;};
+  };
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
-    extraPackages32 = with pkgs.driversi686Linux; [
-      (
-        if (lib.versionOlder (lib.versions.majorMinor lib.version) "23.11")
-        then vaapiIntel
-        else intel-vaapi-driver
-      )
-      intel-media-driver
-    ];
     extraPackages = with pkgs; [
-      (
-        if (lib.versionOlder (lib.versions.majorMinor lib.version) "23.11")
-        then vaapiIntel
-        else intel-vaapi-driver
-      )
       intel-media-driver
+      libvdpau-va-gl
 
+      vulkan-tools
       vaapiVdpau
       libvdpau
       libvdpau-va-gl

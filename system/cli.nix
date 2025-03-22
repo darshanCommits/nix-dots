@@ -12,24 +12,21 @@
   environment.systemPackages = with pkgs; [
     # Terminal Shells and Enhancements
     atuin
-    carapace
+    unstable.carapace
     nushell
     starship
-    zsh-completions
+    # zsh-completions
 
     # File Management and Navigation
-    bat
-    bat-extras.batgrep
+    unstable.bat
     bat-extras.batman
     bat-extras.batpipe
-    bat-extras.prettybat
-    stow
     dua
     eza
     fd
     ripgrep-all
     tokei
-    yazi
+    unstable.yazi
     zoxide
 
     # Version Control and Development
@@ -41,19 +38,24 @@
 
     # System Monitoring and Utilities
     bottom
+    exiftool
     brightnessctl
     killall
     lsof
     nitch
     pciutils
-    stress-ng
     usbutils
+    libva-utils
+    glxinfo
+
+    stress-ng
 
     # Text and Document Processing
     glow
     jq
     smartcat
     tesseract
+
     vim
     inputs.helix-master.packages.${pkgs.system}.helix
 
@@ -72,6 +74,7 @@
 
     # Media and Image Processing
     imagemagick
+    ani-cli
 
     # Other Utilities
     bc

@@ -2,11 +2,11 @@
   config,
   pkgs,
   ...
-}: {
+}: let
+  undervolt_mV = -125;
+in {
   services.undervolt = {
     enable = true;
-    coreOffset = -165;
-    turbo = 0;
-    verbose = true;
+    coreOffset = undervolt_mV;
   };
 }

@@ -4,6 +4,7 @@
   pkgs,
   ...
 }: {
+  # nixpkgs.overlays = [fenix.overlays.default];
   programs.direnv = {
     enable = true;
     nix-direnv.enable = false;
@@ -21,8 +22,16 @@
     cmake
     meson
     cpio
+    cmake
+    (rust-bin.stable.latest.default.override
+      {
+        extensions = ["rust-analyzer" "rust-src"];
+      })
 
     # LSP
+    tailwindcss-language-server
+    unstable.jdt-language-server
+    libclang
     nixd
     nil
     nodePackages.bash-language-server
@@ -30,21 +39,22 @@
     emmet-language-server
     vscode-langservers-extracted
     ccls
-    cmake
     pest-ide-tools
     shellcheck
     taplo
-    hyprls
-    rustup
+    unstable.hyprls
+    harper
+    markdown-oxide
 
     # Formatters
-
+    google-java-format
     shfmt
     alejandra # nix formatter
     biome
 
     # Misc
-    mold
+    mold-wrapped
+    sccache
     cachix
     devenv
   ];

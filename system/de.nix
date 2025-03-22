@@ -1,21 +1,12 @@
 # WAYLAND WAYLAND WAYLAND
 {
+  HOME,
   inputs,
   pkgs,
+  lib,
   ...
 }: {
-  # REFER: flake.nix TODO:1
-  # imports = [
-  #   inputs.gauntlet.nixosModules.default
-  # ];
-
-  # programs.gauntlet = {
-  #   enable = true;
-  #   service.enable = true;
-  # };
-  #
-
-  services.displayManager.ly.enable = true;
+  services.displayManager.ly.enable = false;
   programs.xfconf.enable = true;
   services.gvfs.enable = true; # Mount, trash, and other functionalities
   services.tumbler.enable = true; # Thumbnail support for images
@@ -46,34 +37,59 @@
     loader.timeout = 2;
   };
 
-  environment.sessionVariables.NIXOS_OZONE_WL = "1";
+  environment.sessionVariables = {
+    NIXOS_OZONE_WL = "1";
+    XDG_PICTURES_DIR = "${HOME}/Pictures";
+    XDG_SCREENSHOTS_DIR = "${HOME}/Pictures/Screenshots";
+  };
+
+  hardware.brillo.enable = true;
+
+  security.pam.services.hyprlock.enableGnomeKeyring = true;
+
+  services.upower.enable = true;
+
   programs.uwsm = {
     enable = true;
   };
-
   programs.hyprland = {
     enable = true;
-    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+    # set the flake package
+    # # make sure to also set the portal package, so that they are in sync
+    # package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    # portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
     xwayland.enable = true;
-    portalPackage = pkgs.xdg-desktop-portal-hyprland;
     withUWSM = true;
   };
+
+  services.hypridle = {
+    enable = true;
+    package = inputs.hypridle.packages.${pkgs.system}.hypridle;
+  };
+  programs.hyprlock = {
+    enable = true;
+    package = pkgs.unstable.hyprlock;
+  };
+
+  #TODO: xdg.portal.config / common default / whatever.
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [
       xdg-desktop-portal-gtk
       xdg-desktop-portal-kde
     ];
+    config.common.default = ["*"];
   };
 
   qt = {
     enable = true;
-    platformTheme = "qt5ct";
+    # style = "kvantum";
   };
 
-  programs.kdeconnect = {
-    enable = true;
-  };
+  # more buggy than home manager module
+  # programs.kdeconnect = {
+  #   enable = true;
+  # };
   networking.firewall = {
     allowedTCPPortRanges = [
       {
@@ -89,64 +105,72 @@
     ];
   };
 
-  services.xserver.displayManager.lightdm.enable = false;
+  services.desktopManager.plasma6.enable = true;
+  services.displayManager.sddm.enable = lib.mkForce true;
+
+  services.xserver = {
+    enable = true;
+
+    windowManager = {
+      openbox.enable = false;
+    };
+    desktopManager = {
+      xfce.enable = false;
+    };
+  };
   # services.displayManager.sddm.enable = true;
   # services.displayManager.sddm.wayland.enable = true;
 
   security.polkit.enable = true;
-  security.pam.services.hyprlock.enableGnomeKeyring = true;
+  environment.systemPackages = with pkgs; [
+    # Util
+    dbus-broker
+    xwaylandvideobridge
+    grimblast
+    swaybg
+    pavucontrol
+    nwg-displays
+    greetd.tuigreet
+    unstable.gpu-screen-recorder-gtk
 
-  services.xserver.enable = true;
-  services.hypridle.enable = true;
-  programs.hyprlock.enable = true;
+    # Theming
+    dracula-icon-theme
+    dracula-theme
+    dracula-qt5-theme
+    kdePackages.qtstyleplugin-kvantum
 
-  environment.systemPackages = with pkgs;
-    [
-      # Util
-      dbus-broker
-      mako
-      xwaylandvideobridge
-      grimblast
-      swaybg
-      pavucontrol
-      nwg-displays
-      greetd.tuigreet
-      plymouth
-      gpu-screen-recorder
+    libsForQt5.qtstyleplugin-kvantum
+    libsForQt5.qtstyleplugins
+    # libsForQt5.kdeconnect-kde
+    # kdePackages.kdeconnect-kde
 
-      # Theming
-      dracula-icon-theme
-      dracula-theme
-      dracula-qt5-theme
+    kdePackages.qt6ct
+    libsForQt5.qt5ct
+    unstable.nwg-look
 
-      kdePackages.qtstyleplugin-kvantum
-      libsForQt5.qtstyleplugin-kvantum
-      libsForQt5.qtstyleplugins
-      kdePackages.qt6ct
-      libsForQt5.qt5ct
-      nwg-look
+    # ClipBoard
+    cliphist
+    wl-clipboard
+    wtype
 
-      # ClipBoard
-      cliphist
-      wl-clipboard
-      wtype
+    # Hyprland ecosystem
+    unstable.hyprpicker
+    unstable.hyprpaper
+    unstable.pyprland
+    hyprpanel
 
-      # Hyprland ecosystem
-      hyprpicker
-      hyprcursor
-      hyprlock
-      hyprpaper
-      hyprpolkitagent
-      inputs.pyprland.packages.${pkgs.system}.pyprland
-      # Misc
-      cmus
-      audio-sharing
-      wl-clipboard
-      # hyprlandPlugins.hyprspace
-      # hyprlandPlugins.hyprexpo
-    ]
-    ++ [
-    ];
+    # Misc
+    waybar
+    cmus
+    unstable.anyrun
+    bitwarden
+
+    # file manager
+    nemo
+    nemo-python
+    nemo-fileroller
+    nemo-emblems
+  ];
 
   # More info REFER: home.nix
 }

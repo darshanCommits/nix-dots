@@ -4,38 +4,33 @@
   pkgs,
   ...
 }: {
-  environment.systemPackages = with pkgs; (
-    let
-      genericPkgs = [
-        foot
-        feh
+  environment.systemPackages = with pkgs; [
+    foot
+    feh
 
-        nemo
-        nemo-python
-        nemo-fileroller
-        nemo-emblems
+    gparted
+    blanket
+    brave
 
-        gparted
-        blanket
-        brave
-        localsend
-        transmission_4-qt
-        tofi
-        zathura
-        ffsubsync
-        onlyoffice-bin
-      ];
-      messagingPkgs = [
-        telegram-desktop
-        zapzap
-      ];
-      mediaPkgs = [
-        stremio
-        mpv
-      ];
-    in
-      genericPkgs
-      ++ messagingPkgs
-      ++ mediaPkgs
-  );
+    inputs.zen-browser.packages.${pkgs.system}.default
+
+    localsend
+    qbittorrent
+    tofi
+    zathura
+    renpy
+
+    ffsubsync
+
+    onlyoffice-bin
+
+    telegram-desktop
+    vesktop
+
+    element-desktop
+    thunderbird-latest
+    nicotine-plus
+    stremio
+    mpv
+  ];
 }
