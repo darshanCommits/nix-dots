@@ -14,7 +14,7 @@
 
     hypridle.url = "github:hyprwm/hypridle";
 
-    hyprland.url = "github:hyprwm/Hyprland";
+    hyprland.url = "github:hyprwm/Hyprland/refs/tags/v0.48.0";
     hyprpanel.url = "github:Jas-SinghFSU/HyprPanel";
     pyprland.url = "github:hyprland-community/pyprland";
 
@@ -29,12 +29,12 @@
     };
 
     helix-master = {
-      url = "github:helix-editor/helix/382401020c47213b2ef0417e6e2567a37bf39a1d";
+      url = "github:helix-editor/helix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     helix-forked = {
-      url = "github:darshanCommits/helix/driver";
+      url = "github:the-mikedavis/helix/driver";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

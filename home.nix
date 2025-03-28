@@ -18,6 +18,22 @@
     };
   };
 
+  systemd.user.services.hyprpolkitagent = {
+    Install.WantedBy = ["graphical-session.target"];
+    Unit = {
+      Description = "Hyprland PolicyKit Agent";
+      # After = ["graphical-session-pre.target"];
+      # PartOf = ["graphical-session.target"];
+    };
+    Service = {
+      ExecStart = "${pkgs.hyprpolkitagent}/libexec/hyprpolkitagent";
+      Nice = "-20";
+      Restart = "on-failure";
+      StartLimitIntervalSec = 60;
+      StartLimitBurst = 60;
+    };
+  };
+
   stylix = {
     enable = true;
     autoEnable = true;
@@ -67,7 +83,7 @@
       };
 
       monospace = {
-        package = pkgs.nerdfonts.override {fonts = ["JetBrainsMono"];};
+        package = pkgs.jetbrains-mono;
         name = "JetBrains Mono";
       };
 

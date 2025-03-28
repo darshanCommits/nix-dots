@@ -57,7 +57,7 @@
     tesseract
 
     vim
-    inputs.helix-master.packages.${pkgs.system}.helix
+    inputs.helix-forked.packages.${pkgs.system}.helix
 
     # Network and Download Tools
     aria2

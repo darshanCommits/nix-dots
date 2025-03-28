@@ -5,14 +5,7 @@
   inputs,
   HOME,
   ...
-}:
-# let
-# browser-desktop = "zen.desktop";
-# image-desktop = "feh.desktop";
-# video-desktop = "mpv.desktop";
-# editor-desktop = "Helix.desktop";
-# in
-{
+}: {
   imports = [
     ./hardware-configuration.nix
 
@@ -26,6 +19,7 @@
     ./system/keyd/keyd.nix
 
     ./system/de.nix
+    ./system/substituters.nix
     ./system/gaming.nix
     ./system/flatpak.nix
     ./system/waydroid.nix
@@ -113,7 +107,7 @@
     enable = true;
     pulse.enable = true;
     alsa.enable = true;
-    alsa.support32Bit = true;
+    # alsa.support32Bit = true;
     jack.enable = false;
     extraConfig.pipewire."92-low-latency" = {
       "context.properties" = {
@@ -177,86 +171,11 @@
     settings = {
       trusted-users = ["root" "@wheel" "greeed"];
       experimental-features = ["nix-command" "flakes"];
-      builders-use-substitutes = true;
-      substituters = [
-        "https://cache.nixos.org/"
-        "https://anyrun.cachix.org"
-        "https://nix-community.cachix.org"
-
-        "https://hyprland.cachix.org"
-        "https://helix.cachix.org"
-
-        "https://chaotic-nyx.cachix.org/"
-      ];
-      trusted-public-keys = [
-        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-
-        "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
-        "helix.cachix.org-1:ejp9KQpR1FBI2onstMQ34yogDm4OgU2ru6lIwPvuCVs="
-
-        "anyrun.cachix.org-1:pqBobmOjI7nKlsUMV25u9QHa9btJK65/C8vnO3p346s="
-        "chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
-      ];
     };
   };
 
   xdg.mime = {
     enable = true;
-    # defaultApplications = {
-    #   "text/html" = [browser-desktop];
-    #   "application/xhtml+xml" = [browser-desktop];
-    #   "x-scheme-handler/http" = [browser-desktop];
-    #   "x-scheme-handler/https" = [browser-desktop];
-    #   "x-scheme-handler/about" = [browser-desktop];
-    #   "x-scheme-handler/unknown" = [browser-desktop];
-
-    #   # Browser-related MIME types
-    #   # "x-scheme-handler/http" = ["brave-browser.desktop"];
-    #   # "x-scheme-handler/https" = ["brave-browser.desktop"];
-    #   # "x-scheme-handler/mailto" = ["brave-browser.desktop"];
-    #   # "text/html" = ["brave-browser.desktop"];
-
-    #   # Image files to open with feh
-    #   "image/png" = [image-desktop];
-    #   "image/jpeg" = [image-desktop];
-    #   "image/gif" = [image-desktop];
-    #   "image/bmp" = [image-desktop];
-    #   "image/tiff" = [image-desktop];
-    #   "image/svg+xml" = [image-desktop];
-
-    #   # Video and audio files to open with mpv
-    #   "video/mp4" = [video-desktop];
-    #   "video/x-matroska" = [video-desktop];
-    #   "video/x-msvideo" = [video-desktop];
-    #   "video/webm" = [video-desktop];
-    #   "audio/mpeg" = [video-desktop];
-    #   "audio/ogg" = [video-desktop];
-    #   "audio/wav" = [video-desktop];
-    #   "audio/flac" = [video-desktop];
-
-    #   # Text files to open with Helix
-    #   "text/plain" = [editor-desktop];
-    #   "text/xml" = [editor-desktop];
-    #   "application/json" = [editor-desktop];
-    #   "text/x-shellscript" = [editor-desktop];
-    #   "application/x-sh" = [editor-desktop];
-    #   "text/css" = [editor-desktop];
-    #   "application/x-yaml" = [editor-desktop];
-
-    #   # PDF files to open with Zathura
-    #   "application/pdf" = ["org.pwmt.zathura-pdf-mupdf.desktop"];
-
-    #   # File manager for directories
-    #   "inode/directory" = ["thunar.desktop"];
-
-    #   # Terminal: foot for terminal applications
-    #   "x-scheme-handler/terminal" = ["foot.desktop"];
-
-    #   # Telegram desktop application handlers
-    #   "x-scheme-handler/tg" = ["org.telegram.desktop.desktop"];
-    #   "x-scheme-handler/tonsite" = ["org.telegram.desktop.desktop"];
-    # };
   };
 
   home-manager.backupFileExtension = "hm-backup";

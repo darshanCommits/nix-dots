@@ -6,7 +6,7 @@
   lib,
   ...
 }: {
-  services.displayManager.ly.enable = false;
+  services.displayManager.ly.enable = true;
   programs.xfconf.enable = true;
   services.gvfs.enable = true; # Mount, trash, and other functionalities
   services.tumbler.enable = true; # Thumbnail support for images
@@ -56,8 +56,8 @@
     enable = true;
     # set the flake package
     # # make sure to also set the portal package, so that they are in sync
-    # package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-    # portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
     xwayland.enable = true;
     withUWSM = true;
   };
@@ -74,11 +74,11 @@
   #TODO: xdg.portal.config / common default / whatever.
   xdg.portal = {
     enable = true;
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-gtk
-      xdg-desktop-portal-kde
-    ];
-    config.common.default = ["*"];
+    # extraPortals = with pkgs; [
+    #   xdg-desktop-portal-gtk
+    #   xdg-desktop-portal-kde
+    # ];
+    # config.common.default = ["*"];
   };
 
   qt = {
@@ -105,8 +105,8 @@
     ];
   };
 
-  services.desktopManager.plasma6.enable = true;
-  services.displayManager.sddm.enable = lib.mkForce true;
+  services.desktopManager.plasma6.enable = false;
+  services.displayManager.sddm.enable = false;
 
   services.xserver = {
     enable = true;
@@ -118,10 +118,9 @@
       xfce.enable = false;
     };
   };
-  # services.displayManager.sddm.enable = true;
-  # services.displayManager.sddm.wayland.enable = true;
 
   security.polkit.enable = true;
+
   environment.systemPackages = with pkgs; [
     # Util
     dbus-broker
@@ -155,8 +154,8 @@
 
     # Hyprland ecosystem
     unstable.hyprpicker
-    unstable.hyprpaper
     unstable.pyprland
+    # hyprpolkitagent
     hyprpanel
 
     # Misc
