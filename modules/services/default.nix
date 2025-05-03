@@ -1,0 +1,7 @@
+{...}: {
+  imports = [
+    ./ollama
+    ./immich
+    ./navidrome
+  ];
+}

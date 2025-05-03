@@ -1,0 +1,89 @@
+{
+  description = "AppImage wrapper flake for kunkun";
+
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    flake-utils.url = "github:numtide/flake-utils";
+  };
+
+  outputs = {
+    self,
+    nixpkgs,
+    flake-utils,
+  }:
+    flake-utils.lib.eachDefaultSystem (
+      system: let
+        pkgs = import nixpkgs {inherit system;};
+
+        # Define the kunkun package using appimageTools
+        kunkun = pkgs.callPackage (
+          {
+            appimageTools,
+            fetchurl ? pkgs.fetchurl,
+          }: let
+            pname = "kunkun";
+            version = "0.1.33";
+            name = "${pname}-${version}";
+
+            # src = ./kunkun_0.1.33_amd64.AppImage;
+            # Alternatively, if you want to fetch it from a URL:
+            src = fetchurl {
+              url = "https://github.com/kunkunsh/kunkun/releases/download/Kunkun-v0.1.33/kunkun_0.1.33_amd64.AppImage";
+              sha256 = "sha256-qcfk0FAzOvNtYZmmuEwk5N1viPQx9YAiOG1t3AIBBeg="; # Replace with actual hash
+            };
+
+            # Extract the AppImage contents
+            appimageContents = appimageTools.extractType2 {inherit name src;};
+          in
+            appimageTools.wrapType2 {
+              inherit name src;
+
+              extraPkgs = pkgs:
+                with pkgs; [
+                  # Additional runtime dependencies
+                  libsoup_3
+                  webkitgtk_4_1
+                  glib-networking
+                  openssl
+                ];
+
+              extraInstallCommands = ''
+                mkdir -p $out/bin
+                mkdir -p $out/share/applications
+
+                cp ${appimageContents}/AppRun $out/bin/kunkun || true
+                if [ -d ${appimageContents}/share/icons ]; then
+                  mkdir -p $out/share
+                  cp -r ${appimageContents}/share/icons $out/share/
+                fi
+
+
+                # Try to copy icons if they exist, but don't fail if they don't
+
+              '';
+
+              meta = {
+                description = "Kunkun application";
+                platforms = ["x86_64-linux"];
+                mainProgram = pname;
+              };
+            }
+        ) {};
+      in {
+        # Package definition
+        packages = {
+          default = kunkun;
+          kunkun = kunkun;
+        };
+
+        # App definition for `nix run`
+        apps = {
+          default = {
+            type = "app";
+            program = "${kunkun}/bin/kunkun";
+          };
+          kunkun = self.apps.${system}.default;
+        };
+      }
+    );
+}
