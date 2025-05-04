@@ -7,6 +7,7 @@ in {
     ./stylix
     ./kdeconnect
     ./mpv
+    ./zen-browser
     ./dconf
   ];
 
