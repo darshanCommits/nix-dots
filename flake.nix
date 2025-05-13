@@ -29,10 +29,11 @@
 
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     gauntlet = {
-      url = "github:project-gauntlet/gauntlet/";
+      url = "github:project-gauntlet/gauntlet/v19";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -41,23 +42,25 @@
     stylix,
     home-manager,
     nix-flatpak,
+    gauntlet,
     ...
   } @ inputs: let
     HOME = "/home/greeed";
     wallpaper = "${HOME}/.dotfiles/assets/wallpapers/goatv3.jpg";
     system = "x86_64-linux";
     overlays = import ./overlays {inherit inputs;};
+    specialArgs = {
+      inherit
+        inputs
+        wallpaper
+        HOME
+        system
+        ;
+    };
   in {
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       inherit system;
-      specialArgs = {
-        inherit
-          inputs
-          wallpaper
-          HOME
-          system
-          ;
-      };
+      specialArgs = specialArgs;
       modules = [
         ./hardware-configuration.nix
         ./modules
@@ -65,14 +68,16 @@
         stylix.nixosModules.stylix
         home-manager.nixosModules.home-manager
         nix-flatpak.nixosModules.nix-flatpak
+        gauntlet.overlays.default
         {
           nixpkgs.overlays = [
             overlays.default
           ];
           home-manager = {
+            extraSpecialArgs = specialArgs;
             useGlobalPkgs = true;
             useUserPackages = true;
-            users.greeed = {...}: {
+            users.greeed = {
               imports = [
                 ./home
               ];

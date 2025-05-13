@@ -11,8 +11,5 @@
     package = pkgs.unstable.ollama;
     host = config.localhost;
     acceleration = "cuda";
-    loadModels = [
-      "deepseek-r1:8b"
-    ];
   };
 }

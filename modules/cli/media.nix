@@ -3,6 +3,7 @@
     android-tools
     wget
     ani-cli
+    yt-dlp
     aria2
     ffmpegthumbnailer
     imagemagick

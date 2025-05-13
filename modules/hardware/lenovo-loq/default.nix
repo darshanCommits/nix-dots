@@ -15,9 +15,8 @@
       users = [config.username];
       commands = [
         {
-          command = "/usr/bin/tee /proc/acpi/ibm/fan";
-          options = ["NOPASSWD"];
-        }
+          command = "/run/current-system/sw/bin/tee /proc/acpi/ibm/fan";
+          options = [ "SETENV" "NOPASSWD" ];        }
       ];
     }
   ];

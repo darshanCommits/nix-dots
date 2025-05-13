@@ -1,5 +1,6 @@
 {pkgs, ...}: {
   imports = [
+    ./gauntlet
     ./wl-clipboard
     ./gui
     ./flatpak

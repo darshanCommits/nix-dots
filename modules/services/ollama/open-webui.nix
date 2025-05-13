@@ -1,5 +1,5 @@
 {
-  lib,
+  pkgs,
   config,
   ...
 }: {
@@ -7,6 +7,7 @@
     enable = true;
     host = config.localhost;
     port = config.port.llmUi;
+    # package = pkgs.unstable.open-webui;
     openFirewall = false;
     environment.WEBUI_AUTH = "False";
   };
