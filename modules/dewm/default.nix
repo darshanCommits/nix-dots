@@ -1,10 +1,10 @@
-{pkgs, ...}: {
+{ pkgs, ... }: {
   imports = [
-    ./gauntlet
     ./wl-clipboard
     ./gui
     ./flatpak
     ./hypr
+    ./niri
     ./kde
     ./stylix
   ];
@@ -16,7 +16,7 @@
 
   environment.systemPackages = with pkgs; [
     # Util
-    xwaylandvideobridge
+    kdePackages.xwaylandvideobridge
     grimblast
     swaybg
     pavucontrol

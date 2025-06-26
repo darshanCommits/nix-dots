@@ -1,0 +1,324 @@
+#!/usr/bin/env python3
+
+import os
+import time
+import sys
+import syslog
+import json
+import subprocess
+import argparse
+from pathlib import Path
+
+# These will be replaced by Nix substitution
+STATE_DIR = "{{stateDir}}"
+LOG_TAG = "loq-fan-control"
+FAN_CONTROL_PATH = "/proc/acpi/ibm/fan"
+INTERVAL = "{{interval}}"
+THRESHOLDS = "{{temperatureThresholds}}"
+OVERRIDE_TIMEOUT = "{{overrideTimeout}}"
+
+def log(level, message, daemon_mode=True):
+    if not daemon_mode:
+        print(message)
+        return
+        
+    print(message, file=sys.stderr)
+    priority = {
+        "debug": syslog.LOG_DEBUG,
+        "info": syslog.LOG_INFO,
+        "warning": syslog.LOG_WARNING,
+        "err": syslog.LOG_ERR,
+        "crit": syslog.LOG_CRIT
+    }.get(level, syslog.LOG_INFO)
+    syslog.syslog(priority, message)
+
+def get_current_fan_level():
+    """Read current fan level from /proc/acpi/ibm/fan"""
+    try:
+        with open(FAN_CONTROL_PATH, 'r') as f:
+            content = f.read()
+            for line in content.split('\n'):
+                if line.startswith('level:'):
+                    level_str = line.split(':')[1].strip()
+                    if level_str == 'auto':
+                        return 'auto'
+                    return int(level_str)
+        return None
+    except Exception as e:
+        log("warning", f"Failed to read current fan level: {e}")
+        return None
+
+def is_override_active():
+    """Check if manual override is active and still valid"""
+    override_file = os.path.join(STATE_DIR, "manual_override")
+    if not os.path.exists(override_file):
+        return False
+    
+    try:
+        with open(override_file, 'r') as f:
+            data = json.loads(f.read())
+            override_time = data.get('timestamp', 0)
+            
+        # Check if override has expired
+        if time.time() - override_time > OVERRIDE_TIMEOUT:
+            os.remove(override_file)
+            log("info", "Manual override expired")
+            return False
+            
+        return True
+    except Exception as e:
+        log("warning", f"Error reading override file: {e}")
+        try:
+            os.remove(override_file)
+        except:
+            pass
+        return False
+
+def detect_manual_override():
+    """Detect if user has manually changed fan level"""
+    state_file = os.path.join(STATE_DIR, "current_fan_level")
+    override_file = os.path.join(STATE_DIR, "manual_override")
+    
+    current_level = get_current_fan_level()
+    if current_level is None or current_level == 'auto':
+        return False
+        
+    expected_level = 0
+    if os.path.exists(state_file):
+        try:
+            with open(state_file, 'r') as f:
+                expected_level = int(f.read().strip())
+        except:
+            pass
+    
+    # If current level differs from what we set, it's likely manual override
+    if current_level != expected_level and not is_override_active():
+        override_data = {
+            'timestamp': time.time(),
+            'level': current_level
+        }
+        try:
+            with open(override_file, 'w') as f:
+                json.dump(override_data, f)
+            log("info", f"Manual override detected: fan level {current_level}")
+            return True
+        except Exception as e:
+            log("warning", f"Failed to save override state: {e}")
+    
+    return False
+
+def get_max_temp():
+    try:
+        temps = []
+        hwmon_paths = glob.glob("/sys/class/hwmon/hwmon*/temp*_input")
+        for path in hwmon_paths:
+            try:
+                with open(path, "r") as f:
+                    value = int(f.read().strip())
+                    temps.append(value)
+            except Exception as e:
+                log("debug", f"Failed to read {path}: {e}")
+
+        return max(temps) if temps else None
+    except Exception as e:
+        log("err", f"Failed to read temperatures: {e}")
+        return None
+
+def set_fan_speed(temp_milli):
+    temp_celsius = temp_milli / 1000.0
+
+    state_file = os.path.join(STATE_DIR, "current_fan_level")
+    last_temp_file = os.path.join(STATE_DIR, "last_temp")
+    last_log_file = os.path.join(STATE_DIR, "last_log_time")
+
+    # Check for manual override first
+    if detect_manual_override() or is_override_active():
+        return True
+
+    prev_level = 0
+    if os.path.exists(state_file):
+        try:
+            with open(state_file, 'r') as f:
+                prev_level = int(f.read().strip())
+        except: pass
+
+    prev_temp = 0
+    if os.path.exists(last_temp_file):
+        try:
+            with open(last_temp_file, 'r') as f:
+                prev_temp = float(f.read().strip())
+        except: pass
+
+    level = 7
+    for threshold in sorted(THRESHOLDS, key=lambda x: x["temp"]):
+        if temp_celsius < threshold["temp"]:
+            level = threshold["level"]
+            break
+
+    if level < prev_level:
+        level = max(0, prev_level - 1)
+    if level == prev_level + 1 and temp_celsius < prev_temp + 3:
+        level = prev_level
+
+    try:
+        with open(state_file, 'w') as f:
+            f.write(str(level))
+        with open(last_temp_file, 'w') as f:
+            f.write(str(temp_celsius))
+    except IOError as e:
+        log("warning", f"Failed to write state: {e}")
+
+    now = int(time.time())
+    last_log = 0
+    if os.path.exists(last_log_file):
+        try:
+            with open(last_log_file, 'r') as f:
+                last_log = int(f.read().strip())
+        except: pass
+
+    if level != prev_level or now - last_log >= 300:
+        log("info", f"Temp: {temp_celsius:.1f}C — Fan level: {level} (was {prev_level})")
+        try:
+            with open(last_log_file, 'w') as f:
+                f.write(str(now))
+        except IOError as e:
+            log("warning", f"Failed to write log time: {e}")
+
+    try:
+        with open(FAN_CONTROL_PATH, 'w') as f:
+            f.write(f"level {level}")
+    except IOError as e:
+        log("err", f"Failed to set fan: {e}")
+        return False
+
+    return True
+
+def show_status():
+    """Show current fan control status"""
+    print("=== LOQ Fan Control Status ===")
+    
+    # Show current fan status
+    try:
+        with open(FAN_CONTROL_PATH, 'r') as f:
+            print("Current fan status:")
+            print(f.read())
+    except Exception as e:
+        print(f"Error reading fan status: {e}")
+    
+    # Show temperature
+    temp = get_max_temp()
+    if temp:
+        print(f"Current max temperature: {temp/1000:.1f}°C")
+    
+    # Show override status
+    if is_override_active():
+        try:
+            with open(os.path.join(STATE_DIR, "manual_override"), 'r') as f:
+                data = json.loads(f.read())
+                remaining = OVERRIDE_TIMEOUT - (time.time() - data['timestamp'])
+                print(f"Manual override active: Level {data['level']}")
+                print(f"Time remaining: {int(remaining)} seconds")
+        except:
+            print("Manual override file corrupted")
+    else:
+        print("No manual override active - automatic control enabled")
+
+def manual_override(level):
+    """Set manual fan override"""
+    Path(STATE_DIR).mkdir(parents=True, exist_ok=True)
+    
+    if level == 'auto':
+        try:
+            with open(FAN_CONTROL_PATH, 'w') as f:
+                f.write("level auto")
+            # Remove override file
+            override_file = os.path.join(STATE_DIR, "manual_override")
+            if os.path.exists(override_file):
+                os.remove(override_file)
+            print("Fan set to automatic mode")
+        except Exception as e:
+            print(f"Error setting auto mode: {e}")
+            return False
+    elif level == 'clear':
+        override_file = os.path.join(STATE_DIR, "manual_override")
+        if os.path.exists(override_file):
+            os.remove(override_file)
+            print("Manual override cleared")
+        else:
+            print("No active override to clear")
+    else:
+        try:
+            level_int = int(level)
+            if not 0 <= level_int <= 7:
+                print("Fan level must be between 0 and 7")
+                return False
+                
+            with open(FAN_CONTROL_PATH, 'w') as f:
+                f.write(f"level {level_int}")
+            
+            # Create override file
+            override_data = {
+                'timestamp': time.time(),
+                'level': level_int
+            }
+            with open(os.path.join(STATE_DIR, "manual_override"), 'w') as f:
+                json.dump(override_data, f)
+            
+            print(f"Fan set to level {level_int} for {OVERRIDE_TIMEOUT} seconds")
+        except ValueError:
+            print("Invalid fan level. Use 0-7, 'auto', or 'clear'")
+            return False
+        except Exception as e:
+            print(f"Error setting fan level: {e}")
+            return False
+    
+    return True
+
+def daemon_mode():
+    """Run the fan control daemon"""
+    Path(STATE_DIR).mkdir(parents=True, exist_ok=True)
+    syslog.openlog(LOG_TAG, syslog.LOG_PID, syslog.LOG_DAEMON)
+    
+    if not os.access(FAN_CONTROL_PATH, os.W_OK):
+        log("err", f"No write access to {FAN_CONTROL_PATH}")
+        sys.exit(1)
+
+    log("info", "LOQ Fan Control started")
+
+    try:
+        while True:
+            try:
+                temp_milli = get_max_temp()
+                if temp_milli is None or not set_fan_speed(temp_milli):
+                    time.sleep(30)
+                else:
+                    time.sleep(INTERVAL)
+            except Exception as e:
+                log("err", f"Unexpected error: {e}")
+                time.sleep(30)
+    except KeyboardInterrupt:
+        log("info", "Service stopped")
+
+def main():
+    parser = argparse.ArgumentParser(description='LOQ Fan Control')
+    parser.add_argument('--daemon', action='store_true', 
+                      help='Run as daemon (for systemd service)')
+    parser.add_argument('--status', action='store_true',
+                      help='Show current status')
+    parser.add_argument('--set', metavar='LEVEL',
+                      help='Set fan level (0-7, auto, or clear)')
+    
+    args = parser.parse_args()
+    
+    if args.daemon:
+        daemon_mode()
+    elif args.status:
+        show_status()
+    elif args.set:
+        manual_override(args.set)
+    else:
+        # Default behavior - show status
+        show_status()
+
+if __name__ == "__main__":
+    main()

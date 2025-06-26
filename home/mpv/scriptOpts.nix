@@ -1,4 +1,4 @@
-{...}: {
+{ ... }: {
   programs.mpv.scriptOpts = {
     uosc = {
       timeline_size = 25;

@@ -1,6 +1,6 @@
-{pkgs, ...}: {
+{ pkgs, ... }: {
   environment.systemPackages = with pkgs; [
-    android-tools
+    playerctl
     wget
     ani-cli
     yt-dlp

@@ -1,7 +1,7 @@
 {
   # HOME,
-  pkgs,
-  ...
+  pkgs
+, ...
 }: {
   programs.virt-manager.enable = true;
 
@@ -16,8 +16,8 @@
     spiceUSBRedirection.enable = true;
   };
 
-  users.groups.libvirtd.members = ["greeed"];
-  users.users.greeed.extraGroups = ["libvirtd"];
+  users.groups.libvirtd.members = [ "greeed" ];
+  users.users.greeed.extraGroups = [ "libvirtd" ];
 
   services.qemuGuest.enable = true;
   services.spice-vdagentd.enable = true;
@@ -28,7 +28,7 @@
   ];
 
   networking.firewall = {
-    trustedInterfaces = ["virbr0"];
+    trustedInterfaces = [ "virbr0" ];
     allowedTCPPortRanges = [
       # spice
       {

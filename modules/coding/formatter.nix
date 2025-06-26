@@ -1,8 +1,9 @@
-{pkgs, ...}: {
+{ pkgs, ... }: {
   environment.systemPackages = with pkgs; [
+    just-formatter
     google-java-format
     shfmt
-    alejandra
+    nixpkgs-fmt
     biome
   ];
 }

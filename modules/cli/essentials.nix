@@ -1,19 +1,24 @@
-{
-  inputs,
-  pkgs,
-  ...
+{ inputs
+, HOME
+, pkgs
+, ...
 }: {
-  programs.starship.enable = true;
   programs.git.enable = true;
 
   programs.yazi = {
     enable = true;
-    # TODO: use the nixpkgs version once the helix fix lands in stable nixpkgs
-    package = inputs.yazi.packages.${pkgs.system}.default;
+    flavors = {
+      dracula = ''${HOME}/assets/dracula.yazi.toml'';
+    };
+    settings = {
+      theme = builtins.fromTOML ''
+        [flavor]
+        use = "dracula"
+      '';
+    };
   };
 
   environment.systemPackages = with pkgs; [
-    starship
     bat
     vim
     bc

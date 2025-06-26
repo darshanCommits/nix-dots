@@ -1,4 +1,4 @@
-{...}: {
+{ ... }: {
   imports = [
     ./scripts.nix
   ];
@@ -16,7 +16,6 @@
     fullscreen = "yes";
     cache = "yes";
     cursor-autohide = 3500;
-    sub-font = "Ubuntu";
     sub-border-size = 1;
     sub-color = "#FFFFFF";
     sub-shadow-color = "#000000";

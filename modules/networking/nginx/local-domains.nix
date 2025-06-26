@@ -1,25 +1,37 @@
-{config, ...}: let
-  servicesList = config.serviceDomains;
-  orDefault = x: default:
-    if x != null
-    then x
-    else default;
-
+{ config, ... }:
+let
   defaultProxyPass = port: "http://${config.localhost}:${toString port}";
-  defaultLocation = "/";
-in {
-  services.nginx.virtualHosts = builtins.listToAttrs (map (x: {
-      name = "${x.name}.${config.localDomain}";
-      value = {
-        locations."${orDefault x.location defaultLocation}" = {
-          proxyPass = (defaultProxyPass x.port) + (orDefault x.proxyPass "");
-          proxyWebsockets = true;
-          extraConfig = ''
-            proxy_set_header Upgrade $http_upgrade;
-            proxy_set_header Connection "upgrade";
-          '';
-        };
+in
+{
+  services.nginx.virtualHosts = {
+    "photos.${config.localDomain}" = {
+      listen = [
+        { addr = config.localhost; port = config.port.nginx; }
+      ];
+      locations."/" = {
+        proxyPass = defaultProxyPass config.port.immich;
+        proxyWebsockets = true;
       };
-    })
-    servicesList);
+    };
+
+    "llm.${config.localDomain}" = {
+      listen = [
+        { addr = config.localhost; port = config.port.nginx; }
+      ];
+      locations."/" = {
+        proxyPass = defaultProxyPass config.port.llmUi;
+        proxyWebsockets = true;
+      };
+    };
+
+    "music.${config.localDomain}" = {
+      listen = [
+        { addr = config.localhost; port = config.port.nginx; }
+      ];
+      locations."/" = {
+        proxyPass = defaultProxyPass config.port.navidrome;
+        proxyWebsockets = true;
+      };
+    };
+  };
 }

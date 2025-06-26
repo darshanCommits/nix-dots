@@ -1,7 +1,6 @@
-{
-  pkgs,
-  HOME,
-  ...
+{ pkgs
+, HOME
+, ...
 }: {
   imports = [
     ./gamemode.nix

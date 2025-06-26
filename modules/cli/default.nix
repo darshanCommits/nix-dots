@@ -1,4 +1,4 @@
-{...}: {
+{ ... }: {
   imports = [
     ./media.nix
     ./sys-tools.nix

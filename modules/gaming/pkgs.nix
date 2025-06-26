@@ -1,10 +1,12 @@
-{pkgs, ...}: {
+{ pkgs, ... }: {
+
+
   environment.systemPackages = with pkgs; [
     mangohud
     protontricks
     winetricks
     wineWowPackages.stable
-    unstable.umu-launcher
+    umu-launcher
 
     # Launchers
     heroic

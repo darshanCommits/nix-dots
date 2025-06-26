@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{ pkgs, ... }: {
   virtualisation = {
     containers.enable = true;
     podman = {
@@ -10,8 +10,8 @@
 
   users.users.greeed = {
     isNormalUser = true;
-    extraGroups = ["podman"];
+    extraGroups = [ "podman" ];
   };
 
-  environment.systemPackages = [pkgs.distrobox];
+  environment.systemPackages = [ pkgs.distrobox ];
 }

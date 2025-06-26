@@ -1,16 +1,18 @@
-{...}: {
+{ ... }: {
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-33.4.11"
+  ];
   imports = [
     ./hardware
     ./services
     ./fonts
     ./gaming
     ./keyd
-    ./kvm
+    # ./kvm
     ./waydroid
     ./coding
     ./cli
     ./dewm
-    ./nh
     ./shell
     ./nix-settings
     ./users

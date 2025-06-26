@@ -1,7 +1,6 @@
-{
-  config,
-  pkgs,
-  ...
+{ config
+, pkgs
+, ...
 }: {
   qt.enable = true;
   gtk.enable = true;
@@ -9,8 +8,8 @@
   stylix = {
     enable = false;
     autoEnable = true;
-    image = config.wallpaper;
-    base16Scheme = config.colorscheme;
+    image = ./../../assets/images/goatv3.jpg;
+    base16Scheme = ./../../assets/colorscheme.yaml;
     polarity = "dark";
 
     cursor = {
@@ -27,25 +26,25 @@
     };
   };
 
-  stylix.fonts = {
-    serif = {
-      package = pkgs.dejavu_fonts;
-      name = "DejaVu Serif";
-    };
+  # stylix.fonts = {
+  #   serif = {
+  #     package = pkgs.dejavu_fonts;
+  #     name = "DejaVu Serif";
+  #   };
 
-    sansSerif = {
-      name = "Ubuntu Sans";
-      package = pkgs.ubuntu-sans;
-    };
+  #   sansSerif = {
+  #     name = "Ubuntu Sans";
+  #     package = pkgs.ubuntu-sans;
+  #   };
 
-    monospace = {
-      package = pkgs.nerdfonts.override {fonts = ["JetBrainsMono"];};
-      name = "JetBrains Mono";
-    };
+  #   monospace = {
+  #     package = pkgs.nerd-fonts.jetbrains-mono;
+  #     name = "JetBrains Mono";
+  #   };
 
-    emoji = {
-      package = pkgs.noto-fonts-emoji;
-      name = "Noto Color Emoji";
-    };
-  };
+  #   emoji = {
+  #     package = pkgs.noto-fonts-emoji;
+  #     name = "Noto Color Emoji";
+  #   };
+  # };
 }

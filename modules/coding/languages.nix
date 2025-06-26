@@ -1,7 +1,6 @@
-{
-  inputs,
-  pkgs,
-  ...
+{ inputs
+, pkgs
+, ...
 }: {
   programs.java.enable = true;
   nixpkgs.overlays = [
@@ -11,6 +10,8 @@
   environment.systemPackages = with pkgs; [
     go
     nodejs
+    pnpm
+    deno
     typescript
     jdk
     gcc
@@ -19,9 +20,10 @@
     meson
     cpio
     cmake
+    just
     (rust-bin.stable.latest.default.override
       {
-        extensions = ["rust-analyzer" "rust-src"];
+        extensions = [ "rust-analyzer" "rust-src" ];
       })
   ];
 }

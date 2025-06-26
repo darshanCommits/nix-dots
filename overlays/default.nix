@@ -1,5 +1,7 @@
-{inputs, ...}: let
+{ inputs, ... }:
+let
   unstable = import ./unstable.nix inputs.nixpkgs-unstable;
-in {
+in
+{
   default = final: prev: unstable final prev;
 }

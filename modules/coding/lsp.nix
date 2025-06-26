@@ -1,5 +1,6 @@
-{pkgs, ...}: {
+{ pkgs, ... }: {
   environment.systemPackages = with pkgs; [
+    just-lsp
     tailwindcss-language-server
     libclang
     nixd

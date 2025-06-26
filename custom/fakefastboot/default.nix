@@ -1,10 +1,11 @@
-{
-  config,
-  lib,
-  ...
-}: let
+{ config
+, lib
+, ...
+}:
+let
   cfg = config.fakefastboot;
-in {
+in
+{
   options.fakefastboot = {
     enable = lib.mkOption {
       type = lib.types.bool;

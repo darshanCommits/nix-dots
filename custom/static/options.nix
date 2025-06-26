@@ -1,4 +1,4 @@
-{lib, ...}:
+{ lib, ... }:
 with lib; {
   options = {
     wallpaper = mkOption {
@@ -50,7 +50,7 @@ with lib; {
 
     port = mkOption {
       type = with types; attrsOf port;
-      default = {};
+      default = { };
     };
 
     serviceDomains = mkOption {

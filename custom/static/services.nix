@@ -1,4 +1,4 @@
-{config, ...}: {
+{ config, ... }: {
   config.serviceDomains = [
     {
       name = "photos";
@@ -14,7 +14,6 @@
       extraConfig = ''
         proxy_buffering off;
       '';
-      # proxy_set_header Host localhost:4533;
     }
   ];
 }

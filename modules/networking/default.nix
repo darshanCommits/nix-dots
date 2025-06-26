@@ -1,6 +1,6 @@
-{pkgs, ...}: {
+{ pkgs, ... }: {
   imports = [
-    # ./dnsmasq
+    ./kdeconnect
     ./nginx
   ];
   networking.networkmanager.enable = true;

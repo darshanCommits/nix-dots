@@ -1,6 +1,7 @@
-{pkgs, ...}: {
+{ pkgs, ... }: {
   imports = [
     ./docker
+    ./android
     ./direnv.nix
     ./formatter.nix
     ./languages.nix
@@ -13,6 +14,7 @@
     delta
     gh
     lazygit
-    unstable.code-cursor
+    code-cursor
+    android-studio
   ];
 }
