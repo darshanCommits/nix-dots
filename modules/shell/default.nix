@@ -12,7 +12,8 @@ let
     la = "--long --all --group --group-directories-first";
     lx = "-lbhHigUmuSa@ --time-style=long-iso --git --color-scale --color=always --group-directories-first --icons";
     lS = "-1 --color=always --group-directories-first --icons";
-    lr = "--tree --level=2 --color=always --group-directories-first --icons";
+    lr = "--tree --level=1 --color=always --group-directories-first --icons";
+    lR = "--tree --level=4 --color=always --group-directories-first --icons";
   };
 
   gitAliases = prefix "git" {
