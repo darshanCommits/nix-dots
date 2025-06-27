@@ -19,7 +19,7 @@ jobs:
 
       - uses: cachix/cachix-action@v15
         with:
-          name: darshanCommits
+          name: darshancommits
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
 
       - name: Builder
