@@ -11,7 +11,7 @@
     ./envVars.nix
   ];
 
-  environment.shells = with pkgs; [ fish zsh ];
+  environment.shells = with pkgs; [ fish  ];
   users.defaultUserShell = pkgs.fish;
 
 

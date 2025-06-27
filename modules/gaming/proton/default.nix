@@ -8,6 +8,6 @@
 
     # Launchers
     heroic
-    itch
+    # itch
   ];
 }

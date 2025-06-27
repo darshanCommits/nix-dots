@@ -36,7 +36,7 @@ let helix = inputs.helix-driver.packages.${pkgs.system}.helix; in {
 
     # Build caching and utilities
     cachix
-    devenv
+    # devenv
     sccache
     mold-wrapped
   ];
