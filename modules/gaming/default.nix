@@ -1,10 +1,10 @@
 { pkgs
-, HOME
+, config
 , ...
 }: {
   imports = [
-    ./gamemode.nix
-    ./pkgs.nix
+    ./gamemode
+    ./proton
   ];
 
   programs.steam = {
@@ -13,5 +13,5 @@
     package = pkgs.steam;
   };
 
-  environment.sessionVariables.STEAM_EXTRA_COMPAT_TOOLS_PATHS = "${HOME}/.steam/root/compatibilitytools.d";
+  environment.sessionVariables.STEAM_EXTRA_COMPAT_TOOLS_PATHS = "${config.home}/.steam/root/compatibilitytools.d";
 }

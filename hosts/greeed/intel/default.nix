@@ -1,22 +1,14 @@
-{ pkgs, ... }:
-let
-  intel-media-driver = pkgs.intel-media-driver;
-  intel-media-driver-32 = pkgs.driversi686Linux.intel-media-driver;
-  intel-compute-runtime = pkgs.intel-compute-runtime;
-  vpl-gpu-rt = pkgs.vpl-gpu-rt or pkgs.onevpl-intel-gpu;
-in
-{
+{ pkgs, ... }: {
   config = {
     boot.initrd.kernelModules = [ "i915" ];
 
-    hardware.graphics.extraPackages = [
-      intel-media-driver
+    hardware.graphics.extraPackages = with pkgs; [
       intel-compute-runtime
-      vpl-gpu-rt
+      intel-media-driver
     ];
 
-    hardware.graphics.extraPackages32 = [
-      intel-media-driver-32
+    hardware.graphics.extraPackages32 = with pkgs; [
+      driversi686Linux.intel-media-driver
     ];
   };
 }

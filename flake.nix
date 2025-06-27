@@ -34,11 +34,9 @@
   outputs = { nixpkgs, stylix, home-manager, nix-flatpak, chaotic, ... } @ inputs:
     let
       system = "x86_64-linux";
-      HOME = "/home/greeed";
-      wallpaper = "${HOME}/.dotfiles/assets/wallpapers/goatv3.jpg";
 
       specialArgs = {
-        inherit inputs wallpaper HOME system;
+        inherit inputs system;
       };
 
       overlays = import ./overlays { inherit inputs; };
@@ -48,9 +46,8 @@
         inherit system specialArgs;
 
         modules = [
-          ./hardware-configuration.nix
-          ./modules
-          ./custom
+          ./lib
+          ./hosts
 
           stylix.nixosModules.stylix
           home-manager.nixosModules.home-manager

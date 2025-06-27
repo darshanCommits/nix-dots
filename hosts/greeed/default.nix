@@ -1,11 +1,27 @@
 { ... }: {
   imports = [
-    ./kernel
+    ./hardware-configuration.nix
+
     ./intel
-    ./nvidia
+    ./kernel
     ./lenovo-loq
+    ./nvidia
     ./thermals
-    ./bluetooth
-    ./pipewire
+    ./../../modules
   ];
+
+  users = {
+    users.greeed = {
+      isNormalUser = true;
+      description = "Darshan Kumawat";
+      extraGroups = [
+        "networkmanager"
+        "wheel"
+        "video"
+        "audio"
+        "input"
+        "gamemode"
+      ];
+    };
+  };
 }

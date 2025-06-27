@@ -1,3 +1,5 @@
 { ... }: {
-  imports = [ ./greeed ];
+  imports = [
+    ./greeed
+  ];
 }

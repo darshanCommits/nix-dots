@@ -1,7 +1,8 @@
 { ... }: {
   imports = [
-    ./ollama
-    ./immich
-    ./navidrome
+    # ./databases
+    ./web
+    ./ai
+    ./media
   ];
 }

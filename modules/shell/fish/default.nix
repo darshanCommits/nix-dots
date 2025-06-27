@@ -4,8 +4,9 @@
     grc
     autopair
     puffer
-    fish-you-should-use
-    # async-prompt
+    tide
+    # fish-you-should-use
+    async-prompt
   ] ++ [
     pkgs.grc
   ];
