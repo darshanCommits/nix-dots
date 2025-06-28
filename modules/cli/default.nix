@@ -9,6 +9,10 @@
     enable = true;
   };
 
+  programs.foot = {
+    enable = true;
+  };
+
   environment.systemPackages = with pkgs; [
     # Terminal file management and navigation
     eza # ls replacement

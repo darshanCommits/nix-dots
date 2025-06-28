@@ -1,7 +1,4 @@
-{ config
-, pkgs
-, ...
-}: {
+{ pkgs, ... }: {
   qt.enable = true;
   gtk.enable = true;
 

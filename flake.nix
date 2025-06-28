@@ -31,44 +31,19 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-  outputs = { nixpkgs, stylix, home-manager, nix-flatpak, chaotic, ... } @ inputs:
+
+  outputs = { nixpkgs, ... } @ inputs:
     let
       system = "x86_64-linux";
-
-      specialArgs = {
-        inherit inputs system;
+      mkNixOsConfig = host: {
+        inherit system;
+        specialArgs = { inherit inputs; };
+        modules = [ ./hosts/${host} ];
       };
-
-      overlays = import ./overlays { inherit inputs; };
     in
     {
-      nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-        inherit system specialArgs;
-
-        modules = [
-          ./lib
-          ./hosts
-
-          stylix.nixosModules.stylix
-          home-manager.nixosModules.home-manager
-          nix-flatpak.nixosModules.nix-flatpak
-
-          chaotic.nixosModules.nyx-cache
-          chaotic.nixosModules.nyx-overlay
-          chaotic.nixosModules.nyx-registry
-
-          {
-            nixpkgs.overlays = [ overlays.default ];
-
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              extraSpecialArgs = specialArgs;
-
-              users.greeed.imports = [ ./home ];
-            };
-          }
-        ];
+      nixosConfigurations = {
+        greeed = nixpkgs.lib.nixosSystem (mkNixOsConfig "greeed");
       };
     };
 }

@@ -1,7 +1,4 @@
-{ config
-, pkgs
-, ...
-}:
+{ ... }:
 let
   undervolt_mV = -125;
 in
