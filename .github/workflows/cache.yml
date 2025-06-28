@@ -23,7 +23,7 @@ jobs:
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
 
       - name: Builder
-        run: nix build -L .#nixosConfigurations.nixos.config.system.build.toplevel
+        run: nix build -L .#nixosConfigurations.greeed.config.system.build.toplevel
 
       # - name: Deploy
       #   run: cachix push darshancommits ./result*
