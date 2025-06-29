@@ -6,6 +6,7 @@ in
   programs.home-manager.enable = true;
 
   imports = [
+    ./mako
     ./stylix
     ./mpv
     ./virtualization
