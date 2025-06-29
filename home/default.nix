@@ -8,8 +8,7 @@ in
   imports = [
     ./stylix
     ./mpv
-    # ./zen-browser
-    ./dconf
+    ./virtualization
   ];
 
   # REFER: @/modules/dewm/wl-clipboard
