@@ -7,6 +7,8 @@ let
   fracString = num: denom: "${toString num}/${toString denom}";
 in
 {
+  # make pipewire realtime-capable
+  security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
     pulse.enable = true;

@@ -33,7 +33,6 @@
   services.tor.enable = false;
 
   security.sudo.enable = true;
-  security.rtkit.enable = true;
 
   networking.hostName = "nixos";
   networking.networkmanager.enable = true;

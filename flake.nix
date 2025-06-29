@@ -35,6 +35,10 @@
   outputs = { nixpkgs, ... } @ inputs:
     let
       system = "x86_64-linux";
+      forAllSystems = nixpkgs.lib.genAttrs [
+        "x86_64-linux"
+      ];
+
       mkNixOsConfig = host: {
         inherit system;
         specialArgs = { inherit inputs; };
@@ -42,6 +46,9 @@
       };
     in
     {
+      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixpkgs-fmt);
+      overlays = import ./overlays { inherit inputs; };
+
       nixosConfigurations = {
         greeed = nixpkgs.lib.nixosSystem (mkNixOsConfig "greeed");
       };

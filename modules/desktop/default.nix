@@ -10,6 +10,6 @@
   environment.systemPackages = with pkgs;[
     cliphist
     swaybg
+    tofi
   ];
-
 }

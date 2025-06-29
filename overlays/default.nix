@@ -1,7 +1,8 @@
-{ inputs, ... }:
-let
-  unstable = import ./unstable.nix inputs.nixpkgs-unstable;
-in
-{
-  default = final: prev: unstable final prev;
+{ inputs, ... }: {
+  unstable-pkgs = final: _prev: {
+    unstable = import inputs.nixpkgs-unstable {
+      system = final.system;
+      config.allowUnfree = true;
+    };
+  };
 }
