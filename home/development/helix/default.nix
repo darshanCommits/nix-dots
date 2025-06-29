@@ -5,10 +5,13 @@
   ];
   programs.helix = {
     enable = true;
-    theme = "glazor";
+    themes = {
+      glazor = ./glazor.theme.toml;
+    };
   };
 
   programs.helix.settings.editor = {
+    theme = "glazor";
     soft-wrap.enable = true;
     completion-trigger-len = 1;
     line-number = "relative";

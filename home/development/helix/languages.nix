@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ config, pkgs, ... }: {
   programs.helix.languages.language-server = {
     rust-analyzer.config = {
       check.command = "clippy";
@@ -11,7 +11,7 @@
     };
 
     emmet = {
-      command = "${pkgs.nodePackages.emmet-ls}/bin/emmet-ls"; # adjust if package name differs
+      command = "${pkgs.emmet-language-server}/bin/emmet-language-server";
       args = [ "--stdio" ];
     };
 
@@ -19,35 +19,12 @@
       command = "${pkgs.nixd}/bin/nixd";
       args = [ "--inlay-hints" "--semantic-tokens" ];
       config.nixd.options.home-manager.expr =
-        ''(builtins.getFlake "/home/greeed/dotfiles").homeConfigurations."nixos".options'';
+        ''(builtins.getFlake "${config.homeDir}/dotfiles").homeConfigurations."${config.home.username}".options'';
     };
 
     shellcheck = {
       command = "${pkgs.shellcheck}/bin/shellcheck";
       args = [ "-" ];
-    };
-
-    typescript-language-server = {
-      command = "${pkgs.nodePackages.typescript-language-server}/bin/typescript-language-server";
-      args = [
-        "--stdio"
-        "--tsserver-path=${pkgs.nodePackages.typescript}/lib/node_modules/typescript/lib"
-      ];
-    };
-
-    vscode-css-language-server = {
-      command = "${pkgs.nodePackages.vscode-css-languageserver-bin}/bin/css-languageserver";
-      args = [ "--stdio" ];
-    };
-
-    vscode-html-language-server = {
-      command = "${pkgs.nodePackages.vscode-html-languageserver-bin}/bin/html-languageserver";
-      args = [ "--stdio" ];
-    };
-
-    vscode-json-language-server = {
-      command = "${pkgs.nodePackages.vscode-json-languageserver}/bin/json-languageserver";
-      args = [ "--stdio" ];
     };
 
     tailwindcss-ls = {

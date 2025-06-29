@@ -6,14 +6,29 @@ with lib; {
       description = "Path to the wallpaper image.";
     };
 
+    homeDir = mkOption {
+      type = types.path;
+      description = "Home dir path";
+    };
+
+    currentCompositor = mkOption {
+      type = types.enum [ "hyprland" "niri" ];
+      description = "Current Wayland compositor in use. Accepted values: 'hyprland', 'niri'.";
+    };
+
+    ghUserName = mkOption {
+      type = types.str;
+      description = "Github Username";
+    };
+
+    email = mkOption {
+      type = types.str;
+      description = "Primary Email";
+    };
+
     colorscheme = mkOption {
       type = types.path;
       description = "Path to the colorscheme file.";
-    };
-
-    home = mkOption {
-      type = types.path;
-      description = "Path to Home Directory";
     };
 
     username = mkOption {

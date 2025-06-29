@@ -19,7 +19,7 @@ in
   };
 
   fileSystems."${musicDirectory}" = {
-    device = "${config.home}/Music";
+    device = "${config.homeDir}/Music";
     options = [ "bind" "rw" ];
     fsType = "btrfs";
   };

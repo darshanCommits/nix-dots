@@ -3,7 +3,7 @@
 let
   inherit (lib) mkIf;
 
-  compositor = config.currentCompositor;
+  compositor = "hyprland";
 
   cfg = {
     hyprland = {
@@ -44,8 +44,8 @@ in
           }
           {
             timeout = 150;
-            on-timeout = "brightnessctl -sd *::kbd_backlight set 0";
-            on-resume = "brightnessctl -rd *::kbd_backlight";
+            on-timeout = "brightnessctl -sd platform::kbd_backlight set 0";
+            on-resume = "brightnessctl -rd platform::kbd_backlight";
           }
           {
             timeout = 300;

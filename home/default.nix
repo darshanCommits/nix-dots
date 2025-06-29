@@ -1,15 +1,13 @@
-{ ... }:
-let
-  username = "greeed";
-in
+{ config, ... }:
 {
   programs.home-manager.enable = true;
 
   imports = [
-    ./mako
     ./stylix
-    ./mpv
-    ./virtualization
+    ./desktop
+    ./development
+    ./media
+    ./../lib
   ];
 
   # REFER: @/modules/dewm/wl-clipboard
@@ -19,10 +17,8 @@ in
 
   home = {
     stateVersion = "25.05"; # Adapt this to the current Home Manager version
-    username = username;
-    homeDirectory = "/home/${username}";
+    username = config.username;
+    homeDirectory = "/home/${config.username}";
     enableNixpkgsReleaseCheck = true;
   };
-
-
 }
