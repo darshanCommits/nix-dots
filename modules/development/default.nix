@@ -30,9 +30,6 @@ let helix = inputs.helix-driver.packages.${pkgs.system}.helix; in {
 
     # Version control and Git tools
     act
-    delta
-    gh
-    lazygit
 
     # Build caching and utilities
     cachix

@@ -14,5 +14,8 @@ in
 
     localDomain = "local";
     localhost = "0.0.0.0";
+
+    ghUserName = "darshanCommits";
+    email = "kumawatdarshan.1304@gmail.com";
   };
 }

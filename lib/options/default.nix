@@ -1,7 +1,7 @@
 { ... }: {
   imports = [
     ./types.nix
-    ./config.nix
+    ./static.nix
     ./ports.nix
   ];
 }
