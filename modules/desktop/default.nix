@@ -6,7 +6,10 @@
     ./fonts
     ./services
   ];
+
   environment.systemPackages = with pkgs;[
     cliphist
+    swaybg
   ];
+
 }

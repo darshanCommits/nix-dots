@@ -13,11 +13,7 @@ jobs:
       - name: Free Disk Space (Ubuntu)
         uses: jlumbroso/free-disk-space@main
         with:
-          # if set to "true" but frees about 6 GB
           tool-cache: true # if build fails try with true
-
-      - name: Clean /opt
-        run: sudo rm -rf /opt
 
       - uses: actions/checkout@v4
 

@@ -3,7 +3,7 @@
 let helix = inputs.helix-driver.packages.${pkgs.system}.helix; in {
   imports = [
     # ./tools/kvm
-    # ./tools/podman
+    ./tools/docker
 
     ./adb
     ./languages
