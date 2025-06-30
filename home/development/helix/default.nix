@@ -1,10 +1,11 @@
-{ ... }:
+{ pkgs, inputs, ... }:
 {
   imports = [
     ./languages.nix
   ];
   programs.helix = {
     enable = true;
+    package = inputs.helix-driver.packages.${pkgs.system}.helix;
     themes = {
       glazor = ./glazor.theme.toml;
     };

@@ -1,6 +1,4 @@
-{ inputs, pkgs, ... }:
-
-let helix = inputs.helix-driver.packages.${pkgs.system}.helix; in {
+{ pkgs, ... }: {
   imports = [
     # ./tools/kvm
     ./tools/docker
@@ -26,7 +24,6 @@ let helix = inputs.helix-driver.packages.${pkgs.system}.helix; in {
   environment.systemPackages = with pkgs; [
     # editors
     vim
-    helix # this will be pulled from our let bind. that's how nix works??
 
     # Version control and Git tools
     act

@@ -11,5 +11,6 @@
     cliphist
     swaybg
     tofi
+    hyprpicker
   ];
 }

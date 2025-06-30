@@ -1,7 +1,7 @@
 { ... }: {
   imports = [
     ./../common/hyprlock
-    ./../common/swayidle
+    ./../common/hypridle
     ./../common/waybar
     ./../common/mako
   ];

@@ -1,5 +1,4 @@
 { ... }: {
-  imports = [
-    ./common
-  ];
+  qt.enable = true;
+  gtk.enable = true;
 }

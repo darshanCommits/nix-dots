@@ -1,11 +1,17 @@
 { pkgs, ... }: {
   programs.fish = {
     enable = true;
-  };
+    interactiveShellInit = #fish
+      ''
+        fish_config theme choose Dracula
+        set -g fish_greeting
+        set -g async_prompt_functions _pure_prompt_git
+        # atuin init fish | source
+        # zoxide init --cmd j fish | source
 
-  programs.foot = {
-    enable = true;
-    enableFishIntegration = true;
+        # set -Ux CARAPACE_BRIDGES 'zsh,fish,bash,inshellisense'
+        # carapace _carapace | source
+      '';
   };
 
   environment.systemPackages = with pkgs.fishPlugins; [
@@ -13,7 +19,6 @@
     grc
     autopair
     puffer
-    # fish-you-should-use
     async-prompt
   ] ++ [
     pkgs.grc

@@ -5,12 +5,23 @@
     ./bluetooth
   ];
 
+  programs.bat = {
+    enable = true;
+    extraPackages = with pkgs.bat-extras; [
+      batman
+      prettybat
+    ];
+
+    settings = {
+      style = "plain";
+    };
+  };
+
   networking.networkmanager.enable = true;
 
   environment.systemPackages = with pkgs; [
     openssl
     # Basic file operations
-    bat # cat replacement with syntax highlighting
     fd # find replacement
     ripgrep-all # grep replacement with additional format support
 
