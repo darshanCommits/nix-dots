@@ -11,6 +11,16 @@
 
     hyprpanel.url = "github:Jas-SinghFSU/HyprPanel";
 
+    astal = {
+      url = "github:aylur/astal";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
+    quickshell = {
+      url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -35,22 +45,30 @@
   outputs = { nixpkgs, ... } @ inputs:
     let
       system = "x86_64-linux";
-      forAllSystems = nixpkgs.lib.genAttrs [
-        "x86_64-linux"
-      ];
+      forAllSystems = nixpkgs.lib.genAttrs [ system ];
 
       mkNixOsConfig = host: {
         inherit system;
-        specialArgs = { inherit inputs; };
-        modules = [ ./hosts/${host} ];
+        specialArgs = {
+          inherit inputs;
+        };
+        modules = [
+          {
+            nixpkgs.overlays = [
+              (import ./overlays
+                inputs
+              )
+            ];
+          }
+          ./hosts/${ host}
+        ];
       };
     in
     {
-      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixpkgs-fmt);
-      overlays = import ./overlays { inherit inputs; };
-
+      formatter = forAllSystems (system: nixpkgs.legacyPackages.${ system}.nixpkgs-fmt);
       nixosConfigurations = {
         greeed = nixpkgs.lib.nixosSystem (mkNixOsConfig "greeed");
       };
     };
+
 }

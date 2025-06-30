@@ -30,6 +30,7 @@ in
     rg = "rga";
     pdf = "zathura";
     btm = "btm --battery --enable_gpu --tree --expanded";
+    heroic = "heroic --enable-features=WaylandWindowDecorations --enable-features=UseOzonePlatform --ozone-platform=wayland";
   };
 }
 

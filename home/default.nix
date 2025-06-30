@@ -4,7 +4,9 @@
 
   imports = [
     ./stylix
+    ./cli
     ./desktop
+    ./quickshell
     ./development
     ./media
     ./../lib

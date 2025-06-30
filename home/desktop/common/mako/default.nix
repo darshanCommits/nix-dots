@@ -2,9 +2,9 @@
   services.mako = {
     enable = true;
     settings = {
-      background-color = " #000000";
+      background-color = "#000000";
       text-color = "#CDD6F4";
-      font = "JetBrains Mono 11";
+      font = "JetBrainsMono Nerd Font 11";
       border-color = "#ff4835";
       padding = 13;
       icons = 1;

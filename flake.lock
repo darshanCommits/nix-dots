@@ -2,7 +2,7 @@
   "nodes": {
     "ags": {
       "inputs": {
-        "astal": "astal",
+        "astal": "astal_2",
         "nixpkgs": [
           "hyprpanel",
           "nixpkgs"
@@ -25,6 +25,26 @@
     "astal": {
       "inputs": {
         "nixpkgs": [
+          "nixpkgs-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1751126708,
+        "narHash": "sha256-AodIKw7TmI7rHVcOfEsO82stupMYIMVQeLAUQfVxnkU=",
+        "owner": "aylur",
+        "repo": "astal",
+        "rev": "ac90f09385a2295da9fdc108aaba4a317aaeacc7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "aylur",
+        "repo": "astal",
+        "type": "github"
+      }
+    },
+    "astal_2": {
+      "inputs": {
+        "nixpkgs": [
           "hyprpanel",
           "ags",
           "nixpkgs"
@@ -44,7 +64,7 @@
         "type": "github"
       }
     },
-    "astal_2": {
+    "astal_3": {
       "inputs": {
         "nixpkgs": [
           "hyprpanel",
@@ -412,7 +432,7 @@
     "hyprpanel": {
       "inputs": {
         "ags": "ags",
-        "astal": "astal_2",
+        "astal": "astal_3",
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
@@ -596,8 +616,29 @@
         "type": "github"
       }
     },
+    "quickshell": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1751022554,
+        "narHash": "sha256-+REvWf68WLbwacOsjs4CmJauE2vF+sPh++Jcxn3wSeQ=",
+        "ref": "refs/heads/master",
+        "rev": "1d02292fbf24c41f947cf72dd7de57f6dedf2173",
+        "revCount": 598,
+        "type": "git",
+        "url": "https://git.outfoxxed.me/outfoxxed/quickshell"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://git.outfoxxed.me/outfoxxed/quickshell"
+      }
+    },
     "root": {
       "inputs": {
+        "astal": "astal",
         "chaotic": "chaotic",
         "helix-driver": "helix-driver",
         "home-manager": "home-manager_2",
@@ -605,6 +646,7 @@
         "nix-flatpak": "nix-flatpak",
         "nixpkgs": "nixpkgs_3",
         "nixpkgs-unstable": "nixpkgs-unstable",
+        "quickshell": "quickshell",
         "rust-overlay": "rust-overlay_3",
         "stylix": "stylix",
         "zen-browser": "zen-browser"

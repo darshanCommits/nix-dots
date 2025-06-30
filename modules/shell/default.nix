@@ -4,7 +4,7 @@
     ./fish
     ./zsh
 
-    ./prompt
+#    ./prompt
 
     ./aliases.nix
     ./envVars.nix

@@ -16,6 +16,8 @@ in
     # TODO: I am importing everything cause its a single system, in future i should import only what i need.
     users.${config.username}.imports = [
       ./../../home
+      ./../../home/desktop/niri
+
     ];
   };
 
