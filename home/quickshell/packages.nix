@@ -6,11 +6,13 @@ let
     pname = "caelestia-scripts";
     version = "unstable-2024-01-07";
 
+    # TODO: this is using old version. upstream has deprecated fish scripts.
     src = pkgs.fetchFromGitHub {
       owner = "caelestia-dots";
       repo = "scripts";
-      rev = "main";
-      sha256 = "196z5hgd8d3vpa4bkxizgxnc3fj4aakais3i6a30ankanya4df5j";
+      rev = "696899a";
+      sha256 = "7NauFLR1WMeAPejDD1751/0+LSKkcLAmpEwtioCHGmQ=";
+
     };
 
     nativeBuildInputs = with pkgs; [
@@ -113,9 +115,10 @@ let
   };
 
   # Wrap quickshell with Qt dependencies and required tools in PATH
-  quickshell-wrapped = pkgs.runCommand "quickshell-wrapped" {
-    nativeBuildInputs = [ pkgs.makeWrapper ];
-  } ''
+  quickshell-wrapped = pkgs.runCommand "quickshell-wrapped"
+    {
+      nativeBuildInputs = [ pkgs.makeWrapper ];
+    } ''
     mkdir -p $out/bin
     makeWrapper ${inputs.quickshell.packages.${pkgs.system}.default}/bin/qs $out/bin/qs \
       --prefix QT_PLUGIN_PATH : "${pkgs.qt6.qtbase}/${pkgs.qt6.qtbase.qtPluginPrefix}" \
@@ -133,7 +136,7 @@ in
       default = quickshell-wrapped;
       description = "The wrapped quickshell package with Qt dependencies";
     };
-    
+
     caelestia-scripts = lib.mkOption {
       type = lib.types.package;
       default = caelestia-scripts;

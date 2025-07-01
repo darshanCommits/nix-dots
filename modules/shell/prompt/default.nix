@@ -1,6 +1,9 @@
-{ lib, ... }: {
+{ pkgs, lib, ... }: {
+  environment.systemPackages = [
+    pkgs.starship
+  ];
   programs.starship = {
-    enable = false;
+    enable = true;
     # add_newline = true;
 
     # format = lib.concatStrings [

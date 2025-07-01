@@ -3,7 +3,7 @@
     ./git
     ./foot
     ./helix
-    ./starship
+    # ./starship
   ];
 
   programs.zoxide = {

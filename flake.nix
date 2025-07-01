@@ -42,6 +42,7 @@
     };
   };
 
+
   outputs = { nixpkgs, ... } @ inputs:
     let
       system = "x86_64-linux";
@@ -55,9 +56,7 @@
         modules = [
           {
             nixpkgs.overlays = [
-              (import ./overlays
-                inputs
-              )
+              (import ./overlays inputs)
             ];
           }
           ./hosts/${ host}

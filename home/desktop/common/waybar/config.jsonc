@@ -1,11 +1,27 @@
 {
 	"mainBar": {
-		"modules-left": ["clock", "hyprland/workspaces", "tray"],
-		"modules-right": ["network", "pulseaudio", "battery"],
+		"modules-left": [
+			"clock",
+			"hyprland/workspaces",
+			"tray"
+		],
+		"modules-right": [
+			"network",
+			"pulseaudio",
+			"battery",
+			"custom/power"
+		],
 		"clock": {
 			"format": "󰅐  {:%I:%M:%p}",
 			"tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
 			"format-alt": "  {:%d/%m}"
+		},
+		"niri/workspaces": {
+			"format": "{value}",
+			"format-icons": {
+				"active": "",
+				"default": ""
+			}
 		},
 		"hyprland/window": {
 			"max-length": 30
@@ -56,19 +72,23 @@
 			"format-alt": "{bandwidthDownBytes} {bandwidthUpBytes} | {ipaddr}/{cidr}"
 		},
 		"pulseaudio": {
-			"on-click": "$FLAKE/user/hypr/scripts/volume --toggle",
-			"on-scroll-down": "$FLAKE/user/hypr/scripts/volume --inc",
-			"on-scroll-up": "$FLAKE/user/hypr/scripts/volume --dec",
+			"on-click": "pactl set-sink-mute 0 toggle",
+			"on-scroll-down": "pactl set-sink-volume 0 +5%",
+			"on-scroll-up": "pactl set-sink-volume 0 -5%",
 			"scroll-step": 1,
 			"format": "{icon}  {volume}%",
 			"format-muted": "󰖁 ",
 			"format-icons": {
-				"default": ["", "", ""]
+				"default": [
+					"",
+					"",
+					""
+				]
 			}
 		},
 		"tray": {
 			"icon-size": 15,
-			"spacing": 8
+			"spacing": 5
 		},
 		"battery": {
 			"states": {
@@ -80,8 +100,19 @@
 			"format-charging": " {capacity}%",
 			"format-plugged": " {capacity}%",
 			"format-alt": "{time} {icon}",
-			"format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+			"format-icons": [
+				"󰂎",
+				"󰁺",
+				"󰁻",
+				"󰁼",
+				"󰁽",
+				"󰁾",
+				"󰁿",
+				"󰂀",
+				"󰂁",
+				"󰂂",
+				"󰁹"
+			]
 		}
 	}
 }
-
