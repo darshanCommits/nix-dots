@@ -26,7 +26,7 @@ let
   commands = cfg.${compositor} or (throw "Unsupported compositor: ${compositor}");
 in
 {
-  config = mkIf (compositor != null) {
+  config = mkIf (compositor == "hyprland") {
     services.hypridle = {
       enable = true;
       settings = {

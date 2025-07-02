@@ -51,6 +51,6 @@ jobs:
 
       - name: Builder
         run: |
-          cachix watch-exec rishabh5321 -- \
+          cachix watch-exec darshancommits -- \
             nix build .#nixosConfigurations.greeed.config.system.build.toplevel \
             -L --print-build-logs 

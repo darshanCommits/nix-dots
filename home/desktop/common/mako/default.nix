@@ -1,10 +1,13 @@
-{ ... }: {
+{ pkgs, ... }: {
+  home.packages = with pkgs;[
+    libnotify
+  ];
   services.mako = {
     enable = true;
     settings = {
       background-color = "#000000";
       text-color = "#CDD6F4";
-      font = "JetBrainsMono Nerd Font 11";
+      font = "JetBrainsNerdFont 11";
       border-color = "#ff4835";
       padding = 13;
       icons = 1;

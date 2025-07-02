@@ -2,7 +2,8 @@
   imports = [
     ./hypridle
     ./hyprlock
-    # ./mako
+    ./mako
     ./waybar
+    ./quickshell
   ];
 }

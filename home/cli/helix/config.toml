@@ -1,0 +1,92 @@
+theme = "glazor"
+[editor]
+color-modes = true
+completion-trigger-len = 1
+line-number = "relative"
+mouse = false
+popup-border = "all"
+rainbow-brackets = true
+shell = ["sh", "-c"]
+[editor.auto-save]
+focus-lost = true
+[editor.auto-save.after-delay]
+enable = true
+
+[editor.bufferline]
+context = "minimal"
+show = "always"
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.indent-guides]
+character = "│"
+render = true
+
+[editor.inline-diagnostics]
+cursor-line = "hint"
+other-lines = "disable"
+
+[editor.lsp]
+display-inlay-hints = true
+display-messages = true
+
+[editor.soft-wrap]
+enable = true
+
+[editor.statusline]
+center = ["diagnostics", "workspace-diagnostics"]
+left = ["mode", "spinner", "total-line-numbers", "file-encoding"]
+right = [
+    "position",
+    "position-percentage",
+    "spacer",
+    "separator",
+    "spacer",
+    "version-control",
+]
+
+[editor.word-completion]
+enable = true
+trigger-length = 3
+
+[keys.insert]
+C-backspace = "@<esc>bdi"
+C-del = "delete_word_forward"
+C-k = "@<esc>t<ret>di"
+C-left = "@<esc>b;i"
+C-right = "@<esc>el;i"
+C-u = "@<esc>T<ret>di"
+end = "@<esc>glli"
+home = "@<esc>ghi"
+
+[keys.normal]
+C-a = "@<A-a>"
+C-backspace = "@<space>w"
+C-g = [
+    ":write-all",
+    ":new",
+    ":insert-output lazygit",
+    ":buffer-close!",
+    ":redraw",
+    ":reload-all",
+]
+C-ret = "@[<space>k"
+H = "move_prev_sub_word_start"
+L = "move_next_sub_word_end"
+X = "extend_line_above"
+Z = ":wa"
+esc = ":update"
+home = "increment"
+ret = "@]<space>j"
+
+[keys.normal.space]
+E = [":sh rm -f /tmp/unique-file", ":insert-output yazi --chooser-file=/tmp/unique-file", ":insert-output echo \"\\x1b[?1049h\\x1b[?2004h\" > /dev/tty", ":open %sh{cat /tmp/unique-file}", ":redraw"]
+e = [":sh rm -f /tmp/unique-file", ":insert-output yazi %{buffer_name} --chooser-file=/tmp/unique-file", ":insert-output echo \"\\x1b[?1049h\\x1b[?2004h\" > /dev/tty", ":open %sh{cat /tmp/unique-file}", ":redraw"]
+q = ":q"
+
+[keys.select]
+X = "extend_line_above"
+

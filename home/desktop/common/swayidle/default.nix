@@ -5,40 +5,44 @@ let
   second = 1;
   minute = 60 * second;
 
-  screenBlank = 15 * minute;
-  lockDelay = 15 * minute;
-  suspendDelay = 60 * minute;
+  screenBlankDelay = 15 * minute;
+  lockDelay = screenBlankDelay * 2;
+  suspendDelay = lockDelay * 2;
 
   # Executables
   loginctl = "${pkgs.systemd}/bin/loginctl";
   systemctl = "${pkgs.systemd}/bin/systemctl";
-  hyprlock = lib.getExe pkgs.hyprlock;
+  brightnessctl = lib.getExe pkgs.brightnessctl;
   niri = lib.getExe pkgs.niri;
 
-  # Scripts
-  lockSessionScript = pkgs.writeShellScript "lock-session" ''
-    ${hyprlock}
-    ${niri} msg action power-off-monitors
+  lowerBrightness = pkgs.writeShellScript "lower-brightness" ''
+    ${brightnessctl} -s set 10
   '';
 
-  beforeSleepScript = pkgs.writeShellScript "before-sleep" ''
+  lockSessionScript = pkgs.writeShellScript "lock-session" ''
+    ${niri} msg action power-off-monitors
     ${loginctl} lock-session
+    ${brightnessctl} -sd platform::kbd_backlight set 0
   '';
 in
 {
-  services.swayidle = {
-    enable = true;
+  services.swayidle =
+    {
+      enable = true;
+      events = [
+        { event = "before-sleep"; command = lockSessionScript.outPath; }
+        {
+          event = "after-resume";
+          command = ''
+            ${niri} msg action power-on-monitors
+          '';
+        }
+        { event = "lock"; command = lockSessionScript.outPath; }
+      ];
 
-    events = [
-      { event = "lock"; command = lockSessionScript.outPath; }
-      { event = "before-sleep"; command = beforeSleepScript.outPath; }
-      # { event = "after-resume"; command = "${niri} msg action power-on-monitors"; }
-    ];
-
-    timeouts = [
-      { timeout = screenBlank; command = "${niri} msg action power-off-monitors"; }
-      { timeout = screenBlank + lockDelay; command = "${loginctl} lock-session"; }
-      { timeout = suspendDelay; command = "${systemctl} suspend"; }
-    ];
-  };
+      timeouts = [
+        { timeout = screenBlankDelay; command = lowerBrightness.outPath; }
+        { timeout = suspendDelay; command = "${systemctl} suspend"; }
+      ];
+    };
 }
