@@ -12,6 +12,7 @@
       "https://helix.cachix.org"
       "https://hyprland.cachix.org"
       "https://yazi.cachix.org"
+      "https://anyrun.cachix.org"
 
       # Community
       "https://nix-community.cachix.org"

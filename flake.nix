@@ -11,6 +11,11 @@
 
     hyprpanel.url = "github:Jas-SinghFSU/HyprPanel";
 
+    anyrun = {
+      url = "github:anyrun-org/anyrun";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     astal = {
       url = "github:aylur/astal";
       inputs.nixpkgs.follows = "nixpkgs-unstable";

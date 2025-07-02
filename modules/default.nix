@@ -9,6 +9,8 @@
     ./shell
   ];
 
+  programs.xwayland.enable = true;
+
   boot = {
     consoleLogLevel = 0;
     initrd.verbose = false;

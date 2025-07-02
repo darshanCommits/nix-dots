@@ -12,9 +12,8 @@
   ];
 
   # REFER: @/modules/dewm/wl-clipboard
-  services.cliphist = {
-    enable = true;
-  };
+  services.cliphist.enable = true;
+  services.easyeffects.enable = true;
 
   home = {
     stateVersion = "25.05"; # Adapt this to the current Home Manager version

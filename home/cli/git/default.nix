@@ -1,4 +1,4 @@
-{ pkgs, config, ... }: {
+{ lib, pkgs, config, ... }: {
   home.packages = with pkgs; [
     lazygit
     gh
@@ -11,11 +11,19 @@
     userEmail = config.email;
     aliases = {
       st = "status - sb";
-      last = "log -1 HEAD";
-      ll = "log --oneline --graph --decorate --pretty=format:'%C(auto)%h%d %<(72,trunc)%s %C(green)(%ar) %C(yellow)%an%C(reset)'";
+      last = "log -1 HEAD --stat";
+      ll = "log --graph --oneline --decorate --pretty=format:'%C(auto)%h%d %<(72,trunc)%s %n%C(green)(%ar) %C(yellow)%an%C(reset)'";
     };
 
     extraConfig = {
+      credential = {
+        "https://github.com" = {
+          helper = "!gh auth git-credential";
+        };
+        "https://gist.github.com" = {
+          helper = "!gh auth git-credential";
+        };
+      };
       core.editor = "hx";
       color.ui = "true";
       blame.date = "relative";

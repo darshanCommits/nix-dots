@@ -1,12 +1,11 @@
 { config, lib, pkgs, ... }: {
   imports = [
     ./../common/hyprlock
+    ./../common/mako
     ./../common/swayidle
     ./../common/waybar
-    ./../common/mako
-    ./../common/quickshell
-
     ./../common/swaybg
+    ./../common/anyrun
   ];
 
   services.swayidle.systemdTarget = lib.mkForce "niri.service";
