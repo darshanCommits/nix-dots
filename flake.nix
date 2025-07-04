@@ -34,7 +34,6 @@
       inputs = {
         home-manager.follows = "home-manager";
         rust-overlay.follows = "rust-overlay";
-        # nixpkgs.follows = "nixpkgs-unstable"; # might need to delete this. yep. had to. 
       };
     };
 
