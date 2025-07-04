@@ -15,34 +15,56 @@ let
   brightnessctl = lib.getExe pkgs.brightnessctl;
   niri = lib.getExe pkgs.niri;
 
-  lowerBrightness = pkgs.writeShellScript "lower-brightness" ''
+  lowerBrightness = ''
+    ${brightnessctl} -sd platform::kbd_backlight set 0
     ${brightnessctl} -s set 10
   '';
 
-  lockSessionScript = pkgs.writeShellScript "lock-session" ''
+  lockSessionScript = ''
+    ${brightnessctl} -sd platform::kbd_backlight set 0
     ${niri} msg action power-off-monitors
     ${loginctl} lock-session
-    ${brightnessctl} -sd platform::kbd_backlight set 0
   '';
+
+  screenOn = ''
+    ${brightnessctl} -r
+    ${brightnessctl} -rd platform::kbd_backlight
+    ${niri} msg action power-on-monitors
+  '';
+
+  suspend = ''
+    ${systemctl} suspend
+  '';
+
 in
 {
   services.swayidle =
     {
       enable = true;
       events = [
-        { event = "before-sleep"; command = lockSessionScript.outPath; }
+        {
+          event = "before-sleep";
+          command = lockSessionScript;
+        }
         {
           event = "after-resume";
-          command = ''
-            ${niri} msg action power-on-monitors
-          '';
+          command = screenOn;
         }
-        { event = "lock"; command = lockSessionScript.outPath; }
+        {
+          event = "lock";
+          command = lockSessionScript;
+        }
       ];
 
       timeouts = [
-        { timeout = screenBlankDelay; command = lowerBrightness.outPath; }
-        { timeout = suspendDelay; command = "${systemctl} suspend"; }
+        {
+          timeout = screenBlankDelay;
+          command = lowerBrightness;
+        }
+        {
+          timeout = suspendDelay;
+          command = suspend;
+        }
       ];
     };
 }

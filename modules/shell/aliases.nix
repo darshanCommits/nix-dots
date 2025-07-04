@@ -31,6 +31,7 @@ in
     pdf = "zathura";
     btm = "btm --battery --enable_gpu --tree --expanded";
     heroic = "heroic --enable-features=WaylandWindowDecorations --enable-features=UseOzonePlatform --ozone-platform=wayland";
+    brave = "brave --enable-features=TouchpadOverscrollHistoryNavigation,UseOzonePlatform --ozone-platform=wayland";
   };
 }
 

@@ -1,6 +1,28 @@
 {
   description = "Yo yo yo. 148-3 to the 3 to the 6 to the 9, representing Darshan's dotfiles, what up biatch?!";
 
+  outputs = { nixpkgs, ... } @ inputs:
+    let
+      system = "x86_64-linux";
+      forAllSystems = nixpkgs.lib.genAttrs [ system ];
+
+      mkNixOsConfig = host: {
+        inherit system;
+        specialArgs = {
+          inherit inputs;
+        };
+        modules = [
+          ./hosts/${host}
+        ];
+      };
+    in
+    {
+      formatter = forAllSystems (system: nixpkgs.legacyPackages.${ system}.nixpkgs-fmt);
+      nixosConfigurations = {
+        greeed = nixpkgs.lib.nixosSystem (mkNixOsConfig "greeed");
+      };
+    };
+
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -10,21 +32,6 @@
     stylix.url = "github:danth/stylix/release-25.05";
 
     hyprpanel.url = "github:Jas-SinghFSU/HyprPanel";
-
-    anyrun = {
-      url = "github:anyrun-org/anyrun";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    astal = {
-      url = "github:aylur/astal";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
-
-    quickshell = {
-      url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
 
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
@@ -40,39 +47,5 @@
       url = "github:darshanCommits/helix/driver-new";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    zen-browser = {
-      url = "github:0xc000022070/zen-browser-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
-
-
-  outputs = { nixpkgs, ... } @ inputs:
-    let
-      system = "x86_64-linux";
-      forAllSystems = nixpkgs.lib.genAttrs [ system ];
-
-      mkNixOsConfig = host: {
-        inherit system;
-        specialArgs = {
-          inherit inputs;
-        };
-        modules = [
-          {
-            nixpkgs.overlays = [
-              (import ./overlays inputs)
-            ];
-          }
-          ./hosts/${ host}
-        ];
-      };
-    in
-    {
-      formatter = forAllSystems (system: nixpkgs.legacyPackages.${ system}.nixpkgs-fmt);
-      nixosConfigurations = {
-        greeed = nixpkgs.lib.nixosSystem (mkNixOsConfig "greeed");
-      };
-    };
-
 }

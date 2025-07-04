@@ -1,7 +1,8 @@
 # YOU MUST FIRST DEFINE THE CONFIG OPTIONS IN THE ./types.nix
-{ ... }:
+{ config, ... }:
 let
   username = "greeed";
+  assets = ./../../assets;
 in
 {
   config = {

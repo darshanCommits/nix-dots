@@ -2,6 +2,7 @@
   imports = [
     ./sys-admin.nix
     ./media.nix
+    ./nh.nix
   ];
   programs.git.enable = true;
 

@@ -21,6 +21,7 @@ in
     })
 
     cargo-watch
+    cargo-expand
     bacon
     mold-wrapped
     clang

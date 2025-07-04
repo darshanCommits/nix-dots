@@ -1,4 +1,8 @@
 { inputs, ... }: {
+  nixpkgs.overlays = [
+    (import ./../../../overlays inputs)
+  ];
+
   imports = [
     ./../../../lib
     inputs.home-manager.nixosModules.home-manager

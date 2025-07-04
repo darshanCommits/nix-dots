@@ -1,11 +1,10 @@
-{ config, lib, pkgs, ... }: {
+{ inputs, config, lib, pkgs, ... }: {
   imports = [
     ./../common/hyprlock
     ./../common/mako
     ./../common/swayidle
     ./../common/waybar
     ./../common/swaybg
-    ./../common/anyrun
   ];
 
   services.swayidle.systemdTarget = lib.mkForce "niri.service";
@@ -39,6 +38,7 @@
 
   home.packages = with pkgs; [
     xwayland-satellite
+    walker
   ];
 
 

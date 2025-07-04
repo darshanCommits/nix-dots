@@ -10,7 +10,7 @@
     userName = config.ghUserName;
     userEmail = config.email;
     aliases = {
-      st = "status - sb";
+      st = "status -sb";
       last = "log -1 HEAD --stat";
       ll = "log --graph --oneline --decorate --pretty=format:'%C(auto)%h%d %<(72,trunc)%s %n%C(green)(%ar) %C(yellow)%an%C(reset)'";
     };

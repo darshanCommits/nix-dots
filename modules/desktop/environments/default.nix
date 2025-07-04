@@ -4,6 +4,7 @@
   ];
   imports = [
     ./hyprland
+    # ./cosmic
     ./kde
     ./niri
   ];

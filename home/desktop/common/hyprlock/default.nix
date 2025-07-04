@@ -5,7 +5,7 @@
     settings = {
       background = [{
         monitor = "";
-        path = toString config.wallpaper;
+        path = "${config.wallpaper}";
         color = "rgba(13, 17, 23, 0.7)";
         blur_passes = 1;
         blur_size = 2;

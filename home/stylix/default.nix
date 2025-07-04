@@ -3,7 +3,7 @@
     enable = false;
     autoEnable = true;
     image = config.wallpaper;
-    base16Scheme = config.colorscheme;
+    base16Scheme = /. + config.colorscheme;
     polarity = "dark";
 
     cursor = {

@@ -16,7 +16,8 @@ shell *pkgs:
     nix shell $args
 
 _rebuild command host=default_host:
-    nixos-rebuild {{command}} --flake .#{{host}}
+    nh os {{command}} . --hostname {{host}}
+    # nixos-rebuild {{command}} --flake .#{{host}} # would revert to this if im not happy with nh
 
 switch: 
     just _rebuild switch
