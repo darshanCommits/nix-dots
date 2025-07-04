@@ -26,12 +26,21 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
 
+    # I can do this because i am only taking the cachyos kernel from chaotic. it might break if i do anythig more.
+    # it will lower the time to evaluate inputs
+    chaotic = {
+      url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+      inputs = {
+        home-manager.follows = "home-manager";
+        rust-overlay.follows = "rust-overlay";
+        # nixpkgs.follows = "nixpkgs-unstable"; # might need to delete this. yep. had to. 
+      };
+    };
+
+    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
     stylix.url = "github:danth/stylix/release-25.05";
-
-    hyprpanel.url = "github:Jas-SinghFSU/HyprPanel";
 
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
@@ -45,7 +54,10 @@
 
     helix-driver = {
       url = "github:darshanCommits/helix/driver-new";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        rust-overlay.follows = "rust-overlay";
+      };
     };
   };
 }

@@ -1,6 +1,5 @@
 { ... }: {
   imports = [
-    ./hyprpanel.nix
     ./../common/brightness.nix
     ./../common/hyprlock
     ./../common/hypridle
