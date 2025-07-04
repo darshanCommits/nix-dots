@@ -50,9 +50,9 @@ in
 
       pipewire-pulse."92-low-latency" = {
         "pulse.properties" = {
-          "pulse.min.req" = fracString minQuantum clockRate;
-          "pulse.max.req" = fracString maxQuantum clockRate;
-          # "pulse.default.req" = fracString quantum clockRate;
+          "pulse.default.req" = fracString quantum clockRate;
+          # "pulse.min.req" = fracString minQuantum clockRate;
+          # "pulse.max.req" = fracString maxQuantum clockRate;
           # "pulse.min.quantum" = fracString minQuantum clockRate;
           # "pulse.max.quantum" = fracString maxQuantum clockRate;
         };

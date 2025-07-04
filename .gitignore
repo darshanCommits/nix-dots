@@ -1,4 +1,3 @@
 *.sqlite3*
 *.AppImage
-*.lock
-result
+/result
