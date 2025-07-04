@@ -17,7 +17,7 @@
       };
     in
     {
-      formatter = forAllSystems (system: nixpkgs.legacyPackages.${ system}.nixpkgs-fmt);
+      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixpkgs-fmt);
       nixosConfigurations = {
         greeed = nixpkgs.lib.nixosSystem (mkNixOsConfig "greeed");
       };
@@ -38,7 +38,10 @@
       };
     };
 
-    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
+    lix = {
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.2-1.tar.gz";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
     stylix.url = "github:danth/stylix/release-25.05";
 
