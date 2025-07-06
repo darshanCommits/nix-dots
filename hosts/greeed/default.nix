@@ -1,4 +1,9 @@
-{ inputs, config, pkgs, ... }: {
+{
+  inputs,
+  config,
+  pkgs,
+  ...
+}: {
   imports = [
     inputs.stylix.nixosModules.stylix
     inputs.nix-flatpak.nixosModules.nix-flatpak
@@ -17,7 +22,7 @@
     kernelPackages = pkgs.linuxPackages_cachyos;
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
-    kernelModules = [ "thinkpad_acpi" ];
+    kernelModules = ["thinkpad_acpi"];
     extraModprobeConfig = ''
       options thinkpad_acpi fan_control=1
     '';
@@ -42,5 +47,4 @@
       ];
     };
   };
-
 }

@@ -1,16 +1,16 @@
-{ ... }: {
+{...}: {
   services.keyd = {
     enable = true;
     keyboards = {
       default = {
-        ids = [ "*" ];
+        ids = ["*"];
         settings = {
           main = {
             leftalt = "layer(alt)";
             capslock = "overload(control, esc)";
             insert = "S-insert"; # obvious ig?
           };
-          otherlayer = { };
+          otherlayer = {};
         };
         extraConfig = ''
           [alt]

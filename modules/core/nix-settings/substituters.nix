@@ -1,10 +1,8 @@
-{ ... }:
-let
+{...}: let
   # mkSubsituter = substituter: key: {
   #   subs
   # };
-in
-{
+in {
   nix.settings = {
     auto-optimise-store = true;
     builders-use-substitutes = true;

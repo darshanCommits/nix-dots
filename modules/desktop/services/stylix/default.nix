@@ -1,4 +1,4 @@
-{ config, ... }: {
+{config, ...}: {
   stylix = {
     enable = true;
     autoEnable = true;

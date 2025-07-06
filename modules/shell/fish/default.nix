@@ -1,7 +1,8 @@
-{ pkgs, ... }: {
+{pkgs, ...}: {
   programs.fish = {
     enable = true;
-    interactiveShellInit = #fish
+    interactiveShellInit =
+      #fish
       ''
         fish_config theme choose Dracula
         set -g fish_greeting
@@ -14,13 +15,15 @@
       '';
   };
 
-  environment.systemPackages = with pkgs.fishPlugins; [
-    done
-    grc
-    autopair
-    puffer
-    async-prompt
-  ] ++ [
-    pkgs.grc
-  ];
+  environment.systemPackages = with pkgs.fishPlugins;
+    [
+      done
+      grc
+      autopair
+      puffer
+      async-prompt
+    ]
+    ++ [
+      pkgs.grc
+    ];
 }

@@ -1,6 +1,7 @@
-{ config
-, pkgs
-, ...
+{
+  config,
+  pkgs,
+  ...
 }: {
   services.immich = {
     enable = true;
@@ -12,6 +13,6 @@
     immich-go
   ];
 
-  users.users.immich.extraGroups = [ "video" "render" ];
+  users.users.immich.extraGroups = ["video" "render"];
   # networking.firewall.allowedTCPPorts = [2283];
 }

@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   imports = [
     ./fish
     ./zsh
@@ -10,9 +9,8 @@
     ./envVars.nix
   ];
 
-  environment.shells = with pkgs; [ fish ];
+  environment.shells = with pkgs; [fish];
   users.defaultUserShell = pkgs.fish;
-
 
   environment.systemPackages = with pkgs; [
     fzf

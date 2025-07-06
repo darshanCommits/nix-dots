@@ -1,6 +1,7 @@
-{ config
-, lib
-, ...
+{
+  config,
+  lib,
+  ...
 }: {
   config.port = {
     llmUi = 1234;
@@ -12,11 +13,10 @@
 
   config.assertions = [
     {
-      assertion =
-        let
-          vals = lib.attrValues config.port;
-          noCollision = l: lib.length (lib.unique l) == lib.length l;
-        in
+      assertion = let
+        vals = lib.attrValues config.port;
+        noCollision = l: lib.length (lib.unique l) == lib.length l;
+      in
         noCollision vals;
       message = "port collision happened.";
     }

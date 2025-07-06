@@ -1,10 +1,8 @@
 # YOU MUST FIRST DEFINE THE CONFIG OPTIONS IN THE ./types.nix
-{ config, ... }:
-let
+{config, ...}: let
   username = "greeed";
   assets = ./../../assets;
-in
-{
+in {
   config = {
     wallpaper = ./../../assets/images/goatv3.jpg;
     colorscheme = ./../../assets/colorscheme.yaml;

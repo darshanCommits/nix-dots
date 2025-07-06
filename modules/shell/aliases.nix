@@ -1,5 +1,4 @@
-{ lib, ... }:
-let
+{lib, ...}: let
   inherit (lib) mapAttrs;
 
   prefix = prefixStr: mapAttrs (_: v: "${prefixStr} ${v}");
@@ -24,14 +23,15 @@ let
     gb = "branch";
     gc = "checkout";
   };
-in
-{
-  environment.shellAliases = gitAliases // lsAliases // {
-    rg = "rga";
-    pdf = "zathura";
-    btm = "btm --battery --enable_gpu --tree --expanded";
-    heroic = "heroic --enable-features=WaylandWindowDecorations --enable-features=UseOzonePlatform --ozone-platform=wayland";
-    brave = "brave --enable-features=TouchpadOverscrollHistoryNavigation,UseOzonePlatform --ozone-platform=wayland";
-  };
+in {
+  environment.shellAliases =
+    gitAliases
+    // lsAliases
+    // {
+      rg = "rga";
+      pdf = "zathura";
+      btm = "btm --battery --enable_gpu --tree --expanded";
+      heroic = "heroic --enable-features=WaylandWindowDecorations --enable-features=UseOzonePlatform --ozone-platform=wayland";
+      brave = "brave --enable-features=TouchpadOverscrollHistoryNavigation,UseOzonePlatform --ozone-platform=wayland";
+    };
 }
-

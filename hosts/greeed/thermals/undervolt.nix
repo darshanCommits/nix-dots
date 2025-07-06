@@ -1,8 +1,6 @@
-{ ... }:
-let
+{...}: let
   undervolt_mV = -125;
-in
-{
+in {
   services.undervolt = {
     enable = true;
     coreOffset = undervolt_mV;

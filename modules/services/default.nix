@@ -1,4 +1,4 @@
-{ ... }: {
+{...}: {
   imports = [
     # ./databases
     ./web

@@ -1,4 +1,4 @@
-{ ... }: {
+{...}: {
   imports = [
     ./../common/brightness.nix
     ./../common/hyprlock

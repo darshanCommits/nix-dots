@@ -1,6 +1,7 @@
-{ config
-, inputs
-, ...
+{
+  config,
+  inputs,
+  ...
 }: {
   imports = [
     ./substituters.nix
@@ -12,10 +13,10 @@
   };
 
   nix = {
-    nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
+    nixPath = ["nixpkgs=${inputs.nixpkgs}"];
     settings = {
-      trusted-users = [ "root" "@wheel" config.username ];
-      experimental-features = [ "nix-command" "flakes" ];
+      trusted-users = ["root" "@wheel" config.username];
+      experimental-features = ["nix-command" "flakes"];
       warn-dirty = false;
       max-jobs = "auto";
     };

@@ -1,4 +1,9 @@
-{ lib, pkgs, config, ... }: {
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}: {
   home.packages = with pkgs; [
     lazygit
     gh

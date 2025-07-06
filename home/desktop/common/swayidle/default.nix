@@ -1,6 +1,8 @@
-{ pkgs, lib, ... }:
-
-let
+{
+  pkgs,
+  lib,
+  ...
+}: let
   # Time constants
   second = 1;
   minute = 60 * second;
@@ -35,36 +37,33 @@ let
   suspend = ''
     ${systemctl} suspend
   '';
+in {
+  services.swayidle = {
+    enable = true;
+    events = [
+      {
+        event = "before-sleep";
+        command = lockSessionScript;
+      }
+      {
+        event = "after-resume";
+        command = screenOn;
+      }
+      {
+        event = "lock";
+        command = lockSessionScript;
+      }
+    ];
 
-in
-{
-  services.swayidle =
-    {
-      enable = true;
-      events = [
-        {
-          event = "before-sleep";
-          command = lockSessionScript;
-        }
-        {
-          event = "after-resume";
-          command = screenOn;
-        }
-        {
-          event = "lock";
-          command = lockSessionScript;
-        }
-      ];
-
-      timeouts = [
-        {
-          timeout = screenBlankDelay;
-          command = lowerBrightness;
-        }
-        {
-          timeout = suspendDelay;
-          command = suspend;
-        }
-      ];
-    };
+    timeouts = [
+      {
+        timeout = screenBlankDelay;
+        command = lowerBrightness;
+      }
+      {
+        timeout = suspendDelay;
+        command = suspend;
+      }
+    ];
+  };
 }

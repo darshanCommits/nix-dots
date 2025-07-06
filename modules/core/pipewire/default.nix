@@ -1,12 +1,10 @@
-{ ... }:
-let
+{...}: let
   quantum = 256;
   minQuantum = 64;
   maxQuantum = 512;
   clockRate = 48000;
   fracString = num: denom: "${toString num}/${toString denom}";
-in
-{
+in {
   # make pipewire realtime-capable
   security.rtkit.enable = true;
   services.pipewire = {

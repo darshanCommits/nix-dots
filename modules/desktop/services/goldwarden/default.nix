@@ -1,3 +1,3 @@
-{ ... }: {
+{...}: {
   programs.goldwarden.enable = true;
 }

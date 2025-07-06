@@ -1,13 +1,15 @@
 # TODO: Need to refactor once i own another device (and thus reason to do so)
-# currently its doing things awkwardly with the specialArgs and system. 
-{ config, inputs, ... }:
-let
+# currently its doing things awkwardly with the specialArgs and system.
+{
+  config,
+  inputs,
+  ...
+}: let
   system = "x86_64-linux";
   specialArgs = {
     inherit inputs system;
   };
-in
-{
+in {
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
@@ -17,8 +19,6 @@ in
     users.${config.username}.imports = [
       ./../../home
       ./../../home/desktop/niri
-
     ];
   };
-
 }

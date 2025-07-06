@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{pkgs, ...}: {
   imports = [
     ./environments
     ./flatpak
@@ -7,7 +7,7 @@
     ./services
   ];
 
-  environment.systemPackages = with pkgs;[
+  environment.systemPackages = with pkgs; [
     cliphist
     tofi
     hyprpicker

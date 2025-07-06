@@ -1,5 +1,4 @@
-{ config, ... }:
-let
+{config, ...}: let
   defaultProxyPass = port: "http://${config.localhost}:${toString port}";
   listener = {
     addr = config.localhost;
@@ -11,8 +10,7 @@ let
     llm = "llm.${config.localDomain}";
     music = "music.${config.localDomain}";
   };
-in
-{
+in {
   networking.hosts = {
     "${config.localhost}" = builtins.attrValues domains;
     "${config.ip}" = builtins.attrValues domains;
@@ -33,7 +31,7 @@ in
 
     virtualHosts = {
       "${domains.photos}" = {
-        listen = [ listener ];
+        listen = [listener];
         locations."/" = {
           proxyPass = defaultProxyPass config.port.immich;
           proxyWebsockets = true;
@@ -41,7 +39,7 @@ in
       };
 
       "${domains.llm}" = {
-        listen = [ listener ];
+        listen = [listener];
         locations."/" = {
           proxyPass = defaultProxyPass config.port.llmUi;
           proxyWebsockets = true;
@@ -49,7 +47,7 @@ in
       };
 
       "${domains.music}" = {
-        listen = [ listener ];
+        listen = [listener];
         locations."/" = {
           proxyPass = defaultProxyPass config.port.navidrome;
           proxyWebsockets = true;

@@ -1,6 +1,8 @@
-{ config, lib, ... }:
-
-let
+{
+  config,
+  lib,
+  ...
+}: let
   inherit (lib) mkIf;
 
   compositor = "hyprland";
@@ -24,8 +26,7 @@ let
   };
 
   commands = cfg.${compositor} or (throw "Unsupported compositor: ${compositor}");
-in
-{
+in {
   config = mkIf (compositor == "hyprland") {
     services.hypridle = {
       enable = true;

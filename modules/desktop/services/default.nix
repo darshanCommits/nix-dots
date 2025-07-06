@@ -1,4 +1,4 @@
-{ ... }: {
+{...}: {
   imports = [
     ./kdeconnect
     ./keyd
@@ -6,5 +6,4 @@
     ./stylix
     ./goldwarden
   ];
-
 }

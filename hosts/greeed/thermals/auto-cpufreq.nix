@@ -1,11 +1,10 @@
-{ config
-, pkgs
-, ...
-}:
-let
-  max_freq = 3800000;
-in
 {
+  config,
+  pkgs,
+  ...
+}: let
+  max_freq = 3800000;
+in {
   services.auto-cpufreq = {
     enable = true;
     settings = {

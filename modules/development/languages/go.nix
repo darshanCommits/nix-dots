@@ -1,3 +1,3 @@
-{ pkgs, ... }: {
-  environment.systemPackages = with pkgs; [ go gopls ];
+{pkgs, ...}: {
+  environment.systemPackages = with pkgs; [go gopls];
 }

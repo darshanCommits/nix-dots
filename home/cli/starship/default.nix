@@ -1,6 +1,7 @@
-{ ... }: {
+{...}: {
   programs.starship = {
     enable = false;
+
     settings = {
       add_newline = true;
       format = "$all";

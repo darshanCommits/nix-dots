@@ -1,5 +1,5 @@
-{ pkgs, ... }: {
-  environment.systemPackages = with pkgs;[
+{pkgs, ...}: {
+  environment.systemPackages = with pkgs; [
     wl-clipboard
   ];
   imports = [
@@ -8,5 +8,4 @@
     ./kde
     ./niri
   ];
-
 }

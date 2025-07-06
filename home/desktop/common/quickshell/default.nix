@@ -1,8 +1,11 @@
-{ inputs, pkgs, lib, ... }:
-let
-  quickshell = inputs.quickshell.packages.${pkgs.system}.quickshell;
-in
 {
+  inputs,
+  pkgs,
+  lib,
+  ...
+}: let
+  quickshell = inputs.quickshell.packages.${pkgs.system}.quickshell;
+in {
   home.packages = with pkgs; [
     kdePackages.qqc2-desktop-style
     kdePackages.qt5compat

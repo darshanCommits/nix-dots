@@ -1,4 +1,4 @@
-{ ... }: {
+{...}: {
   imports = [
     ./types.nix
     ./static.nix

@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{pkgs, ...}: {
   imports = [
     # ./tools/kvm
     ./tools/docker
@@ -19,7 +19,6 @@
     CC = "sccache gcc";
     CXX = "sccache g++";
   };
-
 
   environment.systemPackages = with pkgs; [
     # editors

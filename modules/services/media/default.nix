@@ -1,6 +1,7 @@
-{ ... }: {
+{...}: {
   imports = [
     ./immich
     ./navidrome
+    # ./jellyfin
   ];
 }

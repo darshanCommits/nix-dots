@@ -4,4 +4,3 @@ inputs: final: prev: {
     config.allowUnfree = true;
   };
 }
-

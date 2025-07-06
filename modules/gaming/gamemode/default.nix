@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{pkgs, ...}: {
   programs.gamemode = {
     enable = true;
     enableRenice = true;

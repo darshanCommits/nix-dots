@@ -1,7 +1,10 @@
-{ inputs, pkgs, ... }:
-
-let
-  cargoTomlContent = # toml
+{
+  inputs,
+  pkgs,
+  ...
+}: let
+  cargoTomlContent =
+    # toml
     ''
       [build]
       rustc-wrapper = "sccache"
@@ -11,13 +14,12 @@ let
       linker = "clang"
       rustflags = ["-C", "link-arg=-fuse-ld=mold", "-C", "target-cpu=native"]
     '';
-in
-{
-  nixpkgs.overlays = [ inputs.rust-overlay.overlays.default ];
+in {
+  nixpkgs.overlays = [inputs.rust-overlay.overlays.default];
 
   environment.systemPackages = with pkgs; [
     (rust-bin.stable.latest.default.override {
-      extensions = [ "rust-analyzer" "rust-src" "clippy" "rustfmt" ];
+      extensions = ["rust-analyzer" "rust-src" "clippy" "rustfmt"];
     })
 
     cargo-watch
@@ -27,7 +29,8 @@ in
     clang
   ];
 
-  environment.etc."profile.d/rust-setup.sh".text = #sh
+  environment.etc."profile.d/rust-setup.sh".text =
+    #sh
     ''
       export PATH="$HOME/.cargo/bin:$PATH"
       export CARGO_TARGET_DIR="$HOME/.cargo/target"

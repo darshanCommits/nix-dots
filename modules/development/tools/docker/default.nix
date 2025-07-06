@@ -1,4 +1,4 @@
-{ ... }: {
+{...}: {
   virtualisation.docker = {
     enable = false;
 
@@ -7,7 +7,7 @@
       setSocketVariable = true;
       # Optionally customize rootless Docker daemon settings
       daemon.settings = {
-        dns = [ "1.1.1.1" "8.8.8.8" ];
+        dns = ["1.1.1.1" "8.8.8.8"];
       };
     };
   };

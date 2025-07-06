@@ -1,9 +1,10 @@
-{ lib
-, pkgs
-, ...
+{
+  lib,
+  pkgs,
+  ...
 }: {
   nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [ "corefonts" ];
+    builtins.elem (lib.getName pkg) ["corefonts"];
 
   fonts = {
     fontconfig.useEmbeddedBitmaps = true;

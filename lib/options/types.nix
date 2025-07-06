@@ -1,4 +1,4 @@
-{ lib, ... }:
+{lib, ...}:
 with lib; {
   options = {
     wallpaper = mkOption {
@@ -12,7 +12,7 @@ with lib; {
     };
 
     currentCompositor = mkOption {
-      type = types.enum [ "hyprland" "niri" ];
+      type = types.enum ["hyprland" "niri"];
       description = "Current Wayland compositor in use. Accepted values: 'hyprland', 'niri'.";
     };
 
@@ -65,7 +65,7 @@ with lib; {
 
     port = mkOption {
       type = with types; attrsOf port;
-      default = { };
+      default = {};
     };
   };
 }
