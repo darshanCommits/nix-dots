@@ -9,7 +9,12 @@
 
   programs.direnv = {
     enable = true;
-    nix-direnv.enable = false;
+    silent = true;
+    loadInNixShell = true;
+    enableBashIntegration = true;
+    nix-direnv = {
+      enable = true;
+    };
   };
 
   # Global sccache configuration
