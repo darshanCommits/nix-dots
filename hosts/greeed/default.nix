@@ -6,7 +6,7 @@
 }: {
   imports = [
     inputs.stylix.nixosModules.stylix
-    inputs.nix-flatpak.nixosModules.nix-flatpak
+    # inputs.nix-flatpak.nixosModules.nix-flatpak
     ./../common/base
 
     ./home.nix
@@ -17,6 +17,8 @@
     ./../common/nvidia
     ./../../modules
   ];
+
+  services.openssh.enable = true;
 
   boot = {
     kernelPackages = pkgs.linuxPackages_cachyos;

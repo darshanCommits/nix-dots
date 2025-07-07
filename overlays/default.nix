@@ -1,5 +1,5 @@
-inputs: final: prev: {
-  unstable = import inputs.nixpkgs-unstable {
+nixpkgs-unstable: final: prev: {
+  unstable = import nixpkgs-unstable {
     system = final.system;
     config.allowUnfree = true;
   };

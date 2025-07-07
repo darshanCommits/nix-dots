@@ -17,13 +17,13 @@ in {
       Port = config.port.navidrome;
       MusicFolder = musicDirectory;
       EnableSharing = true;
-      LastFM.ApiKey = "cb62a45e2f3075ca21d16bcb4de6cb1d";
-      LastFM.Secret = "fcdd6180e8d27adb248fc9c1012ef592";
+      LastFM.ApiKey = config.sops.secrets.LastFMApiKey;
+      LastFM.Secret = config.sops.secrets.LastFMSecret;
     };
   };
 
   # yo this is super important. ts wont work otherwise, and i have no idea how to make it work
-  # how to make 
+  # how to make
   systemd.services.navidrome.serviceConfig = {
     User = lib.mkForce config.username;
     Group = lib.mkForce "users";

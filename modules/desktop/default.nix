@@ -1,7 +1,7 @@
 {pkgs, ...}: {
   imports = [
     ./environments
-    ./flatpak
+    # ./flatpak
     ./apps
     ./fonts
     ./services

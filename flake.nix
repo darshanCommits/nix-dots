@@ -1,7 +1,11 @@
 {
   description = "Yo yo yo. 148-3 to the 3 to the 6 to the 9, representing Darshan's dotfiles, what up biatch?!";
 
-  outputs = {nixpkgs, ...} @ inputs: let
+  outputs = {
+    nixpkgs,
+    lix-module,
+    ...
+  } @ inputs: let
     system = "x86_64-linux";
     forAllSystems = nixpkgs.lib.genAttrs [system];
 
@@ -11,7 +15,14 @@
         inherit inputs;
       };
       modules = [
+        lix-module.nixosModules.default
+        ./lib
         ./hosts/${host}
+        {
+          nixpkgs.overlays = [
+            (import ./overlays inputs.nixpkgs-unstable)
+          ];
+        }
       ];
     };
   in {
@@ -35,11 +46,17 @@
       };
     };
 
-    # lix = {
-    #   url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.2-1.tar.gz";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
-    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    lix-module = {
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.2-1.tar.gz";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
     stylix.url = "github:danth/stylix/release-25.05";
 
     rust-overlay = {
