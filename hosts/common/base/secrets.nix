@@ -12,8 +12,8 @@
 
   sops.age.keyFile = "${config.homeDir}/.config/sops/age/keys.txt";
 
-  sops.secrets.LastFMApiKey = {};
-  sops.secrets.LastFMSecret = {};
+  sops.secrets."LastFM.ApiKey" = {};
+  sops.secrets."LastFM.Secret" = {};
 
   # systemd.services."sometestservice" = {
   #   script = ''

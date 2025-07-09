@@ -17,8 +17,8 @@ in {
       Port = config.port.navidrome;
       MusicFolder = musicDirectory;
       EnableSharing = true;
-      LastFM.ApiKey = config.sops.secrets.LastFMApiKey;
-      LastFM.Secret = config.sops.secrets.LastFMSecret;
+      LastFM.ApiKey = config.sops.secrets."LastFM.ApiKey".path;
+      LastFM.Secret = config.sops.secrets."LastFM.Secret".path;
     };
   };
 
