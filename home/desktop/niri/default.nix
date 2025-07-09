@@ -13,9 +13,6 @@
     ./../common/swaybg
   ];
 
-  services.swayidle.systemdTarget = lib.mkForce "niri.service";
-  systemd.user.services.swayidle.Unit.After = lib.mkForce "niri.service";
-
   systemd.user.services.niri = {
     Service = {
       Slice = "session.slice";
@@ -36,6 +33,7 @@
         "mako.service"
         "waybar.service"
         "swaybg.service"
+        "swayidle.service"
       ];
     };
   };

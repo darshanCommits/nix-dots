@@ -1,8 +1,10 @@
 {
-  pkgs,
   lib,
+  pkgs,
   ...
 }: let
+  inherit (lib) getExe;
+
   # Time constants
   second = 1;
   minute = 60 * second;
@@ -12,58 +14,37 @@
   suspendDelay = lockDelay * 2;
 
   # Executables
+  brightnessctl = getExe pkgs.brightnessctl;
+  niri = getExe pkgs.niri;
   loginctl = "${pkgs.systemd}/bin/loginctl";
   systemctl = "${pkgs.systemd}/bin/systemctl";
-  brightnessctl = lib.getExe pkgs.brightnessctl;
-  niri = lib.getExe pkgs.niri;
 
-  lowerBrightness = ''
-    ${brightnessctl} -sd platform::kbd_backlight set 0
-    ${brightnessctl} -s set 10
-  '';
-
-  lockSessionScript = ''
-    ${brightnessctl} -sd platform::kbd_backlight set 0
-    ${niri} msg action power-off-monitors
-    ${loginctl} lock-session
-  '';
-
-  screenOn = ''
-    ${brightnessctl} -r
-    ${brightnessctl} -rd platform::kbd_backlight
-    ${niri} msg action power-on-monitors
-  '';
-
-  suspend = ''
-    ${systemctl} suspend
+  swayidleScript = pkgs.writeShellScript "swayidle-power-management" ''
+    ${getExe pkgs.swayidle} -w \
+      timeout ${toString screenBlankDelay} '${brightnessctl} -sd platform::kbd_backlight set 0 && ${brightnessctl} -s set 10' \
+      timeout ${toString suspendDelay} '${systemctl} suspend' \
+      before-sleep '${brightnessctl} -sd platform::kbd_backlight set 0 && ${niri} msg action power-off-monitors && ${loginctl} lock-session' \
+      after-resume '${brightnessctl} -r && ${brightnessctl} -rd platform::kbd_backlight && ${niri} msg action power-on-monitors' \
+      lock '${brightnessctl} -sd platform::kbd_backlight set 0 && ${niri} msg action power-off-monitors && ${loginctl} lock-session'
   '';
 in {
-  services.swayidle = {
-    enable = true;
-    events = [
-      {
-        event = "before-sleep";
-        command = lockSessionScript;
-      }
-      {
-        event = "after-resume";
-        command = screenOn;
-      }
-      {
-        event = "lock";
-        command = lockSessionScript;
-      }
-    ];
+  home.packages = [pkgs.swayidle];
 
-    timeouts = [
-      {
-        timeout = screenBlankDelay;
-        command = lowerBrightness;
-      }
-      {
-        timeout = suspendDelay;
-        command = suspend;
-      }
-    ];
+  systemd.user.services.swayidle = {
+    Unit = {
+      Description = "Swayidle power management daemon";
+      PartOf = ["graphical-session.target"];
+      After = ["graphical-session.target"];
+      Requisite = ["graphical-session.target"];
+    };
+
+    Service = {
+      ExecStart = "${swayidleScript}";
+      Restart = "on-failure";
+    };
+
+    Install = {
+      WantedBy = ["graphical-session.target"];
+    };
   };
 }
