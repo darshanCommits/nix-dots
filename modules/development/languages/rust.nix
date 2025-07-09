@@ -7,7 +7,7 @@
     # toml
     ''
       [build]
-      rustc-wrapper = "sccache"
+      # rustc-wrapper = "sccache"
       target-dir = "$HOME/.cargo/target"
 
       [target.x86_64-unknown-linux-gnu]
@@ -15,12 +15,17 @@
       rustflags = ["-C", "link-arg=-fuse-ld=mold", "-C", "target-cpu=native"]
     '';
 in {
-  nixpkgs.overlays = [inputs.rust-overlay.overlays.default];
+  nixpkgs.overlays = [inputs.fenix.overlays.default];
 
   environment.systemPackages = with pkgs; [
-    (rust-bin.stable.latest.default.override {
-      extensions = ["rust-analyzer" "rust-src" "clippy" "rustfmt"];
-    })
+    (fenix.stable.withComponents [
+      "cargo"
+      "clippy"
+      "rust-src"
+      "rustc"
+      "rustfmt"
+      "rust-analyzer"
+    ])
 
     cargo-watch
     cargo-expand
@@ -38,11 +43,12 @@ in {
 
       CONFIG_FILE="$HOME/.cargo/config.toml"
 
-      if [ ! -f "$CONFIG_FILE" ]; then
-        mkdir -p "$HOME/.cargo"
-        cat > "$CONFIG_FILE" <<'EOF'
+      mkdir -p "$HOME/.cargo"
+      cat > "$CONFIG_FILE" <<'EOF'
       ${cargoTomlContent}
       EOF
-      fi
+
+      # if [ ! -f "$CONFIG_FILE" ]; then
+      # fi
     '';
 }

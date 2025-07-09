@@ -20,7 +20,7 @@
         ./hosts/${host}
         {
           nixpkgs.overlays = [
-            (import ./overlays inputs.nixpkgs-unstable)
+            # (import ./overlays inputs.nixpkgs-unstable)
           ];
         }
       ];
@@ -34,15 +34,15 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    # nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     # I can do this because i am only taking the cachyos kernel from chaotic. it might break if i do anythig more.
     # it will lower the time to evaluate inputs
     chaotic = {
       url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
       inputs = {
-        home-manager.follows = "home-manager";
-        rust-overlay.follows = "rust-overlay";
+        home-manager.follows = "";
+        rust-overlay.follows = "";
       };
     };
 
@@ -56,11 +56,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
     stylix.url = "github:danth/stylix/release-25.05";
 
-    rust-overlay = {
-      url = "github:oxalica/rust-overlay";
+    fenix = {
+      url = "github:nix-community/fenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -73,7 +72,6 @@
       url = "github:darshanCommits/helix/driver-new";
       inputs = {
         nixpkgs.follows = "nixpkgs";
-        rust-overlay.follows = "rust-overlay";
       };
     };
   };

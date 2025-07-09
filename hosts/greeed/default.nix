@@ -6,7 +6,6 @@
 }: {
   imports = [
     inputs.stylix.nixosModules.stylix
-    # inputs.nix-flatpak.nixosModules.nix-flatpak
     ./../common/base
 
     ./home.nix
@@ -19,6 +18,16 @@
   ];
 
   services.openssh.enable = true;
+
+  # i mostly use tldr
+  documentation = {
+    enable = false;
+    doc.enable = false;
+    dev.enable = false;
+    man.enable = false;
+    info.enable = false;
+    nixos.enable = false;
+  };
 
   boot = {
     kernelPackages = pkgs.linuxPackages_cachyos;
