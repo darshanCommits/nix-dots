@@ -30,7 +30,7 @@
   programs.dconf.enable = true;
   xdg.mime.enable = true;
 
-  home-manager.backupFileExtension = "hm-backup";
+  home-manager.backupFileExtension = "bhay-bas";
 
   services.printing.enable = true;
   services.tor.enable = false;

@@ -11,7 +11,7 @@
   ];
 
   # REFER: @/modules/dewm/wl-clipboard
-  services.cliphist.enable = true;
+  services.cliphist.enable = false;
   services.easyeffects.enable = true;
 
   home = {

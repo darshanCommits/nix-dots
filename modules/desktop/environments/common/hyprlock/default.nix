@@ -1,6 +1,6 @@
 {...}: {
   programs.hyprlock = {
-    enable = true;
+    # enable = false; enabled from HM
   };
 
   security.pam.services.hyprlock.enableGnomeKeyring = true;

@@ -2,7 +2,6 @@
   imports = [
     ./../common/brightness.nix
     ./../common/hyprlock
-    ./../common/hypridle
     ./../common/sddm
   ];
 

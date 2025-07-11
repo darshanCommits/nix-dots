@@ -43,6 +43,8 @@
       inputs = {
         home-manager.follows = "";
         rust-overlay.follows = "";
+        jovian.follows = "";
+        flake-schemas.follows = "";
       };
     };
 
@@ -60,7 +62,10 @@
 
     fenix = {
       url = "github:nix-community/fenix";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        rust-analyzer-src.follows = ""; # comment if i want to use nightly
+      };
     };
 
     home-manager = {

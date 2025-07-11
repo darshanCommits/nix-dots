@@ -2,6 +2,9 @@ set quiet
 
 default_host := "greeed"
 
+debug-home host=default_host:
+    journalctl -u home-manager-{{host}}.service --pager-end | bat
+
 shell *pkgs:
     #!/usr/bin/env fish
     set args

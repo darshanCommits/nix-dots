@@ -3,7 +3,7 @@
     wl-clipboard
   ];
   imports = [
-    ./hyprland
+    # ./hyprland
     ./cosmic
     ./kde
     ./niri
