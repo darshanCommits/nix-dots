@@ -4,6 +4,6 @@ in {
   services.undervolt = {
     enable = true;
     coreOffset = undervolt_mV;
-    turbo = 0;
+    turbo = 1;
   };
 }

@@ -2,7 +2,7 @@
   imports = [
     ./../common/brightness.nix
     ./../common/hyprlock
-    ./../common/sddm
+    ./../common/ly
   ];
 
   programs.niri = {

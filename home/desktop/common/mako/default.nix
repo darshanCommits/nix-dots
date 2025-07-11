@@ -7,7 +7,7 @@
     settings = {
       background-color = "#000000";
       text-color = "#CDD6F4";
-      font = "JetBrainsNerd Font 11";
+      font = "JetBrains erd Font 11";
       border-color = "#ff4835";
       padding = 13;
       icons = 1;
