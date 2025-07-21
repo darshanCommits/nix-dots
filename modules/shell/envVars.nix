@@ -2,7 +2,7 @@
   environment.variables = {
     EDITOR = "hx";
     VISUAL = "hx";
-    BROWSER = "brave";
+    BROWSER = "vivaldi";
     TERMINAL = "footclient";
     VIDEO_PLAYER = "mpv";
     AUDIO_PLAYER = "mpv";

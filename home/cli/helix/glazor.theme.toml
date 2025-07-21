@@ -131,7 +131,6 @@ info = "sky"
 hint = "red"
 
 [palette]
-# catppuccin palette colors
 rosewater = "#F5E0DC"
 flamingo = "#F2CDCD"
 lightpink = "#F5C2E7"
@@ -162,7 +161,6 @@ base = "#0d1117"
 mantle = "#181825"
 crust = "#11111B"
 
-# DERIVED colors by blending existing palette colors
 cursorline = "#2A2B3C"
 secondary_cursor = "#B5A6A8"
 secondary_cursor_normal = "#878EC0"

@@ -1,40 +1,9 @@
 {
   description = "Yo yo yo. 148-3 to the 3 to the 6 to the 9, representing Darshan's dotfiles, what up biatch?!";
 
-  outputs = {
-    nixpkgs,
-    lix-module,
-    ...
-  } @ inputs: let
-    system = "x86_64-linux";
-    forAllSystems = nixpkgs.lib.genAttrs [system];
-
-    mkNixOsConfig = host: {
-      inherit system;
-      specialArgs = {
-        inherit inputs;
-      };
-      modules = [
-        lix-module.nixosModules.default
-        ./lib
-        ./hosts/${host}
-        {
-          nixpkgs.overlays = [
-            # (import ./overlays inputs.nixpkgs-unstable)
-          ];
-        }
-      ];
-    };
-  in {
-    formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
-    nixosConfigurations = {
-      greeed = nixpkgs.lib.nixosSystem (mkNixOsConfig "greeed");
-    };
-  };
-
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
-    # nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     # I can do this because i am only taking the cachyos kernel from chaotic. it might break if i do anythig more.
     # it will lower the time to evaluate inputs
@@ -78,6 +47,38 @@
       inputs = {
         nixpkgs.follows = "nixpkgs";
       };
+    };
+  };
+
+  outputs = {
+    self,
+    nixpkgs,
+    lix-module,
+    ...
+  } @ inputs: let
+    system = "x86_64-linux";
+    forAllSystems = nixpkgs.lib.genAttrs [system];
+
+    mkNixOsConfig = host: {
+      inherit system;
+      specialArgs = {
+        inherit inputs self;
+      };
+      modules = [
+        lix-module.nixosModules.default
+        ./lib
+        ./hosts/${host}
+        {
+          nixpkgs.overlays = [
+            (import ./overlays inputs.nixpkgs-unstable)
+          ];
+        }
+      ];
+    };
+  in {
+    formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
+    nixosConfigurations = {
+      greeed = nixpkgs.lib.nixosSystem (mkNixOsConfig "greeed");
     };
   };
 }

@@ -1,10 +1,14 @@
-{...}: let
+{pkgs, ...}: let
   quantum = 256;
   minQuantum = 64;
   maxQuantum = 512;
   clockRate = 48000;
   fracString = num: denom: "${toString num}/${toString denom}";
 in {
+  environment.systemPackages = with pkgs; [
+    pavucontrol
+  ];
+
   # make pipewire realtime-capable
   security.rtkit.enable = true;
   services.pipewire = {
@@ -39,9 +43,9 @@ in {
         "92-low-latency" = {
           "context.properties" = {
             "default.clock.rate" = clockRate;
-            # "default.clock.quantum" = quantum;
-            # "default.clock.min-quantum" = minQuantum;
-            # "default.clock.max-quantum" = maxQuantum;
+            "default.clock.quantum" = quantum;
+            "default.clock.min-quantum" = minQuantum;
+            "default.clock.max-quantum" = maxQuantum;
           };
         };
       };
@@ -49,10 +53,10 @@ in {
       pipewire-pulse."92-low-latency" = {
         "pulse.properties" = {
           "pulse.default.req" = fracString quantum clockRate;
-          # "pulse.min.req" = fracString minQuantum clockRate;
-          # "pulse.max.req" = fracString maxQuantum clockRate;
-          # "pulse.min.quantum" = fracString minQuantum clockRate;
-          # "pulse.max.quantum" = fracString maxQuantum clockRate;
+          "pulse.min.req" = fracString minQuantum clockRate;
+          "pulse.max.req" = fracString maxQuantum clockRate;
+          "pulse.min.quantum" = fracString minQuantum clockRate;
+          "pulse.max.quantum" = fracString maxQuantum clockRate;
         };
         "stream.properties" = {
           "node.latency" = fracString minQuantum clockRate;

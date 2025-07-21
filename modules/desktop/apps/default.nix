@@ -4,5 +4,6 @@
     ./documents
     ./media
     ./messaging
+    # ./flatpak
   ];
 }

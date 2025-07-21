@@ -1,4 +1,17 @@
+/*
+* Variant: Rosé Pine
+* Maintainer: DankChoir
+*/
+
+@define-color overlay #26233a;
+@define-color muted #6e6a86;
+@define-color pine #31748f;
+@define-color foam #9ccfd8;
+
+
 * {
+
+
   font-family: "JetBrainsMono Nerd Font";
   font-weight: 600;
   font-size: 15px;
@@ -54,7 +67,8 @@
 #clock,
 #battery,
 #pulseaudio,
-#network {
+#network,
+#custom-swaync {
   background: #000;
   padding: 0px 10px;
   margin-bottom: 5px;
@@ -96,13 +110,39 @@
   border-bottom: 2px solid #ff3333;
 }
 
-#custom-power {
-  color: #000;
-  background: #ff4734;
-  margin: 5px 10px 5px 5px;
-  padding: 5px 10px;
-}
-
 #tray {
   margin-left: 10px;
+}
+
+#custom-swaync {
+  margin-right: 5px;
+  border-left: 2px solid @foam;
+}
+
+#custom-swaync:hover {
+  color: @overlay;
+}
+
+#custom-swaync.none {
+  color: @muted;
+}
+
+#custom-swaync.notification {
+  color: @foam;
+}
+
+#custom-swaync.dnd-none {
+  color: @muted;
+}
+
+#custom-swaync.dnd-notification {
+  color: @pine;
+}
+
+#custom-swaync.inhibited-none {
+  color: @muted;
+}
+
+#custom-swaync.inhibited-notification {
+  color: @pine;
 }

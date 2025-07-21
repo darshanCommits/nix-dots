@@ -16,10 +16,11 @@
     "modules-right": [
       "network",
       "pulseaudio",
-      "battery"
+      "battery",
+      "custom/swaync"
     ],
     "clock": {
-      "format": "󰅐  {:%I:%M:%p}",
+      "format": "󰅐  {:%I:%M %p}",
       "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
       "format-alt": "  {:%d/%m}"
     },
@@ -96,6 +97,26 @@
     "tray": {
       "icon-size": 18,
       "spacing": 10
+    },
+    "custom/swaync": {
+      "tooltip": false,
+      "format": "{icon}",
+      "format-icons": {
+        "notification": "",
+        "none": "",
+        "dnd-notification": "",
+        "dnd-none": "",
+        "inhibited-notification": "<span foreground='#eb6f92'><sup></sup></span>",
+        "inhibited-none": "",
+        "dnd-inhibited-notification": "<span foreground='#eb6f92'><sup></sup></span>",
+        "dnd-inhibited-none": ""
+      },
+      "return-type": "json",
+      "exec-if": "which swaync-client",
+      "exec": "swaync-client -swb",
+      "on-click": "swaync-client -t -sw",
+      "on-click-right": "swaync-client -d -sw",
+      "escape": true
     }
   }
 }

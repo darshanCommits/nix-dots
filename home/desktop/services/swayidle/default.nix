@@ -16,16 +16,16 @@
   # Executables
   brightnessctl = getExe pkgs.brightnessctl;
   niri = getExe pkgs.niri;
-  loginctl = "${pkgs.systemd}/bin/loginctl";
+  lock = "${pkgs.systemd}/bin/loginctl lock-session";
   systemctl = "${pkgs.systemd}/bin/systemctl";
 
   swayidleScript = pkgs.writeShellScript "swayidle-power-management" ''
     ${getExe pkgs.swayidle} -w \
       timeout ${toString screenBlankDelay} '${brightnessctl} -sd platform::kbd_backlight set 0 && ${brightnessctl} -s set 10' \
       timeout ${toString suspendDelay} '${systemctl} suspend' \
-      before-sleep '${brightnessctl} -sd platform::kbd_backlight set 0 && ${niri} msg action power-off-monitors && ${loginctl} lock-session' \
+      before-sleep '${brightnessctl} -sd platform::kbd_backlight set 0 && ${niri} msg action power-off-monitors' \
       after-resume '${brightnessctl} -r && ${brightnessctl} -rd platform::kbd_backlight && ${niri} msg action power-on-monitors' \
-      lock '${brightnessctl} -sd platform::kbd_backlight set 0 && ${niri} msg action power-off-monitors && ${loginctl} lock-session'
+      lock '${brightnessctl} -sd platform::kbd_backlight set 0 && ${niri} msg action power-off-monitors && ${lock}'
   '';
 in {
   home.packages = [pkgs.swayidle];

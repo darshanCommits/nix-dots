@@ -6,5 +6,6 @@
   environment.systemPackages = with pkgs; [
     onlyoffice-bin
     zathura
+    kdePackages.okular
   ];
 }

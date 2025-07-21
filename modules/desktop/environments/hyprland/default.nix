@@ -1,15 +1,15 @@
 {...}: {
-  imports = [
-    ./../common/brightness.nix
-    ./../common/hyprlock
-    ./../common/hypridle
-    ./../common/sddm
-  ];
+  # imports = [
+  #   ./../../services/brightness.nix
+  #   ./../../services/hyprlock
+  #   ./../../services/hypridle
+  #   ./../../services/sddm
+  # ];
 
-  programs.uwsm.enable = true;
+  # programs.uwsm.enable = true;
   programs.hyprland = {
     enable = true;
-    withUWSM = true;
-    xwayland.enable = true;
+    withUWSM = false;
+    xwayland.enable = false;
   };
 }

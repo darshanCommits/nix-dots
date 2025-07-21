@@ -1,13 +1,13 @@
 # TODO: Need to refactor once i own another device (and thus reason to do so)
 # currently its doing things awkwardly with the specialArgs and system.
 {
+  self,
   config,
   inputs,
   ...
 }: let
-  system = "x86_64-linux";
   specialArgs = {
-    inherit inputs system;
+    inherit inputs self;
   };
 in {
   home-manager = {

@@ -3,7 +3,6 @@
     qimgv
     stremio
     easyeffects
-    feh
     ani-cli
     ffsubsync
     blanket
