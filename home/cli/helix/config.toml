@@ -89,4 +89,3 @@ q = ":q"
 
 [keys.select]
 X = "extend_line_above"
-

@@ -26,23 +26,46 @@
     coreOffset = -125;
     turbo = 0;
   };
-  services.auto-cpufreq = let
-    Ghz = x: x * 1000 * 1000;
-  in {
+  services.tlp = {
     enable = true;
     settings = {
-      battery = {
-        governor = "powersave";
-        turbo = "never";
-      };
-      charger = {
-        governor = "performance";
-        energy_perf_bias = "performance";
-        scaling_max_freq = Ghz 4.4;
-        turbo = "auto";
-      };
+      RUNTIME_PM_ENABLE = "01:00.0";
+      RUNTIME_PM_ON_AC = "auto";
+
+      # disable cpu module
+      CPU_SCALING_GOVERNOR_ON_AC = "";
+      CPU_SCALING_GOVERNOR_ON_BAT = "";
+      CPU_SCALING_MIN_FREQ_ON_AC = "";
+      CPU_SCALING_MAX_FREQ_ON_AC = "";
+      CPU_SCALING_MIN_FREQ_ON_BAT = "";
+      CPU_SCALING_MAX_FREQ_ON_BAT = "";
+      CPU_BOOST_ON_AC = "";
+      CPU_BOOST_ON_BAT = "";
+      CPU_HWP_ON_AC = "";
+      CPU_HWP_ON_BAT = "";
+      CPU_HWP_DYN_BOOST_ON_AC = "";
+      CPU_HWP_DYN_BOOST_ON_BAT = "";
+      SCHED_POWERSAVE_ON_AC = "";
+      SCHED_POWERSAVE_ON_BAT = "";
     };
   };
+  # services.auto-cpufreq = let
+  #   Ghz = x: x * 1000 * 1000;
+  # in {
+  #   enable = true;
+  #   settings = {
+  #     battery = {
+  #       governor = "powersave";
+  #       turbo = "never";
+  #     };
+  #     charger = {
+  #       governor = "performance";
+  #       energy_perf_bias = "performance";
+  #       scaling_max_freq = Ghz 4.4;
+  #       turbo = "auto";
+  #     };
+  #   };
+  # };
 
   # i mostly use tldr
   documentation = {
