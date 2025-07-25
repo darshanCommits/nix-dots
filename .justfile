@@ -31,6 +31,9 @@ test:
 boot: 
     just _rebuild boot
 
+build: 
+    just _rebuild build
+
 update:
     nix flake update
 
