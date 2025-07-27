@@ -1,5 +1,5 @@
 {self, ...}: let
-  servicesPath = "${self.outPath}/home/desktop/services";
+  servicesPath = "${self}/home/desktop/services";
   services = map (service: "${servicesPath}/${service}") [
     "hyprlock"
     #mako"

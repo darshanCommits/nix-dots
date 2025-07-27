@@ -62,9 +62,9 @@
       "format-alt": "{ipaddr}/{cidr}"
     },
     "pulseaudio": {
-      "on-click": "pactl set-sink-mute 0 toggle",
-      "on-scroll-down": "pactl set-sink-volume 0 +5%",
-      "on-scroll-up": "pactl set-sink-volume 0 -5%",
+      "on-click": "swayosd-client --output-volume mute-toggle",
+      "on-scroll-up": "swayosd-client --output-volume 2 --max-volume 120",
+      "on-scroll-down": "swayosd-client --output-volume -2 --max-volume 120",
       "scroll-step": 1,
       "format": "{icon}  {volume}%",
       "format-muted": "󰖁 ",

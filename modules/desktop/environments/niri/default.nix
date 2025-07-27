@@ -3,7 +3,7 @@
   pkgs,
   ...
 }: let
-  servicesPath = "${self.outPath}/modules/desktop/services";
+  servicesPath = "${self}/modules/desktop/services";
   services = map (service: "${servicesPath}/${service}") [
     "brightness.nix"
     "hyprlock"

@@ -30,7 +30,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Install Nix(ummm, akshually Lix)
+      - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
         with: 
           extra_nix_config: |

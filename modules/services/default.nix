@@ -1,7 +1,8 @@
 {...}: {
   imports = [
-    ./web
-    ./ai
-    ./media
+    # ./web/nginx
+    ./ai/ollama
+    # ./media/immich
+    ./media/navidrome
   ];
 }

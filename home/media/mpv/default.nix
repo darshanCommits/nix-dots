@@ -1,6 +1,13 @@
-{...}: {
+{pkgs, ...}: {
   imports = [
-    ./scripts.nix
+    ./scriptOpts.nix
+  ];
+  programs.mpv.scripts = with pkgs.mpvScripts; [
+    mpris
+    uosc
+    thumbfast
+    autosubsync-mpv
+    sponsorblock
   ];
 
   programs.mpv.enable = true;
@@ -20,5 +27,9 @@
     sub-color = "#FFFFFF";
     sub-shadow-color = "#000000";
     sub-shadow-offset = 2;
+
+    hwdec = "vaapi";
+    vo = "gpu";
+    gpu-context = "wayland";
   };
 }
