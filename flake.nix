@@ -38,7 +38,7 @@
     };
 
     helix-driver = {
-      url = "github:darshanCommits/helix";
+      url = "github:darshanCommits/helix/driver";
       inputs = {
         nixpkgs.follows = "nixpkgs";
       };

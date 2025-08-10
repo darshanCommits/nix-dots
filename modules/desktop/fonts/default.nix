@@ -7,7 +7,10 @@
     builtins.elem (lib.getName pkg) ["corefonts"];
 
   fonts = {
-    fontconfig.useEmbeddedBitmaps = true;
+    fontconfig = {
+      subpixel.rgba = "rgb";
+      useEmbeddedBitmaps = true;
+    };
     enableDefaultPackages = true;
     fontDir.enable = true;
 
@@ -16,6 +19,7 @@
       noto-fonts
       noto-fonts-cjk-sans
       noto-fonts-emoji
+      inter
       nerd-fonts.jetbrains-mono
       nerd-fonts.ubuntu-sans
     ];

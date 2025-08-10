@@ -10,6 +10,7 @@
     yt-dlp # video downloader
     ani-cli # anime streaming CLI
     aria2 # advanced downloader
+    qbittorrent
 
     # Media processing
     ffmpegthumbnailer # video thumbnails

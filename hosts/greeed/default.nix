@@ -49,24 +49,6 @@
       SCHED_POWERSAVE_ON_BAT = "";
     };
   };
-  # services.auto-cpufreq = let
-  #   Ghz = x: x * 1000 * 1000;
-  # in {
-  #   enable = true;
-  #   settings = {
-  #     battery = {
-  #       governor = "powersave";
-  #       turbo = "never";
-  #     };
-  #     charger = {
-  #       governor = "performance";
-  #       energy_perf_bias = "performance";
-  #       scaling_max_freq = Ghz 4.4;
-  #       turbo = "auto";
-  #     };
-  #   };
-  # };
-
   # i mostly use tldr
   documentation = {
     enable = false;
@@ -111,7 +93,7 @@
 
   services.scx = {
     enable = true;
-    scheduler = "scx_lavd";
+    scheduler = "scx_rusty";
   };
 
   users = {

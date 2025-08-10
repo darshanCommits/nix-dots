@@ -2,8 +2,7 @@
   imports = [
     ./kdeconnect
     ./keyd
-    ./waydroid
-    ./stylix
+    # ./waydroid
     ./goldwarden
   ];
 }

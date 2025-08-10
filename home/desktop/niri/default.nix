@@ -3,7 +3,7 @@
   services = map (service: "${servicesPath}/${service}") [
     "hyprlock"
     #mako"
-    "swayidle"
+    # "swayidle"
     "waybar"
     "walker"
     "swaybg"

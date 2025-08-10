@@ -6,10 +6,10 @@
   #   ./../../services/sddm
   # ];
 
-  # programs.uwsm.enable = true;
+  programs.uwsm.enable = true;
   programs.hyprland = {
     enable = true;
-    withUWSM = false;
-    xwayland.enable = false;
+    withUWSM = true;
+    xwayland.enable = true;
   };
 }

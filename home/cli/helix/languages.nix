@@ -14,11 +14,6 @@
       args = ["lsp-proxy"];
     };
 
-    qmlls = {
-      command = "${pkgs.kdePackages.qtdeclarative}/bin/qmlls";
-      args = ["-E"];
-    };
-
     emmet = {
       command = "${pkgs.emmet-language-server}/bin/emmet-language-server";
       args = ["--stdio"];

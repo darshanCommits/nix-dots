@@ -1,6 +1,7 @@
 {pkgs, ...}: {
   imports = [
     ./environments/niri
+    ./environments/kde
     ./apps
     ./fonts
     ./services

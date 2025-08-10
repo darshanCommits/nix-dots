@@ -9,5 +9,6 @@
     # Launchers
     heroic
     # itch
+    unstable.steamtinkerlaunch
   ];
 }
